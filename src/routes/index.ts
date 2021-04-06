@@ -1,21 +1,19 @@
 import {Router} from 'express';
-import {helloWorld, createUser} from '../controllers/user.controller'
+import {helloWorld, createUser, loginUser, deleteUser} from '../controllers/user.controller'
 
-
-import multer from '../libs/multer'
 
 const router = Router();
     
 router.route('/')
-    .get(helloWorld)// la part lògica esta en un altre document en el controlador de cada cosa
+    .get(helloWorld) //la part lògica esta en un altre document en el controlador de cada cosa
 
-
-router.route('/users')
+router.route('/newUser')
     .post(createUser)
-    //Crear el usercontroller
-    //Crear el model User
-    //Crear les rutes 
-    // Us INSOMNIA
     
+router.route('/login')
+    .get(loginUser)
+
+router.route('/deleteUser')
+    .delete(deleteUser)
 
 export default router;
