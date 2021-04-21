@@ -20,7 +20,7 @@ app.use(cors());
 
 
 //Routes
-app.use('/api',indexRoutes); //Configurem qui sera l'autoritat de les rutes que arribin amb /app
+app.use('/',indexRoutes); //Configurem qui sera l'autoritat de les rutes que arribin amb /app
 
 // this folder is for public documents ( A lo que puede acceder el navegador)
 app.use('/uploads',express.static(path.resolve('uploads')));

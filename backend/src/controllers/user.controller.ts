@@ -1,7 +1,7 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
 
-export function helloWorld( req: Request, res:Response): Response {
+export function helloWorld(req: Request, res: Response): Response {
     return res.send('Hello World !!!')
 }
 
@@ -92,11 +92,19 @@ export async function deleteUser (req: Request, res: Response): Promise<void> {
     const registeredUser = User.findOne({name:username, password:password}, function(){
         try{
             if(registeredUser != null){
-                User.findOneAndDelete(registeredUser);
-                return res.json({
-                    code: 200,
-                    message: "User correctly deleted"
-                });
+                if(registeredUser.get(password) == password){
+                    return res.json({
+                        code: 200,
+                        message: "User correctly deleted"
+                    });
+                }
+                else{
+                    User.findOneAndDelete(registeredUser);
+                    return res.json({
+                        code: 201,
+                        message: "Wrong password"
+                    });
+                }
             }
             else{
                 return res.json({

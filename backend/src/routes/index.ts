@@ -1,7 +1,6 @@
 import {Router} from 'express';
 import {helloWorld, createUser, loginUser, deleteUser} from '../controllers/user.controller'
 
-
 const router = Router();
     
 router.route('/')
