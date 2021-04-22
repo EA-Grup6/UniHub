@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit {
     this.userService.loginUser(user)
       .subscribe( res => {
         console.log('Res: ' + res);
-        this.newUserForm.reset();
+        this.loginUserForm.reset();
       },
       err => {
         console.log("Err: " + err);
