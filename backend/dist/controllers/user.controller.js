@@ -13,7 +13,7 @@ async function createUser(req, res) {
     let { username, password } = req.body;
     let user = { username: username, password: password };
     let newUser = new User_1.default(user);
-    let registeredUser = await User_1.default.findOne({ name: username });
+    let registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
             return res.status(201).send({ message: "User already exists" });
@@ -29,16 +29,18 @@ async function createUser(req, res) {
 }
 exports.createUser = createUser;
 async function loginUser(req, res) {
-    const { username, password } = req.body;
+    let { username, password } = req.body;
     const user = {
         username: username,
         password: password
     };
+    console.log("Username: " + user.username);
+    console.log("Password: " + user.password);
     const registeringUser = new User_1.default(user);
-    const registeredUser = await User_1.default.findOne({ name: username });
+    const registeredUser = await User_1.default.findOne({ username: registeringUser.username });
     try {
         if (registeredUser != null) {
-            if (registeredUser.get(password) == registeringUser.password) {
+            if (registeredUser.get('password') == registeringUser.password) {
                 return res.status(200).send({ message: "User correctly logged in" });
             }
             else {
