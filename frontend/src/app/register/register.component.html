@@ -25,20 +25,20 @@
         <form [formGroup]="newUserForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="userUsername" formControlName="username" placeholder="Username" [(ngModel)]="username"/>
+              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="username"/>
             </div>
             <div class="example-container">
-              <input type="password" id="userPassword" formControlName="password" placeholder="Password" [(ngModel)]="password"/>
+              <input type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="password"/>
             </div>
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('username').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="newUserForm.get('regisUsername').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
             <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('password').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="newUserForm.get('regisPassword').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -66,20 +66,20 @@
         <form [formGroup]="loginUserForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="userUsername" formControlName="username" placeholder="Username" [(ngModel)]="username"/>
+              <input type="text" id="regisUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
             </div>
             <div class="example-container">
-              <input type="password" id="userPassword" formControlName="password" placeholder="Password" [(ngModel)]="password"/>
+              <input type="password" id="regisPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="password"/>
             </div>
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('username').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="loginUserForm.get('loginUsername').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
             <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('password').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="loginUserForm.get('loginPassword').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>

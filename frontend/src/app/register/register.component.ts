@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../models/user';
 import {userService} from '../services/userService';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, throwMatDialogContentAlreadyAttachedError} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -23,19 +23,19 @@ export class RegisterComponent implements OnInit {
               public dialog: MatDialog, private formBuilder: FormBuilder) {
 
     this.newUserForm = this.formBuilder.group({
-      username: new FormControl('', Validators.compose([
+      regisUsername: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,20}$/)])),
 
-      password: new FormControl('', Validators.compose([
+      regisPassword: new FormControl('', Validators.compose([
         Validators.required])),
     });
     this.loginUserForm = this.formBuilder.group({
-      username: new FormControl('', Validators.compose([
+      loginUsername: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,20}$/)])),
 
-      password: new FormControl('', Validators.compose([
+      loginPassword: new FormControl('', Validators.compose([
         Validators.required])),
     });
   }
@@ -55,12 +55,13 @@ export class RegisterComponent implements OnInit {
 
   addUser(){
     let user = new User();
-    user.username = this.newUserForm.get('username').value;
-    user.password = this.newUserForm.get('password').value;
+    user.username = this.newUserForm.get('regisUsername').value;
+    user.password = this.newUserForm.get('regisUsername').value;
     console.log(user.username);
     this.userService.newUser(user)
       .subscribe( res => {
         console.log("Res " + res);
+        this.newUserForm.reset();
       },
       err => {
         console.log("Err: " + err);
@@ -70,12 +71,13 @@ export class RegisterComponent implements OnInit {
 
   registerUser(){
     let user = new User();
-    user.username = this.loginUserForm.get('username').value;
-    user.password = this.loginUserForm.get('password').value;
+    user.username = this.loginUserForm.get('loginUsername').value;
+    user.password = this.loginUserForm.get('loginUsername').value;
     console.log(user.username);
     this.userService.loginUser(user)
       .subscribe( res => {
         console.log('Res: ' + res);
+        this.newUserForm.reset();
       },
       err => {
         console.log("Err: " + err);
