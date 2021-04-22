@@ -10,36 +10,22 @@ function helloWorld(req, res) {
 }
 exports.helloWorld = helloWorld;
 async function createUser(req, res) {
-    const { username, password } = req.body;
-    const user = {
-        username: username,
-        password: password
-    };
-    const newUser = new User_1.default(user); // creem l'objecte de MongoDB
-    const registeredUser = User_1.default.findOne({ name: username }, function () {
-        try {
-            if (registeredUser != null) {
-                return res.json({
-                    code: 201,
-                    message: "User already exists"
-                });
-            }
-            else {
-                newUser.save();
-                return res.json({
-                    code: 200,
-                    message: "User correctly registered"
-                });
-            }
+    let { username, password } = req.body;
+    let user = { username: username, password: password };
+    let newUser = new User_1.default(user);
+    let registeredUser = await User_1.default.findOne({ name: username });
+    try {
+        if (registeredUser != null) {
+            return res.status(201).send({ message: "User already exists" });
         }
-        catch {
-            return res.json({
-                code: 500,
-                message: "Internal server error"
-            });
+        else {
+            let result = newUser.save();
+            return res.status(200).send(result);
         }
-    });
-    await registeredUser;
+    }
+    catch {
+        return res.status(500).send({ message: "Internal server error" });
+    }
 }
 exports.createUser = createUser;
 async function loginUser(req, res) {
@@ -49,72 +35,39 @@ async function loginUser(req, res) {
         password: password
     };
     const registeringUser = new User_1.default(user);
-    const registeredUser = User_1.default.findOne({ name: username }, function () {
-        try {
-            if (registeredUser != null) {
-                if (registeredUser.get(password) == registeringUser.password) {
-                    return res.json({
-                        code: 200,
-                        message: "User correctly logged in"
-                    });
-                }
-                else {
-                    return res.json({
-                        code: 201,
-                        message: "Wrong password"
-                    });
-                }
+    const registeredUser = await User_1.default.findOne({ name: username });
+    try {
+        if (registeredUser != null) {
+            if (registeredUser.get(password) == registeringUser.password) {
+                return res.status(200).send({ message: "User correctly logged in" });
             }
             else {
-                return res.json({
-                    code: 404,
-                    message: "User not found"
-                });
+                return res.status(201).send({ message: "Wrong password" });
             }
         }
-        catch {
-            return res.json({
-                code: 500,
-                message: "Internal server error"
-            });
+        else {
+            return res.status(404).send({ message: "User not found" });
         }
-    });
-    await registeredUser;
+    }
+    catch {
+        return res.status(500).send({ message: "Internal server error" });
+    }
 }
 exports.loginUser = loginUser;
 async function deleteUser(req, res) {
-    const { username, password } = req.body;
-    const registeredUser = User_1.default.findOne({ name: username, password: password }, function () {
-        try {
-            if (registeredUser != null) {
-                if (registeredUser.get(password) == password) {
-                    return res.json({
-                        code: 200,
-                        message: "User correctly deleted"
-                    });
-                }
-                else {
-                    User_1.default.findOneAndDelete(registeredUser);
-                    return res.json({
-                        code: 201,
-                        message: "Wrong password"
-                    });
-                }
-            }
-            else {
-                return res.json({
-                    code: 404,
-                    message: "User not found"
-                });
-            }
+    const { username } = req.body;
+    const registeredUser = await User_1.default.findOne({ name: username });
+    try {
+        if (registeredUser != null) {
+            User_1.default.findOneAndDelete({ username: registeredUser.username });
+            return res.status(200).send({ message: "User correctly deleted" });
         }
-        catch {
-            return res.json({
-                code: 500,
-                message: "Internal server error"
-            });
+        else {
+            return res.status(404).send({ message: "User not found" });
         }
-    });
-    await registeredUser; // guardem l'usuari amb mongoose
+    }
+    catch {
+        return res.status(500).send({ message: "Internal server error" });
+    }
 }
 exports.deleteUser = deleteUser;
