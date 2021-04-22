@@ -15,11 +15,11 @@ export class userService {
   }
 
   loginUser(user: User){
-    return this.http.post(this.url.urlUser + '/loginUser', user);
+    return this.http.post(this.url.urlUser + '/loginUser/', user);
   }
 
   newUser(user: User){
-    return this.http.post(this.url.urlUser + '/newUser', user);
+    return this.http.post(this.url.urlUser + '/newUser/', user);
   }
 
   deleteUser(user: User){

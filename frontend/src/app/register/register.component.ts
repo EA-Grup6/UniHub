@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-home',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })

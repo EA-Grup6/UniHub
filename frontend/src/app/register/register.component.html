@@ -5,13 +5,14 @@
   <div class="column-list">
     <div class="margin-sides">
       <p>Login/Register</p>
-      <button class="btn btn-primary" type="button" id="loginUser" data-toggle="modal" data-target="#loginUser">Login</button>
-      <button class="btn btn-primary" type="button" id="registerUser" data-toggle="modal" data-target="#registerUser">Login</button>
-    </div>
+      <button class="btn btn-primary" type="button" id="login" data-toggle="modal" data-target="#loginUser">Login</button>
+      <button class="btn btn-primary" type="button" id="register" data-toggle="modal" data-target="#registerUser">Register</button>
+    </div>  
   </div>
 </div>
 
-<div class="modal fade" id="registerUser" tabindex="-1" role="dialog" aria-labelledby="userLabel">
+
+<div class="modal fade" id="registerUser" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -24,7 +25,7 @@
         <form [formGroup]="newUserForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="userUsername" formControlName="password" placeholder="Username" [(ngModel)]="username"/>
+              <input type="text" id="userUsername" formControlName="username" placeholder="Username" [(ngModel)]="username"/>
             </div>
             <div class="example-container">
               <input type="password" id="userPassword" formControlName="password" placeholder="Password" [(ngModel)]="password"/>
@@ -32,12 +33,12 @@
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('username').hasError(validation.type) && (newUserForm.get('username').dirty || newUserForm.get('username').touched)">
+              <div class="alert alert-danger" *ngIf="newUserForm.get('username').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
             <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('password').hasError(validation.type) && (newUserForm.get('password').dirty || newUserForm.get('password').touched)">
+              <div class="alert alert-danger" *ngIf="newUserForm.get('password').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -52,7 +53,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="loginUser" tabindex="-1" role="dialog" aria-labelledby="userLabel">
+<div class="modal fade" id="loginUser" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -73,12 +74,12 @@
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('username').hasError(validation.type) && (loginUserForm.get('username').dirty || loginUserForm.get('username').touched)">
+              <div class="alert alert-danger" *ngIf="loginUserForm.get('username').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
             <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('password').hasError(validation.type) && (loginUserForm.get('password').dirty || loginUserForm.get('password').touched)">
+              <div class="alert alert-danger" *ngIf="loginUserForm.get('password').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -86,8 +87,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()" data-dismiss="modal">Log in into your account</button>
+        <button type="mat-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="mat-button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()" data-dismiss="modal">Log in into your account</button>
       </div>
     </div>
   </div>
