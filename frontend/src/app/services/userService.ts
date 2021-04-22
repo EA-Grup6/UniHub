@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Environment} from "./environment";
 import { HttpClient } from '@angular/common/http';
-import User from '../models/user'
+import {User} from '../models/user'
 
 @Injectable({
   providedIn: 'root'
 })
-export class schoolService {
+export class userService {
 
   url: Environment;
 
@@ -14,16 +14,16 @@ export class schoolService {
     this.url = new Environment();
   }
 
-  loginUser(){
-    return this.http.post(this.url.urlUser + '/loginUser', {User});
+  loginUser(user: User){
+    return this.http.post(this.url.urlUser + '/loginUser', user);
   }
 
-  newUser(){
-    return this.http.post(this.url.urlUser + '/newUser', {User});
+  newUser(user: User){
+    return this.http.post(this.url.urlUser + '/newUser', user);
   }
 
-  deleteUser(){
-    return this.http.post(this.url.urlUser+'/deleteUser/', {User});
+  deleteUser(user: User){
+    return this.http.post(this.url.urlUser + '/deleteUser/', user);
   }
 
 }
