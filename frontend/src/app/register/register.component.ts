@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
   addUser(){
     let user = new User();
     user.username = this.newUserForm.get('regisUsername').value;
-    user.password = this.newUserForm.get('regisUsername').value;
+    user.password = this.newUserForm.get('regisPassword').value;
     console.log(user.username);
     this.userService.newUser(user)
       .subscribe( res => {
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
   registerUser(){
     let user = new User();
     user.username = this.loginUserForm.get('loginUsername').value;
-    user.password = this.loginUserForm.get('loginUsername').value;
+    user.password = this.loginUserForm.get('loginPassword').value;
     console.log(user.username);
     this.userService.loginUser(user)
       .subscribe( res => {
