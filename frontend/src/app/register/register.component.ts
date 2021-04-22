@@ -25,7 +25,8 @@ export class RegisterComponent implements OnInit {
     this.newUserForm = this.formBuilder.group({
       regisUsername: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,20}$/)])),
+        Validators.email,
+        Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
 
       regisPassword: new FormControl('', Validators.compose([
         Validators.required])),
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
     this.loginUserForm = this.formBuilder.group({
       loginUsername: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,20}$/)])),
+        Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
 
       loginPassword: new FormControl('', Validators.compose([
         Validators.required])),
@@ -45,7 +46,8 @@ export class RegisterComponent implements OnInit {
     this.validation_messages = {
       username: [
         { type: 'required', message: 'Username is required' },
-        { type: 'pattern', message: 'Name must be in capital letter and have between 1 and 20 characters' },
+        { type: 'email', message: 'Not valid email format' },
+        { type: 'pattern', message: 'Username must be an email and have between 1 and 40 characters' },
       ],
       password: [
         { type: 'required', message: 'Password is required' }
