@@ -1,1 +1,11 @@
-<app-home></app-home>
+<br>
+<br>
+<h1 style="text-align: center">Sprint 0</h1>
+<br>
+<br>
+<div style='margin-left:50%'>
+    <button mdbBtn type="button" color="primary" class="btm btn-primary" mdbWavesEffect data-toggle="modal" *ngIf="!this.isLogged" (click)=onLoginClick()>Login</button>
+</div>
+<div *ngIf=this.isLogged>
+    <app-profile></app-profile>
+</div>

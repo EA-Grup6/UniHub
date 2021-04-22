@@ -32,19 +32,19 @@ export async function loginUser (req: Request, res: Response){
     console.log("Username: " + user.username);
     console.log("Password: " + user.password);
     const registeringUser = new User(user);
-    const registeredUser = await User.findOne({username:registeringUser.username})
+    var registeredUser = await User.findOne({username:registeringUser.username})
     try{
         if(registeredUser != null){
             if(registeredUser.get('password') == registeringUser.password){
-                return res.status(200).send({message: "User correctly logged in"});
+                return res.status(200).send('200');
             } else {
-                return res.status(201).send({message: "Wrong password"});
+                return res.status(201).send('201');
             }
         } else {
-            return res.status(404).send({message: "User not found"});
+            return res.status(404).send('404');
         }
     } catch {
-        return res.status(500).send({message: "Internal server error"});
+        return res.status(500).send('500');
     }
 }
 

@@ -4,9 +4,11 @@ import {RegisterComponent} from "./register/register.component";
 import {ProfileComponent} from "./profile/profile.component";
 
 const routes: Routes = [
-  {path: 'home', component: RegisterComponent},
+  {path: 'login', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: '**', redirectTo: 'home'} //si se pone cualquier cosa en el navegador ira al login/register
+  //{path: '**', redirectTo: 'login'},
+  //{path: ' ', redirectTo: 'login', pathMatch: 'full'}
 ];
 
 @NgModule({
