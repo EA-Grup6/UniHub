@@ -21,25 +21,23 @@ export class AppComponent{
 
   ngOnInit(){
   }
-  
-  
     onLoginClick(){
-      if (this.loginpopup)
-      {
-      const MatDialogRef = this.dialog.open(RegisterComponent,{
-        width: '100%',
-        height: '100%'     
-    
-      });
-      MatDialogRef.afterClosed().subscribe(data=>{
-        console.log(data);
-        
-        this.isLogged = true;
-        
-      });
-    }
+        if (this.loginpopup)
+        {
+        const MatDialogRef = this.dialog.open(RegisterComponent,{
+          width: '100%',
+          height: '100%'     
+      
+        });
+        MatDialogRef.afterClosed().subscribe(data=>{
+          console.log(data);
+          
+          this.isLogged = true;
+          
+        });
+      }
     this.loginpopup = false;//con esto evitamos que salgan mas logins que Minions 
-  }
+   }
   }
 
 function onLoginClick() {
