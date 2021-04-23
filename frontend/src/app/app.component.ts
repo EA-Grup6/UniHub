@@ -37,7 +37,9 @@ export class AppComponent{
         });
       }
     this.loginpopup = false;//con esto evitamos que salgan mas logins que Minions 
+
    }
+   
   }
 
 function onLoginClick() {
