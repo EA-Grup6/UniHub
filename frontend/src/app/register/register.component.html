@@ -1,9 +1,14 @@
-<div id="container">
+<body  Style=background-color:rgb(114,174,235); >
+ 
+ 
+ <div id="container" class=cdk-global-overlay-wrapper>
+  
   <div class="column-list">
     <div class="margin-sides">
-      <p>Login/Register</p>
+      <p style="color:rgb(132, 156, 223);font-size: 40px; max-width:large; font-family:Georgia"  >Do you want to join us?</p>
       <button class="btn btn-primary" type="button" id="login" data-toggle="modal" data-target="#loginUser">Login</button>
       <button class="btn btn-primary" type="button" id="register" data-toggle="modal" data-target="#registerUser">Register</button>
+      <button class="btn btn-primary" type="button" id="delete" data-toggle="modal" data-target="#deleteUser">Delete</button>
     </div>  
   </div>
 </div>
@@ -98,3 +103,47 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userLabel">Delete Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="deleteUserForm">
+          <div class="form-group">
+            <div class="example-container">
+              <input type="text" id="deleteUsername" formControlName="deleteUsername" placeholder="Username" [(ngModel)]="username"/>
+            </div>
+            <div class="example-container">
+              <input type="password" id="deletePassword" formControlName="deletePassword" placeholder="Password" [(ngModel)]="password"/>
+            </div>
+          </div>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.username">
+              <div class="alert alert-danger" *ngIf="deleteUserForm.get('deleteUsername').hasError(validation.type)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+            <ng-container *ngFor="let validation of validation_messages.password">
+              <div class="alert alert-danger" *ngIf="deleteUserForm.get('deletePassword').hasError(validation.type)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="!deleteUserForm.valid" (click)="deleteUser()" data-dismiss="modal">Delete your account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>

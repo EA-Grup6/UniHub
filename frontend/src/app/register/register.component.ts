@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
   password: String;
   newUserForm: FormGroup;
   loginUserForm: FormGroup;
+  deleteUserForm: FormGroup;
   validation_messages: any;
   wrong_login_user = false;
   wrong_login_password = false;
@@ -40,6 +41,14 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
 
       loginPassword: new FormControl('', Validators.compose([
+        Validators.required])),
+    });
+    this.deleteUserForm = this.formBuilder.group({
+      deleteUsername: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
+
+      deletePassword: new FormControl('', Validators.compose([
         Validators.required])),
     });
   }
@@ -86,6 +95,33 @@ export class RegisterComponent implements OnInit {
         let code = res.toString();
         if(code == '200'){
           this.loginUserForm.reset();
+          this.closeDialog(res);
+        }
+        else if(code == '201'){
+          this.wrong_login_password = true;
+        }
+        else if(code == "404"){
+          this.wrong_login_user = true;
+        }
+      },
+      err => {
+        console.log("Err: " + err);
+        RegisterComponent.handleError(err);
+      })
+  }
+
+  deleteUser(){
+    let user = new User();
+    user.username = this.deleteUserForm.get('deleteUsername').value;
+    user.password = this.deleteUserForm.get('deletePassword').value;
+    this.wrong_login_user = false;
+    this.wrong_login_password = false;
+    console.log(user.username);
+    this.userService.deleteUser(user)
+      .subscribe( res => {
+        let code = res.toString();
+        if(code == '200'){
+          this.deleteUserForm.reset();
           this.closeDialog(res);
         }
         else if(code == '201'){
