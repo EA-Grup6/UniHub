@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {RegisterComponent} from './register/register.component';
 import {MatDialogRef, MatDialog} from '@angular/material/dialog';
-import { ProfileComponent } from './profile/profile.component';
+
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent{
   ngOnInit(){
   }
     onLoginClick(){
-        if (this.loginpopup)
+      if (this.loginpopup)
         {
         const MatDialogRef = this.dialog.open(RegisterComponent,{
           width: '100%',
@@ -32,7 +32,7 @@ export class AppComponent{
         MatDialogRef.afterClosed().subscribe(data=>{
           console.log(data);
           
-          this.isLogged = true;
+        this.isLogged = true;
           
         });
       }

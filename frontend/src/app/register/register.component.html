@@ -3,56 +3,94 @@
  
  <div id="container" class=cdk-global-overlay-wrapper>
   
-  <div class="column-list">
+  <div class="btn-group">
     <div class="margin-sides">
-      <p style="color:rgb(132, 156, 223);font-size: 40px; max-width:large; font-family:Georgia"  >Do you want to join us?</p>
-      <button class="btn btn-primary" type="button" id="login" data-toggle="modal" data-target="#loginUser">Login</button>
-      <button class="btn btn-primary" type="button" id="register" data-toggle="modal" data-target="#registerUser">Register</button>
-      <button class="btn btn-primary" type="button" id="delete" data-toggle="modal" data-target="#deleteUser">Delete</button>
+      <p style="color:rgb(4, 32, 109);font-size: 40px; max-width:large; font-family:Georgia"  > Institution management </p>
+      <button class="btn btn-primary" type="button" id="list" data-toggle="modal" data-target="#listHospital">List Institutions</button>
+      <button class="btn btn-primary" type="button" id="register" data-toggle="modal" data-target="#registerHospital">Register Institution</button>
+      <button class="btn btn-primary" type="button" id="delete" data-toggle="modal" data-target="#deleteHospital">Delete Institution</button>
     </div>  
   </div>
 </div>
-<div class="modal fade" id="registerUser" tabindex="-1" role="dialog">
+<div class="modal fade" id="registerHospital" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="userLabel">New account</h5>
+        <h5 class="modal-title" id="hospitalLabel">New hospital</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="newUserForm">
+        <form [formGroup]="newHospitalForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="username"/>
+              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Institution" [(ngModel)]="username"/>
             </div>
             <div class="example-container">
-              <input type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="password"/>
+              <input type="description" id="regisDescription" formControlName="regisDescription" placeholder="Description" [(ngModel)]="description"/>
+            </div>
+            <div class="example-container">
+              <input type="url" id="regisUrl" formControlName="regisurl" placeholder="url" [(ngModel)]="url"/>
             </div>
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('regisUsername').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="newHospitalForm.get('regisUsername').hasError(validation.type)">
                 {{ validation.message }}
               </div>
-            </ng-container>
-            <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="newUserForm.get('regisPassword').hasError(validation.type)">
-                {{ validation.message }}
-              </div>
+           
             </ng-container>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="!newUserForm.valid" (click)="addUser()" data-dismiss="modal">Create your account</button>
+        <button type="button" class="btn btn-primary" [disabled]="!newHospitalForm.valid" (click)="addHospital()" data-dismiss="modal">Create your account</button>
       </div>
     </div>
   </div>
 </div>
-
+<div class="modal fade" id="deleteHospital" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hospitalLabel">Delete hospital</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newHospitalForm">
+          <div class="form-group">
+            <div class="example-container">
+              <input type="text" id="deleteUsername" formControlName="deleteUsername" placeholder="Institution" [(ngModel)]="username"/>
+            </div>
+            <div class="example-container">
+              <input type="description" id="deleteDescription" formControlName="deleteDescription" placeholder="Description" [(ngModel)]="description"/>
+            </div>
+            <div class="example-container">
+              <input type="url" id="deleteUrl" formControlName="deleteurl" placeholder="url" [(ngModel)]="url"/>
+            </div>
+          </div>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.username">
+              <div class="alert alert-danger" *ngIf="newHospitalForm.get('deleteUsername').hasError(validation.type)">
+                {{ validation.message }}
+              </div>
+           
+            </ng-container>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="!newHospitalForm.valid" (click)="addHospital()" data-dismiss="modal">Create your account</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
 <div class="modal fade" id="loginUser" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -63,7 +101,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="loginUserForm">
+       <form [formGroup]="listHospitalform">
           <div class="form-group">
             <div class="example-container">
               <input type="text" id="regisUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
@@ -74,7 +112,7 @@
           </div>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('loginUsername').hasError(validation.type)">
+              <div class="alert alert-danger" *ngIf="listHospitalUserForm.get('loginUsername').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -96,54 +134,15 @@
           </div>
         </form>
       </div>
+
       <div class="modal-footer">
         <button type="mat-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="mat-button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()" data-dismiss="modal">Log in into your account</button>
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
-<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="userLabel">Delete Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="deleteUserForm">
-          <div class="form-group">
-            <div class="example-container">
-              <input type="text" id="deleteUsername" formControlName="deleteUsername" placeholder="Username" [(ngModel)]="username"/>
-            </div>
-            <div class="example-container">
-              <input type="password" id="deletePassword" formControlName="deletePassword" placeholder="Password" [(ngModel)]="password"/>
-            </div>
-          </div>
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="deleteUserForm.get('deleteUsername').hasError(validation.type)">
-                {{ validation.message }}
-              </div>
-            </ng-container>
-            <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="deleteUserForm.get('deletePassword').hasError(validation.type)">
-                {{ validation.message }}
-              </div>
-            </ng-container>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="!deleteUserForm.valid" (click)="deleteUser()" data-dismiss="modal">Delete your account</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 </body>

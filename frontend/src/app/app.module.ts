@@ -13,14 +13,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatIconModule} from "@angular/material/icon";
 import { AppComponent } from './app.component';
-import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    ProfileComponent
+    
   ],
   imports: [
     BrowserModule,
