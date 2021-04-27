@@ -14,12 +14,14 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatIconModule} from "@angular/material/icon";
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
+import { HeaderComponent } from './header/header.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { RegisterComponent } from './register/register.component';
     FormsModule,
     MatRadioModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatToolbarModule,
   ],
   exports: [
     BrowserModule,
