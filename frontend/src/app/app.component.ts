@@ -13,32 +13,25 @@ import {MatDialogRef, MatDialog} from '@angular/material/dialog';
 export class AppComponent{
 
   title = 'frontend';
-  loginpopup = true;
-  isLogged = false;
-  
+  regisComp: RegisterComponent;
+  isLogged=false;
 
   constructor (private router: Router, public dialog: MatDialog){}
 
   ngOnInit(){
   }
     onLoginClick(){
-      if (this.loginpopup)
-        {
-        const MatDialogRef = this.dialog.open(RegisterComponent,{
-          width: '100%',
-          height: '100%'     
-      
-        });
-        MatDialogRef.afterClosed().subscribe(data=>{
-          console.log(data);
-          
-        this.isLogged = true;
-          
-        });
-      }
-    this.loginpopup = false;//con esto evitamos que salgan mas logins que Minions 
+      const MatDialogRef = this.dialog.open(RegisterComponent,{
+        width: 'auto',
+        height: 'auto',
+    
+      });
+      MatDialogRef.afterClosed().subscribe(data=>{
+        console.log(data);
+        this.isLogged=data;
+      });
+    }
 
-   }
    
   }
 

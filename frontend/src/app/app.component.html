@@ -1,13 +1,19 @@
-<app-header></app-header>
+<mat-toolbar color="primary" class="mat-elevation-z8">
+    <span>UNIHUB</span>
+  
+    <div class="spacer"></div>
+  
+    <button mat-button>What is UNIHUB?</button>
+    <button mat-button>About us</button>
+    <button mat-button>Offers</button>
+    <button *ngIf='!this.isLogged' mat-raised-button color="accent" (click)="onLoginClick()">Log In</button>
+    <button *ngIf='this.isLogged' mat-button>Your account</button>
+    <button *ngIf='this.isLogged' mat-raised-button color="accent">Log Out</button>
+  
+  </mat-toolbar>
+  
 <br>
 <br>
 <h1 style="text-align: center">UNIHUB Sprint 0</h1>
 <br>
 <br>
-<div style='margin-left:45%'>
-    <button mdbBtn type="button" color="primary" class="btn btn-primary" mdbWavesEffect *ngIf="!this.isLogged" (click)=onLoginClick() >Login</button>
-    
-</div>
-<div *ngIf=this.isLogged>
-
-</div>

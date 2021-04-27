@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {User} from '../models/user';
 import {userService} from '../services/userService';
 import {MatDialog, MatDialogRef, throwMatDialogContentAlreadyAttachedError} from '@angular/material/dialog';
@@ -21,8 +21,10 @@ export class RegisterComponent implements OnInit {
   validation_messages: any;
   wrong_login_user = false;
   wrong_login_password = false;
+  isLogged: boolean;
 
-  constructor(private userService: userService, private router: Router,
+
+  constructor(private userService: userService,
               public dialog: MatDialog, private formBuilder: FormBuilder,public dialogRef: MatDialogRef<RegisterComponent>) {
 
     this.newUserForm = this.formBuilder.group({
@@ -67,6 +69,8 @@ export class RegisterComponent implements OnInit {
       .subscribe( res => {
         console.log("Res " + res);
         this.newUserForm.reset();
+        this.isLogged = true;
+        this.closeDialog(this.isLogged);
       },
       err => {
         console.log("Err: " + err);

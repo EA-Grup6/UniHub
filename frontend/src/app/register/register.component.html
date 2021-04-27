@@ -1,10 +1,43 @@
-<div id="container">
-  <div class="column-list">
-      <p>Login/Register</p>
-      <button class="btn btn-primary" type="button" id="login" data-toggle="modal" data-target="#loginUser">Login</button>
-      <button class="btn btn-primary" type="button" id="register" data-toggle="modal" data-target="#registerUser">Register</button> 
-  </div>
+<div id="container" style="margin:15%">
+  <form [formGroup]="loginUserForm">
+    <div class="form-group" style="margin:15%">
+      <mat-form-field>
+        <input matInput type="text" id="loginUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" id="loginPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="password"/>
+      </mat-form-field>
+    </div>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.username">
+        <div class="alert alert-danger" *ngIf="loginUserForm.get('loginUsername').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let validation of validation_messages.password">
+        <div class="alert alert-danger" *ngIf="loginUserForm.get('loginPassword').hasError(validation.type)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="wrong_login_user">
+        <div class="alert alert-danger">
+          Wrong user
+        </div>
+      </ng-container>
+      <ng-container *ngIf="wrong_login_password">
+        <div class="alert alert-danger">
+          Wrong password
+        </div>
+      </ng-container>
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addUser()" data-toggle="modal" data-target="#registerUser">Create your account</button>
+        <button type="button" class="btn btn-primary" [disabled]="!newUserForm.valid" (click)="registerUser()">Login</button>
+      </div>
+    </div>
+  </form>
 </div>
+
 <div class="modal fade" id="registerUser" tabindex="-1" role="dialog" data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -41,57 +74,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" [disabled]="!newUserForm.valid" (click)="addUser()" data-dismiss="modal">Create your account</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="loginUser" tabindex="-1" role="dialog" data-backdrop="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="studentLabel">Existing account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="loginUserForm">
-          <div class="form-group">
-            <div class="example-container">
-              <input type="text" id="regisUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
-            </div>
-            <div class="example-container">
-              <input type="password" id="regisPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="password"/>
-            </div>
-          </div>
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.username">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('loginUsername').hasError(validation.type)">
-                {{ validation.message }}
-              </div>
-            </ng-container>
-            <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="alert alert-danger" *ngIf="loginUserForm.get('loginPassword').hasError(validation.type)">
-                {{ validation.message }}
-              </div>
-            </ng-container>
-            <ng-container *ngIf="wrong_login_user">
-              <div class="alert alert-danger">
-                Wrong user
-              </div>
-            </ng-container>
-            <ng-container *ngIf="wrong_login_password">
-              <div class="alert alert-danger">
-                Wrong password
-              </div>
-            </ng-container>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="mat-button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="mat-button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()" data-dismiss="modal">Log in into your account</button>
       </div>
     </div>
   </div>
