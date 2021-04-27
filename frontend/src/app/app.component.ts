@@ -14,7 +14,8 @@ export class AppComponent{
 
   title = 'frontend';
   regisComp: RegisterComponent;
-  isLogged=false;
+  isLogged = false;
+  username: String;
 
   constructor (private router: Router, public dialog: MatDialog){}
 
@@ -29,13 +30,9 @@ export class AppComponent{
       MatDialogRef.afterClosed().subscribe(data=>{
         console.log(data);
         this.isLogged=data;
+        this.router.navigateByUrl('profile');
       });
     }
 
    
   }
-
-function onLoginClick() {
-  throw new Error('Function not implemented.');
-}
-

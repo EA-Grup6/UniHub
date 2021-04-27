@@ -1,11 +1,9 @@
 import {Component, OnInit, Output} from '@angular/core';
 import {User} from '../models/user';
 import {userService} from '../services/userService';
-import {MatDialog, MatDialogRef, throwMatDialogContentAlreadyAttachedError} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
-import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-home',
@@ -69,8 +67,6 @@ export class RegisterComponent implements OnInit {
       .subscribe( res => {
         console.log("Res " + res);
         this.newUserForm.reset();
-        this.isLogged = true;
-        this.closeDialog(this.isLogged);
       },
       err => {
         console.log("Err: " + err);
@@ -90,7 +86,7 @@ export class RegisterComponent implements OnInit {
         let code = res.toString();
         if(code == '200'){
           this.loginUserForm.reset();
-          this.closeDialog(res);
+          this.closeDialogAndReturn(res);
         }
         else if(code == '201'){
           this.wrong_login_password = true;
@@ -107,11 +103,16 @@ export class RegisterComponent implements OnInit {
 
   private static handleError(err: HttpErrorResponse) {
     if ( err.status === 500 ) {
-      alert('Ha ocurrido un error al crear la asignatura');
+      alert('Error');
     }
   }
 
-  closeDialog(data: any){
+  closeDialog(){
+    //If operation is canceled the dialog closes without returning any students
+    this.dialogRef.close();
+  }
+
+  closeDialogAndReturn(data:any){
     //If operation is canceled the dialog closes without returning any students
     this.dialogRef.close(data);
   }
