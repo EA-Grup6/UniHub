@@ -3,30 +3,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteHospital = exports.listHospital = exports.createHospital = exports.helloWorld = void 0;
-const Hospital_1 = __importDefault(require("../models/Hospital"));
+exports.deleteUser = exports.loginUser = exports.createUser = exports.helloWorld = void 0;
+const User_1 = __importDefault(require("../models/User"));
 function helloWorld(req, res) {
     return res.send('Hello World !!!');
 }
 exports.helloWorld = helloWorld;
-async function createHospital(req, res) {
-    const { username, description, url } = req.body;
-    const hospital = {
+async function createUser(req, res) {
+    const { username, password } = req.body;
+    const user = {
         username: username,
-        description: description,
-        url: url
+        password: password
     };
-    const newHospital = new Hospital_1.default(hospital); // creem l'objecte de MongoDB
-    const registeredHospital = Hospital_1.default.findOne({ name: username }, function () {
+    const newUser = new User_1.default(user); // creem l'objecte de MongoDB
+    const registeredUser = User_1.default.findOne({ name: username }, function () {
         try {
-            if (registeredHospital != null) {
+            if (registeredUser != null) {
                 return res.json({
                     code: 201,
                     message: "User already exists"
                 });
             }
             else {
-                newHospital.save();
+                newUser.save();
                 return res.json({
                     code: 200,
                     message: "User correctly registered"
@@ -40,24 +39,23 @@ async function createHospital(req, res) {
             });
         }
     });
-    await registeredHospital;
+    await registeredUser;
 }
-exports.createHospital = createHospital;
-async function llustnUser(req, res) {
-    const { username, password,url } = req.body;
+exports.createUser = createUser;
+async function loginUser(req, res) {
+    const { username, password } = req.body;
     const user = {
         username: username,
-        description: description,
-        url: url
+        password: password
     };
-    const registeringHospital = new Hospital_1.default(user);
-    const registeredHospital = Hospital_1.default.findOne({ name: username }, function () {
+    const registeringUser = new User_1.default(user);
+    const registeredUser = User_1.default.findOne({ name: username }, function () {
         try {
-            if (registeredHospital != null) {
-                if (registeredHospital.get(username) == registeringUser.username) {
+            if (registeredUser != null) {
+                if (registeredUser.get(password) == registeringUser.password) {
                     return res.json({
                         code: 200,
-                        message: "Already exists "
+                        message: "User correctly logged in"
                     });
                 }
                 else {
@@ -81,14 +79,14 @@ async function llustnUser(req, res) {
             });
         }
     });
-    await registeredHospital;
+    await registeredUser;
 }
-exports.listHospital = listHospital;
-async function deleteHospital(req, res) {
-    const { username, description ,url } = req.body;
-    const registeredUser = User_1.default.findOne({ name: username,description: description, url:url }, function () {
+exports.loginUser = loginUser;
+async function deleteUser(req, res) {
+    const { username, password } = req.body;
+    const registeredUser = User_1.default.findOne({ name: username, password: password }, function () {
         try {
-            if (registeredHospital != null) {
+            if (registeredUser != null) {
                 if (registeredUser.get(password) == password) {
                     return res.json({
                         code: 200,
@@ -117,6 +115,6 @@ async function deleteHospital(req, res) {
             });
         }
     });
-    await registeredHospital; // guardem l'usuari amb mongoose
+    await registeredUser; // guardem l'usuari amb mongoose
 }
-exports.deleteUser = deleteHospital;
+exports.deleteUser = deleteUser;

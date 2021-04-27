@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const schema = new mongoose_1.Schema({
     username: String,
-    description: String,
-    url: String,
-
+    password: String,
 });
-exports.default = mongoose_1.model('Hospital', schema);
+exports.default = mongoose_1.model('User', schema);
