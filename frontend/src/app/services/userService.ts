@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Environment} from "./environment";
 import { HttpClient } from '@angular/common/http';
-import {Hospital} from '../models/hospital'
+import {User} from '../models/user'
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +14,16 @@ export class userService {
     this.url = new Environment();
   }
 
-  listHospital(hospital: Hospital){
-    return this.http.post(this.url.urlUser + '/listHospital/', hospital);
+  loginUser(user: User){
+    return this.http.post(this.url.urlUser + '/loginUser/', user);
   }
 
-  newHospital(hospital: Hospital){
-    return this.http.post(this.url.urlUser + '/newHospital/', hospital);
+  newUser(user: User){
+    return this.http.post(this.url.urlUser + '/newUser/', user);
   }
 
-  deleteHospital(hospital: Hospital){
-    return this.http.post(this.url.urlUser + '/deleteHospital/', hospital);
+  deleteUser(user: User){
+    return this.http.post(this.url.urlUser + '/deleteUser/', user);
   }
 
 }

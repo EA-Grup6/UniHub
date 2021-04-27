@@ -8,7 +8,6 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {HttpClientModule} from "@angular/common/http";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatIconModule} from "@angular/material/icon";
@@ -48,7 +47,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatDialogModule,
     HttpClientModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
