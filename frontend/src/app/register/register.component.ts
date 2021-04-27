@@ -85,8 +85,7 @@ export class RegisterComponent implements OnInit {
       .subscribe( res => {
         let code = res.toString();
         if(code == '200'){
-          this.loginUserForm.reset();
-          this.closeDialogAndReturn(res);
+          this.closeDialogAndReturn(this.loginUserForm.get('loginUsername').value);
         }
         else if(code == '201'){
           this.wrong_login_password = true;
@@ -112,9 +111,9 @@ export class RegisterComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  closeDialogAndReturn(data:any){
+  closeDialogAndReturn(username:String){
     //If operation is canceled the dialog closes without returning any students
-    this.dialogRef.close(data);
+    this.dialogRef.close(username);
   }
 
 }
