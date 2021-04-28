@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
   user: User;
   username: String;
   password: String;
+  password2: String;
   newUserForm: FormGroup;
   loginUserForm: FormGroup;
   validation_messages: any;
@@ -32,7 +33,12 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
 
       regisPassword: new FormControl('', Validators.compose([
-        Validators.required])),
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(10)])),
+
+      regisPassword2: new FormControl('', Validators.compose([
+          Validators.required])),
     });
     this.loginUserForm = this.formBuilder.group({
       loginUsername: new FormControl('', Validators.compose([
@@ -53,7 +59,9 @@ export class RegisterComponent implements OnInit {
         { type: 'pattern', message: 'Username must be an email and have between 1 and 40 characters' },
       ],
       password: [
-        { type: 'required', message: 'Password is required' }
+        { type: 'required', message: 'Password is required' },
+        { type : 'minLength', message: 'Password must be 5 characters minimum'},
+        { type : 'maxLength', message: 'Password must be 10 characters maximum'}
       ],
     };
   }
