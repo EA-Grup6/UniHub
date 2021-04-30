@@ -11,4 +11,6 @@ router.route('/User/loginUser/').post(loginUser);
 
 router.route('/User/deleteUser/').post(deleteUser);
 
+//router.route('/User/loginUser/').put(loginUser); //Forgot password
+
 export default router;

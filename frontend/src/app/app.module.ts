@@ -15,6 +15,21 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ProfileComponent } from './profile/profile.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyApkwagvk0f4_C6ZZvKNK-ALSDFzq4HnOE",
+  authDomain: "sprint0-2cdf8.firebaseapp.com",
+  projectId: "sprint0-2cdf8",
+  storageBucket: "sprint0-2cdf8.appspot.com",
+  messagingSenderId: "659979771998",
+  appId: "1:659979771998:web:97bd639aef27f59a4014cf",
+  measurementId: "G-QRB59S4ZF0"
+};
 
 @NgModule({
   declarations: [
@@ -37,6 +52,10 @@ import { ProfileComponent } from './profile/profile.component';
     MatIconModule,
     ReactiveFormsModule,
     MatToolbarModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule, // firestore
+    AngularFireAuthModule, // auth
+    AngularFireStorageModule, // storage
   ],
   exports: [
     BrowserModule,
