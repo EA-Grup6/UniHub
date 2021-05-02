@@ -15,7 +15,7 @@ class Register extends State<RegisterScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Sign Up"),
-          ),
+        ),
         body: Padding(
             padding: EdgeInsets.all(10),
             child: ListView(
@@ -23,7 +23,7 @@ class Register extends State<RegisterScreen> {
                 Image.asset('assets/images/unihubLogo.png',
                     height: 250, width: 250),
                 Container(
-                  padding: EdgeInsets.fromLTRB(10,0,10,10),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: TextField(
                     controller: usernameController,
                     decoration: InputDecoration(

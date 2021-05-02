@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/screens/profile/editingProfile.dart';
 import 'screens/login/login.dart';
 import 'screens/login/register.dart';
 
@@ -8,7 +9,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       home: LoginScreen(),
       routes: {
-        '/register' : (BuildContext context)=>RegisterScreen(),
+        '/register': (BuildContext context) => RegisterScreen(),
+        '/editProfile': (BuildContext context) => EditingProfileScreen()
       },
     );
   }
