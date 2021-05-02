@@ -37,6 +37,4 @@ export class AppComponent{
         this.router.navigateByUrl('profile');
       });
     }
-
-   
   }
