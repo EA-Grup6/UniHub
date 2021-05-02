@@ -1,8 +1,12 @@
 <div id="container" style="margin:15%">
   <form [formGroup]="loginUserForm">
     <div class="form-group" style="margin:15%">
-        <input matInput type="text" id="loginUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
-        <input matInput type="password" id="loginPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="password"/>
+      <div class="example-container">
+        <input matInput type="text" id="loginUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="usernameLogin"/>
+      </div>
+      <div class="example-container">
+        <input matInput type="password" id="loginPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="passwordLogin"/>
+      </div>
     </div>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.username">
@@ -28,7 +32,7 @@
       <div class="btn-group">
         <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerUser">Create your account</button>
-        <button type="button" class="btn btn-primary" [disabled]="!newUserForm.valid" (click)="registerUser()">Login</button>
+        <button type="button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()">Login</button>
       </div>
     </div>
   </form>
@@ -47,10 +51,13 @@
         <form [formGroup]="newUserForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="username"/>
+              <input matinput type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="usernameRegister"/>
             </div>
             <div class="example-container">
-              <input type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="password"/>
+              <input matinput type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="passwordRegister"/>
+            </div>
+            <div class="example-container">
+              <input matinput type="password" id="regisPassword2" formControlName="regisPassword2" placeholder="Repeat your password" [(ngModel)]="passwordRegister2"/>
             </div>
           </div>
           <div class="validation-errors">
@@ -61,6 +68,11 @@
             </ng-container>
             <ng-container *ngFor="let validation of validation_messages.password">
               <div class="alert alert-danger" *ngIf="newUserForm.get('regisPassword').hasError(validation.type)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+            <ng-container *ngFor="let validation of validation_messages.password2">
+              <div class="alert alert-danger" *ngIf="newUserForm.get('regisPassword2').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>

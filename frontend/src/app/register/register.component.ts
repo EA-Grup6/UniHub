@@ -12,9 +12,11 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class RegisterComponent implements OnInit {
   user: User;
-  username: String;
-  password: String;
-  password2: String;
+  usernameLogin: String;
+  passwordLogin: String;
+  usernameRegister: String;
+  passwordRegister: String;
+  passwordRegister2: String;
   newUserForm: FormGroup;
   loginUserForm: FormGroup;
   validation_messages: any;
@@ -29,7 +31,7 @@ export class RegisterComponent implements OnInit {
     this.newUserForm = this.formBuilder.group({
       regisUsername: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.email,
+        //Validators.email,
         Validators.pattern(/[^A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,40}$/)])),
 
       regisPassword: new FormControl('', Validators.compose([
@@ -38,7 +40,7 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(10)])),
 
       regisPassword2: new FormControl('', Validators.compose([
-          Validators.required])),
+        Validators.required])),
     });
     this.loginUserForm = this.formBuilder.group({
       loginUsername: new FormControl('', Validators.compose([
@@ -55,7 +57,7 @@ export class RegisterComponent implements OnInit {
     this.validation_messages = {
       username: [
         { type: 'required', message: 'Username is required' },
-        { type: 'email', message: 'Not valid email format' },
+        //{ type: 'email', message: 'Not valid email format' },
         { type: 'pattern', message: 'Username must be an email and have between 1 and 40 characters' },
       ],
       password: [
