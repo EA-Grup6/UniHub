@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:unihub_app/controllers/register_controller.dart';
 
 class RegisterScreen extends StatefulWidget {
   Register createState() => Register();
@@ -9,22 +11,30 @@ class Register extends State<RegisterScreen> {
   final TextEditingController password1Controller = TextEditingController();
   final TextEditingController password2Controller = TextEditingController();
   bool _isHidden = true;
+  final _formKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text("Sign Up"),
-        ),
-        body: Padding(
-            padding: EdgeInsets.all(10),
-            child: ListView(
-              children: <Widget>[
+          ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(10),
+        child: ConstrainedBox(
+            constraints: BoxConstraints(),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
                 Image.asset('assets/images/unihubLogo.png',
                     height: 250, width: 250),
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                  child: TextField(
+                  padding: EdgeInsets.fromLTRB(10,0,10,10),
+                  child: TextFormField(
+                    validator: (val) => val.isEmpty ? 'Enter an email' : null,
                     controller: usernameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -35,8 +45,9 @@ class Register extends State<RegisterScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: TextField(
+                  child: TextFormField(
                     obscureText: _isHidden,
+                    validator: (val) => val.isEmpty ? 'Enter a password' : null,
                     controller: password1Controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -53,12 +64,13 @@ class Register extends State<RegisterScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: TextField(
+                  child: TextFormField(
                     obscureText: _isHidden,
+                    validator: (val) => val.isEmpty ? 'Repeat password' : null,
                     controller: password2Controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Password Again',
+                      labelText: 'Repeat password',
                       alignLabelWithHint: true,
                       suffix: InkWell(
                         onTap: _tooglePasswordView,
@@ -86,14 +98,26 @@ class Register extends State<RegisterScreen> {
                               backgroundColor:
                                   MaterialStateProperty.all<Color>(Colors.blue),
                             ),
-                            onPressed: () {
-                              print(usernameController.text);
-                              print(password1Controller.text);
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()){
+                                dynamic result = await _auth.registerWithEmailAndPassword(usernameController.text, password1Controller.text);
+                                if (result == null){
+                                  setState(() => error = 'Please enter a valid email');
+                                } else{
+
+                                }
+                              }
                             },
+                          ),
+                          SizedBox(height: 12.0),
+                          Text(
+                            error,
+                            style: TextStyle(color: Colors.red,fontSize: 14.0),
                           )
+                  
                         ])),
               ],
-            )));
+            )))));
   }
 
   void _tooglePasswordView() {

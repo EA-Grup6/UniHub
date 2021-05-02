@@ -1,15 +1,14 @@
-class User {
-  String username;
-  String password;
-  String fullname;
-  String phone;
-  String profilePhoto;
+class UserApp {
+  final String username;
+  final String password;
+  final String fullname;
+  final String phone;
+  final String profilePhoto;
 
-  User(this.username, this.fullname, this.password, this.phone,
-      this.profilePhoto);
+  UserApp(this.username, this.fullname, this.password, this.phone, this.profilePhoto);
 
-  factory User.fromMap(Map<String, dynamic> json) {
-    return User(
+  factory UserApp.fromMap(Map<String, dynamic> json) {
+    return UserApp(
       json['username'],
       json['fullname'],
       json['password'],
