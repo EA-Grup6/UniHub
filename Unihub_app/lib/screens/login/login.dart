@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/routes/apibasehelper.dart';
+/*
+import 'package:htpp/http.dart';
+import 'package:flurest/networking/api_exceptions.dart';
+import 'dart:async';
+*/
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
@@ -8,7 +15,6 @@ class Login extends State<LoginScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _isHidden = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,13 +24,6 @@ class Login extends State<LoginScreen> {
               children: <Widget>[
                 Image.asset('assets/images/unihubLogo.png',
                     height: 300, width: 300),
-                Container(
-                  alignment: Alignment.center,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                ),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
@@ -74,6 +73,10 @@ class Login extends State<LoginScreen> {
                             onPressed: () {
                               print(nameController.text);
                               print(passwordController.text);
+                              ApiBaseHelper().post('/User/loginUser', {
+                                'username': nameController.text,
+                                'password': passwordController.text
+                              });
                             },
                           )
                         ])),
