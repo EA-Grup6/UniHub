@@ -142,7 +142,7 @@ class Login extends State<LoginScreen> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.of(context).pushNamed('/register');
                       },
                     )
                   ],
