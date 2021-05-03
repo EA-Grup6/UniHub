@@ -5,7 +5,20 @@ class EditingProfileScreen extends StatefulWidget {
 }
 
 class EditingProfile extends State<EditingProfileScreen> {
-  bool showPassword = true;
+  bool _isHidden = true;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _universityController = TextEditingController();
+  final TextEditingController _degreeController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
+  final TextEditingController _subjectsdoneController = TextEditingController();
+  final TextEditingController _subjectsaskingController =
+      TextEditingController();
+  final TextEditingController _recommendationsController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,17 +95,147 @@ class EditingProfile extends State<EditingProfileScreen> {
               SizedBox(
                 height: 20,
               ),
-              buildTextField("Full Name"),
-              buildTextField("Description"),
-              buildTextField("University"),
-              buildTextField("Degree"),
-              buildTextField("Role"),
-              buildTextField("Subjects already done"),
-              buildTextField("Subjects that you demand"),
-              buildTextField("Recommendations"),
-              buildTextField("E-mail"),
-              buildTextField("Telephone Number"),
-              buildPasswordField("Password", true),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _nameController,
+                  validator: (val) => val.isEmpty ? 'Enter your name' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Full Name",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _descriptionController,
+                  validator: (val) =>
+                      val.isEmpty ? 'Enter a description' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Description",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _universityController,
+                  validator: (val) => val.isEmpty ? 'Enter a university' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "University",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _degreeController,
+                  validator: (val) => val.isEmpty ? 'Enter a degree' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Degree",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _roleController,
+                  validator: (val) => val.isEmpty ? 'Choose your role' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Role",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _subjectsdoneController,
+                  validator: (val) =>
+                      val.isEmpty ? 'Enter subjects already done' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Subjects already done",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _subjectsaskingController,
+                  validator: (val) =>
+                      val.isEmpty ? 'Enter subjects asking for classes' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Subjects asking for",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _recommendationsController,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Recommendations",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  controller: _emailController,
+                  validator: (val) => val.isEmpty ? 'Enter your email' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Contact E-mail",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  obscureText: _isHidden,
+                  controller: _passwordController,
+                  validator: (val) =>
+                      val.isEmpty ? 'Enter your password' : null,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: 'Password',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    suffix: InkWell(
+                      onTap: _tooglePasswordView,
+                      child: Icon(
+                        _isHidden ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
+                  obscureText: _isHidden,
+                  controller: _password2Controller,
+                  validator: (val) =>
+                      val.isEmpty ? 'Repeat your password' : null,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: 'Repeat Password',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    suffix: InkWell(
+                      onTap: _tooglePasswordView,
+                      child: Icon(
+                        _isHidden ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -138,39 +281,9 @@ class EditingProfile extends State<EditingProfileScreen> {
     );
   }
 
-  Widget buildPasswordField(String labelText, bool isPasswordTextfield) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: showPassword,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextfield
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                    icon: Icon(Icons.remove_red_eye),
-                    color: Colors.grey,
-                  )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always),
-      ),
-    );
-  }
-
-  Widget buildTextField(String labelText) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always),
-      ),
-    );
+  void _tooglePasswordView() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
 }
