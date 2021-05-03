@@ -25,5 +25,9 @@ export class userService {
   deleteUser(user: User){
     return this.http.post(this.url.urlUser + '/deleteUser/', user);
   }
+
+  getUsers(){
+    return this.http.get<User[]>(this.url.urlUser + '/getUsers/');
+  }
   
 }
