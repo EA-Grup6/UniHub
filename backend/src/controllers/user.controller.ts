@@ -7,9 +7,9 @@ export function helloWorld(req: Request, res: Response){
 export async function createUser (req: Request, res: Response){
 
     let {username, password} = req.body;
-    let user = {username: username,password: password};
+    const user = {username: username,password: password};
     let newUser = new User(user);
-    let registeredUser = await User.findOne({username:newUser.username})
+    var registeredUser = await User.findOne({username:newUser.username})
     try{
         if(registeredUser != null){
             return res.status(201).send({message: "User already exists"});
@@ -25,10 +25,7 @@ export async function createUser (req: Request, res: Response){
 export async function loginUser (req: Request, res: Response){
 
     let {username, password} = req.body;
-    const user = {
-        username: username,
-        password: password
-    };
+    const user = {username: username,password: password};
     console.log("Username: " + user.username);
     console.log("Password: " + user.password);
     const registeringUser = new User(user);

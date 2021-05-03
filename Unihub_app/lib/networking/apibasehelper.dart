@@ -1,17 +1,22 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:unihub_app/routes/api_exceptions.dart';
+import 'package:unihub_app/networking/api_exceptions.dart';
 import 'dart:async';
+import 'api_exceptions.dart';
 
 class ApiBaseHelper {
   final String _baseUrl = "http://10.0.2.2:4000";
 
   Future<dynamic> post(String url, dynamic content) async {
     print('Api Post, url $url');
+    Map<String, String> customHeaders = {'content-type': 'application/json'};
+    var bodyF = jsonEncode(content);
     var responseJson;
     try {
-      final response = await http.post(_baseUrl + url, body: content);
+      print('Content: ' + content.toString());
+      final response = await http.post(Uri.parse(_baseUrl + url),
+          headers: customHeaders, body: bodyF);
       responseJson = _returnResponse(response);
     } on SocketException {
       print('No net');
@@ -22,18 +27,13 @@ class ApiBaseHelper {
   }
 
   dynamic _returnResponse(http.Response response) {
+    print(response.statusCode);
     switch (response.statusCode) {
-      //Falta poner nuestros códigos de error
       case 200:
-        var responseJson = json.decode(response.body.toString());
-        print(responseJson);
         print('200 Received');
-        return responseJson;
-      case 400:
-        throw BadRequestException(response.body.toString());
-      case 401:
-      case 403:
-        throw UnauthorisedException(response.body.toString());
+        return response.statusCode;
+      case 201:
+        throw BadRequestException(json.decode(response.body.toString()));
       case 500:
       default:
         throw FetchDataException(

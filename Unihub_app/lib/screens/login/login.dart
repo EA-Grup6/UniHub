@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/controllers/login_controller.dart';
+import '../../controllers/login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
 }
 
 class Login extends State<LoginScreen> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isHidden = true;
 
   @override
@@ -28,7 +30,7 @@ class Login extends State<LoginScreen> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
-                    controller: nameController,
+                    controller: _nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
@@ -40,7 +42,7 @@ class Login extends State<LoginScreen> {
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: TextField(
                     obscureText: _isHidden,
-                    controller: passwordController,
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
@@ -72,8 +74,10 @@ class Login extends State<LoginScreen> {
                                   MaterialStateProperty.all<Color>(Colors.blue),
                             ),
                             onPressed: () {
-                              print(nameController.text);
-                              print(passwordController.text);
+                              print(_nameController.text);
+                              print(_passwordController.text);
+                              LoginController().loginUser(_nameController.text,
+                                  _passwordController.text);
                             },
                           )
                         ])),
