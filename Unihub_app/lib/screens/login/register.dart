@@ -32,12 +32,13 @@ class Register extends State<RegisterScreen> {
                         Container(
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                           child: TextFormField(
-                            validator: (String value){
-                              if(value.isEmpty)
-                              {
+                            validator: (String value) {
+                              if (value.isEmpty) {
                                 return 'Enter an email';
                               }
-                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                              if (!RegExp(
+                                      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                  .hasMatch(value)) {
                                 return 'Please enter a valid Email';
                               }
                               return null;
@@ -76,12 +77,11 @@ class Register extends State<RegisterScreen> {
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: TextFormField(
                             obscureText: _isHidden,
-                            validator: (String value){
-                              if(value.isEmpty)
-                              {
+                            validator: (String value) {
+                              if (value.isEmpty) {
                                 return 'Missing password';
                               }
-                              if(_passwordController.text != (value)){
+                              if (_passwordController.text != (value)) {
                                 return 'Passwords are not equal. Please enter same password';
                               }
                               return null;
@@ -127,8 +127,8 @@ class Register extends State<RegisterScreen> {
                                           print(_nameController.text);
                                           print(_passwordController.text);
                                           RegisterController().registerUser(
-                                                  _nameController.text,
-                                                  _passwordController.text);
+                                              _nameController.text,
+                                              _passwordController.text);
                                           Navigator.of(context)
                                               .pushNamed('/editProfile');
                                         }
