@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/widgets/text_section.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -73,6 +74,23 @@ class Profile extends State<ProfileScreen> {
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed('/editProfile');
+                  },
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.clear();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login', (Route<dynamic> route) => false);
                   },
                 )
               ])

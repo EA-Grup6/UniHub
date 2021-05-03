@@ -112,7 +112,7 @@ class Login extends State<LoginScreen> {
                                               await SharedPreferences
                                                   .getInstance();
                                           prefs.setString(
-                                              'user', _nameController.text);
+                                              'username', _nameController.text);
                                           Fluttertoast.showToast(
                                               msg: "Logged correctly",
                                               toastLength: Toast.LENGTH_SHORT,
@@ -120,7 +120,6 @@ class Login extends State<LoginScreen> {
                                               backgroundColor: Colors.green,
                                               textColor: Colors.white,
                                               fontSize: 16.0);
-                                          //Este no nos deja volver al login, BIEN
                                           Navigator.of(context)
                                               .pushNamedAndRemoveUntil(
                                                   '/homepage',
