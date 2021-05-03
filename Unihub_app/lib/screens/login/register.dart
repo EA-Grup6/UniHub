@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/register_controller.dart';
 
-import '../../controllers/register_controller.dart';
-
 class RegisterScreen extends StatefulWidget {
   Register createState() => Register();
 }
@@ -34,12 +32,20 @@ class Register extends State<RegisterScreen> {
                         Container(
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                           child: TextFormField(
-                            validator: (val) =>
-                                val.isEmpty ? 'Enter an email' : null,
+                            validator: (String value){
+                              if(value.isEmpty)
+                              {
+                                return 'Enter an email';
+                              }
+                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                return 'Please enter a valid Email';
+                              }
+                              return null;
+                            },
                             controller: _nameController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Username',
+                              labelText: 'Email',
                               alignLabelWithHint: true,
                             ),
                           ),
@@ -49,7 +55,7 @@ class Register extends State<RegisterScreen> {
                           child: TextFormField(
                             obscureText: _isHidden,
                             validator: (val) =>
-                                val.isEmpty ? 'Enter a password' : null,
+                                val.isEmpty ? 'Missing password' : null,
                             controller: _passwordController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -70,8 +76,16 @@ class Register extends State<RegisterScreen> {
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: TextFormField(
                             obscureText: _isHidden,
-                            validator: (val) =>
-                                val.isEmpty ? 'Repeat password' : null,
+                            validator: (String value){
+                              if(value.isEmpty)
+                              {
+                                return 'Missing password';
+                              }
+                              if(_passwordController.text != (value)){
+                                return 'Passwords are not equal. Please enter same password';
+                              }
+                              return null;
+                            },
                             controller: _password2Controller,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -112,20 +126,13 @@ class Register extends State<RegisterScreen> {
                                         if (_formKey.currentState.validate()) {
                                           print(_nameController.text);
                                           print(_passwordController.text);
-                                          var response = RegisterController()
-                                              .registerUser(
+                                          RegisterController().registerUser(
                                                   _nameController.text,
                                                   _passwordController.text);
                                           Navigator.of(context)
                                               .pushNamed('/editProfile');
                                         }
                                       }),
-                                  SizedBox(height: 12.0),
-                                  Text(
-                                    error,
-                                    style: TextStyle(
-                                        color: Colors.red, fontSize: 14.0),
-                                  )
                                 ])),
                       ],
                     )))));

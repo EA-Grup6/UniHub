@@ -33,7 +33,9 @@ class ApiBaseHelper {
         print('200 Received');
         return response.statusCode;
       case 201:
-        throw BadRequestException(json.decode(response.body.toString()));
+        print('201 Received');
+        return response.statusCode;
+        //throw BadRequestException(json.decode(response.body.toString()));
       case 500:
       default:
         throw FetchDataException(
