@@ -12,18 +12,18 @@ class ApiBaseHelper {
     print('Api Post, url $url');
     Map<String, String> customHeaders = {'content-type': 'application/json'};
     var bodyF = jsonEncode(content);
-    var responseJson;
+    var finalResponse;
     try {
       print('Content: ' + content.toString());
       final response = await http.post(Uri.parse(_baseUrl + url),
           headers: customHeaders, body: bodyF);
-      responseJson = _returnResponse(response);
+      finalResponse = response;
     } on SocketException {
       print('No net');
       throw FetchDataException('No Internet connection');
     }
     print('api post recieved!');
-    return responseJson;
+    return finalResponse;
   }
 
   dynamic _returnResponse(http.Response response) {
@@ -35,7 +35,7 @@ class ApiBaseHelper {
       case 201:
         print('201 Received');
         return response.statusCode;
-        //throw BadRequestException(json.decode(response.body.toString()));
+      //throw BadRequestException(json.decode(response.body.toString()));
       case 500:
       default:
         throw FetchDataException(

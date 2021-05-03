@@ -6,6 +6,8 @@ class EditingProfileScreen extends StatefulWidget {
 
 class EditingProfile extends State<EditingProfileScreen> {
   bool _isHidden = true;
+  //Campos que ya está rellenos autocompletar!
+  //Universidad, grado, rol, asignaturas (hechas y solicitadas) son dropdown menus!
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _universityController = TextEditingController();
