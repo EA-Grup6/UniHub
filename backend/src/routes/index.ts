@@ -9,7 +9,7 @@ router.route('/User/newUser/').post(createUser);
     
 router.route('/User/loginUser/').post(loginUser);
 
-router.route('/User/deleteUser/').post(deleteUser);
+router.route('/User/deleteUser/:username').delete(deleteUser);
 
 router.route('/User/getUsers').get(getUsers);
 

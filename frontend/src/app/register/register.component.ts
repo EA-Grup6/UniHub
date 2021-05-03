@@ -1,6 +1,6 @@
+import { UserService } from '../services/UserService';
 import {Component, OnInit, Output} from '@angular/core';
 import {User} from '../models/user';
-import {userService} from '../services/userService';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
   loginPassword: String;
 
 
-  constructor(private userService: userService,
+  constructor(private UserService: UserService,
               public dialog: MatDialog, private formBuilder: FormBuilder,public dialogRef: MatDialogRef<RegisterComponent>) {
 
     this.newUserForm = this.formBuilder.group({
@@ -76,7 +76,7 @@ export class RegisterComponent implements OnInit {
     user.username = this.newUserForm.get('regisUsername').value;
     user.password = this.newUserForm.get('regisPassword').value;
     console.log(user.username);
-    this.userService.newUser(user)
+    this.UserService.newUser(user)
       .subscribe( res => {
         console.log("Res " + res);
         this.newUserForm.reset();
@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
     this.wrong_login_user = false;
     this.wrong_login_password = false;
     console.log(user.username);
-    this.userService.loginUser(user)
+    this.UserService.loginUser(user)
       .subscribe( res => {
         let code = res.toString();
         if(code == '200'){
@@ -130,3 +130,4 @@ export class RegisterComponent implements OnInit {
   }
 
 }
+

@@ -47,7 +47,7 @@ export async function loginUser (req: Request, res: Response){
 
 export async function deleteUser (req: Request, res: Response){
 
-    const{username} = req.body;
+    const username = req.params;
     const registeredUser = await User.findOne({name:username});
     try{
         if(registeredUser != null){
