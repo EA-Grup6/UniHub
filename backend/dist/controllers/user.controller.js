@@ -10,12 +10,9 @@ function helloWorld(req, res) {
 }
 exports.helloWorld = helloWorld;
 async function createUser(req, res) {
-    console.log(req.body);
     let { username, password } = req.body;
     const user = { username: username, password: password };
     let newUser = new User_1.default(user);
-    console.log(user);
-    console.log(newUser);
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
@@ -32,7 +29,6 @@ async function createUser(req, res) {
 }
 exports.createUser = createUser;
 async function loginUser(req, res) {
-    console.log(req.body);
     let { username, password } = req.body;
     const user = { username: username, password: password };
     console.log("Username: " + user.username);

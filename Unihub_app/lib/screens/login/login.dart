@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/login_controller.dart';
-import '../../controllers/login_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
@@ -10,13 +10,18 @@ class Login extends State<LoginScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isHidden = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: EdgeInsets.all(10),
-            child: ListView(
+    body: SingleChildScrollView(
+      padding: EdgeInsets.all(10),
+        child: ConstrainedBox(
+        constraints: BoxConstraints(),
+         child: Form(
+            key: _formKey,     
+            child: Column(
               children: <Widget>[
                 Image.asset('assets/images/unihubLogo.png',
                     height: 300, width: 300),
@@ -29,7 +34,17 @@ class Login extends State<LoginScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (String value){
+                              if(value.isEmpty)
+                              {
+                                return 'Enter an email';
+                              }
+                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                return 'Please enter a valid Email';
+                              }
+                              return null;
+                            },
                     controller: _nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -40,7 +55,9 @@ class Login extends State<LoginScreen> {
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: TextField(
+                  child: TextFormField(
+                    validator: (val) =>
+                                val.isEmpty ? 'Missing password' : null,
                     obscureText: _isHidden,
                     controller: _passwordController,
                     decoration: InputDecoration(
@@ -73,11 +90,27 @@ class Login extends State<LoginScreen> {
                               backgroundColor:
                                   MaterialStateProperty.all<Color>(Colors.blue),
                             ),
-                            onPressed: () {
-                              print(_nameController.text);
-                              print(_passwordController.text);
-                              LoginController().loginUser(_nameController.text,
-                                  _passwordController.text);
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                          print(_nameController.text);
+                                          print(_passwordController.text);
+                                          final String response = await LoginController().loginUser(_nameController.text, _passwordController.text);
+                                          print(response);
+                                          if (response == '201'){
+                                              print("Estoy dentro del if");
+                                              Fluttertoast.showToast(
+                                                  msg: "Wrong email or password, please try again",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  timeInSecForIosWeb: 2,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0
+                                              );
+                                          }else{
+                                             //Navigator.of(context)
+                                              //  .pushNamed('/editProfile');
+                                          }
+                                        }
                             },
                           )
                         ])),
@@ -150,7 +183,7 @@ class Login extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 ))
               ],
-            )));
+            )))));
   }
 
   void _tooglePasswordView() {
