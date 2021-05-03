@@ -1,8 +1,8 @@
 <div id="container" style="margin:15%">
   <form [formGroup]="loginUserForm">
     <div class="form-group" style="margin:15%">
-        <input matInput type="text" id="loginUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="username"/>
-        <input matInput type="password" id="loginPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="password"/>
+        <input matInput type="text" id="loginUsername" formControlName="loginUsername" placeholder="Username" [(ngModel)]="loginUsername"/>
+        <input matInput type="password" id="loginPassword" formControlName="loginPassword" placeholder="Password" [(ngModel)]="loginPassword"/>
     </div>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.username">
@@ -28,7 +28,7 @@
       <div class="btn-group">
         <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerUser">Create your account</button>
-        <button type="button" class="btn btn-primary" [disabled]="!newUserForm.valid" (click)="registerUser()">Login</button>
+        <button type="button" class="btn btn-primary" [disabled]="!loginUserForm.valid" (click)="registerUser()">Login</button>
       </div>
     </div>
   </form>
@@ -47,10 +47,13 @@
         <form [formGroup]="newUserForm">
           <div class="form-group">
             <div class="example-container">
-              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="username"/>
+              <input type="text" id="regisUsername" formControlName="regisUsername" placeholder="Username" [(ngModel)]="regisUsername"/>
             </div>
             <div class="example-container">
-              <input type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="password"/>
+              <input type="password" id="regisPassword" formControlName="regisPassword" placeholder="Password" [(ngModel)]="regisPassword"/>
+            </div>
+            <div class="example-container">
+              <input type="password" id="regisPassword2" formControlName="regisPassword2" placeholder="Confirm Password" [(ngModel)]="regisPassword2"/>
             </div>
           </div>
           <div class="validation-errors">

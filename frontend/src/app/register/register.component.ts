@@ -21,6 +21,11 @@ export class RegisterComponent implements OnInit {
   wrong_login_user = false;
   wrong_login_password = false;
   isLogged: boolean;
+  regisUsername: String;
+  regisPassword: String;
+  regisPassword2: String;
+  loginUsername: String;
+  loginPassword: String;
 
 
   constructor(private userService: userService,
