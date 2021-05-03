@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/screens/profile/Profile.dart';
+
+import 'home.dart';
 
 class HomepageScreen extends StatefulWidget {
   Homepage createState() => Homepage();
 }
 
 class Homepage extends State<HomepageScreen> {
-  // int currentTab = 0;
-  // final List<Widget> screens = [
-  //  Dashboard(),
-  //  Chat(),
-  // Search()
-  // ];
+  int currentTab = 0;
+  final List<Widget> screens = [
+    HomeScreen(),
+    //  Chat(),
+    // Search()
+    ProfileScreen()
+  ];
   //
-  //final PageStorageBucket bucket = PageStorageBucket();
-  // Widget currentScreen = Dashboard();
+  final PageStorageBucket bucket = PageStorageBucket();
+  Widget currentScreen = HomeScreen();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: PageStorage(
+        child: currentScreen,
+        bucket: bucket,
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.menu_book_outlined),
         onPressed: () {},
@@ -38,8 +46,8 @@ class Homepage extends State<HomepageScreen> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        //currentScreen = ;
-                        //CurrentTab=0;
+                        currentScreen = HomeScreen();
+                        currentTab = 0;
                       });
                     },
                     child: Column(
@@ -107,8 +115,8 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 40,
                   onPressed: () {
                     setState(() {
-                      //currentScreen = ;
-                      //CurrentTab=0;
+                      currentScreen = ProfileScreen();
+                      currentTab = 1;
                     });
                   },
                   child: Column(
