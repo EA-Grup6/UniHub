@@ -72,7 +72,7 @@ class Profile extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   onPressed: () {
-                    //aquí tiene que llevar al perfil
+                    Navigator.of(context).pushNamed('/editProfile');
                   },
                 )
               ])

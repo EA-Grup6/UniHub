@@ -36,7 +36,9 @@ class EditingProfile extends State<EditingProfileScreen> {
             Icons.arrow_back,
             color: Colors.blue,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
       body: Container(
@@ -255,7 +257,7 @@ class EditingProfile extends State<EditingProfileScreen> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     onPressed: () {
-                      //aquí tiene que llevar al perfil
+                      Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
@@ -270,7 +272,7 @@ class EditingProfile extends State<EditingProfileScreen> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     onPressed: () {
-                      //aquí tiene que llevar al perfil
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
