@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
+import 'package:unihub_app/screens/forum/forum.dart';
 
+import '../forum/forum.dart';
 import 'home.dart';
 
 class HomepageScreen extends StatefulWidget {
@@ -28,7 +30,12 @@ class Homepage extends State<HomepageScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.menu_book_outlined),
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            currentScreen = ForumScreen();
+            currentTab = 0;
+          });
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
