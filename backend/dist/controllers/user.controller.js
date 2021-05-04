@@ -65,16 +65,11 @@ async function loginUser(req, res) {
 }
 exports.loginUser = loginUser;
 async function deleteUser(req, res) {
-    const username = req.params;
-    const registeredUser = await User_1.default.findOne({ username: username });
+    const username = req.params.username;
+    console.log(username);
     try {
-        if (registeredUser != null) {
-            User_1.default.findOneAndDelete({ username: registeredUser.username });
-            return res.status(200).send({ message: "User correctly gotten" });
-        }
-        else {
-            return res.status(404).send({ message: "Users not found" });
-        }
+        await User_1.default.findOneAndDelete({ username: username });
+        return res.status(200).send({ message: "User correctly gotten" });
     }
     catch {
         return res.status(500).send({ message: "Internal server error" });
