@@ -69,6 +69,8 @@ const firebaseConfig = {
     HttpClientModule,
     MatButtonModule,
     MatCheckboxModule,
+    RegisterComponent,
+    ListComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

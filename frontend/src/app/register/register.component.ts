@@ -1,5 +1,5 @@
 import { UserService } from '../services/userService';
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit, Output, Input} from '@angular/core';
 import {User} from '../models/user';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -26,6 +26,8 @@ export class RegisterComponent implements OnInit {
   regisPassword2: String;
   loginUsername: String;
   loginPassword: String;
+
+  @Input() name: User;
 
 
   constructor(private UserService: UserService,
@@ -124,10 +126,14 @@ export class RegisterComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  closeDialogAndReturn(username:String){
+  closeDialogAndReturn(username: String){
     //If operation is canceled the dialog closes without returning any students
-    this.dialogRef.close(username);
+    if(username == 'admin'){
+      this.dialogRef.close(true);
+    }
+    else{
+      this.dialogRef.close(false);
+    }
   }
-
 }
 

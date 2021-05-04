@@ -1,6 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import {RegisterComponent} from './register/register.component';
 import {MatDialogRef, MatDialog} from '@angular/material/dialog';
 import { ProfileComponent } from './profile/profile.component';
@@ -18,6 +18,7 @@ export class AppComponent{
   regisComp: RegisterComponent;
   isLogged = false;
   username: string;
+  isAdmin = false;
 
   constructor (private router: Router, public dialog: MatDialog){}
 
@@ -29,12 +30,20 @@ export class AppComponent{
         height: 'auto',
       });
       MatDialogRef.afterClosed().subscribe(data=>{
-        this.username = data;
-        console.log(this.username);
-        this.isLogged=true;
-        let user = new User('', this.username, '');
-        new ProfileComponent(user);
-        this.router.navigateByUrl('profile');
+        this.isAdmin = data;
+        //console.log(this.username);
+        if(data != null){
+          this.isLogged=true;
+        }
       });
+    }
+    onLogoutClick(){
+      this.isLogged = false;
+      this.username=null;
+      this.router.navigateByUrl('');
+      this.isAdmin = false;
+    }
+    onManageClick(){
+      this.router.navigateByUrl('admin');
     }
   }
