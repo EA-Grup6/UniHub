@@ -107,9 +107,10 @@ async function updateUser(req, res) {
 exports.updateUser = updateUser;
 async function getUsers(req, res) {
     const users = await User_1.default.find();
+    console.log(users);
     try {
         if (users != null) {
-            res.status(200).json(users);
+            return res.status(200).header('Content Type - application/json').send(users);
         }
         else {
             return res.status(404).send({ message: "Users not found" });

@@ -1,17 +1,20 @@
-<div class="col-md-8">
-    <table class="table table-striped">
-      <thead>
-        <th>Name</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.username }}</td>
-          <td>
-            <a (click)="deleteUser()" class="btn btn-danger btn-sm">
-              <i class="material-icons">delete</i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<h1 style="text-align: center">Users</h1>
+<div id="container">
+  <div class="column-list">
+    <div class="margin-sides">
+      <p>Users</p>
+      <mat-card class="mat-card-list">
+        <mat-list role="list">
+          <mat-list-item *ngFor="let user of users"
+                         class="no-pad list-item"
+                         role="listitem">
+            <div class="text">
+              <h5>{{user.username}}</h5>
+            </div>
+            <!--<button class="btn btn-primary" type="button" id="userDeleteButton" (click)="onDeleteClick()">Delete User</button>-->
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
   </div>
+</div>

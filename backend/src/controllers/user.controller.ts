@@ -1,4 +1,4 @@
-import {Request, Response} from 'express'
+import {json, Request, Response} from 'express'
 import User from '../models/User'
 
 export function helloWorld(req: Request, res: Response){
@@ -97,11 +97,10 @@ export async function updateUser (req: Request, res: Response){
 export async function getUsers (req: Request, res: Response){
 
     const users = await User.find();
-
+    console.log(users);
     try{
         if(users != null){
-           
-            res.status(200).json(users);
+            return res.status(200).header('Content Type - application/json').send(users);
         } else {
             return res.status(404).send({message: "Users not found"});
         }
