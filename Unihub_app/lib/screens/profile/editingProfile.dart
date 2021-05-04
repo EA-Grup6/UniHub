@@ -1,11 +1,46 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/models/user.dart';
+
+String finalUsername;
+UserApp currentUser;
 
 class EditingProfileScreen extends StatefulWidget {
   EditingProfile createState() => EditingProfile();
 }
 
 class EditingProfile extends State<EditingProfileScreen> {
+  @override
+  void initState() {
+    getValidationData().whenComplete(() async {
+      currentUser = UserApp.fromMap(
+          jsonDecode(await EditProfileController().getProfile(finalUsername)));
+      _nameController.text = currentUser.fullname;
+      _descriptionController.text = currentUser.description;
+      _universityController.text = currentUser.university;
+      _degreeController.text = currentUser.degree;
+      _roleController.text = currentUser.role;
+      _subjectsdoneController.text = currentUser.subjectsDone;
+      _subjectsaskingController.text = currentUser.subjectsRequested;
+      _passwordController.text = currentUser.password;
+      _phoneController.text = currentUser.phone;
+    });
+    super.initState();
+  }
+
   bool _isHidden = true;
+
+  Future getValidationData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var username = preferences.getString('username');
+    setState(() {
+      finalUsername = username;
+    });
+  }
+
   //Campos que ya está rellenos autocompletar!
   //Universidad, grado, rol, asignaturas (hechas y solicitadas) son dropdown menus!
   final TextEditingController _nameController = TextEditingController();
@@ -16,10 +51,8 @@ class EditingProfile extends State<EditingProfileScreen> {
   final TextEditingController _subjectsdoneController = TextEditingController();
   final TextEditingController _subjectsaskingController =
       TextEditingController();
-  final TextEditingController _recommendationsController =
-      TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -125,6 +158,17 @@ class EditingProfile extends State<EditingProfileScreen> {
               Container(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: TextFormField(
+                  controller: _phoneController,
+                  validator: (val) => val.isEmpty ? 'Enter your phone' : null,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 3),
+                      labelText: "Phone",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: TextFormField(
                   controller: _universityController,
                   validator: (val) => val.isEmpty ? 'Enter a university' : null,
                   decoration: InputDecoration(
@@ -176,27 +220,6 @@ class EditingProfile extends State<EditingProfileScreen> {
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 3),
                       labelText: "Subjects asking for",
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: TextFormField(
-                  controller: _recommendationsController,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 3),
-                      labelText: "Recommendations",
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: TextFormField(
-                  controller: _emailController,
-                  validator: (val) => val.isEmpty ? 'Enter your email' : null,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(bottom: 3),
-                      labelText: "Contact E-mail",
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                 ),
               ),
@@ -272,6 +295,19 @@ class EditingProfile extends State<EditingProfileScreen> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     onPressed: () {
+                      UserApp updatedUser = new UserApp(
+                        currentUser.username,
+                        _passwordController.text,
+                        _nameController.text,
+                        _descriptionController.text,
+                        _universityController.text,
+                        _degreeController.text,
+                        _roleController.text,
+                        _subjectsdoneController.text,
+                        _subjectsaskingController.text,
+                        _phoneController.text,
+                      );
+                      EditProfileController().updateProfile(updatedUser);
                       Navigator.of(context).pop();
                     },
                   ),

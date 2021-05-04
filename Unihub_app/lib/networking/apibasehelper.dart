@@ -26,6 +26,22 @@ class ApiBaseHelper {
     return finalResponse;
   }
 
+  Future<dynamic> get(String url) async {
+    print('Api get, url $url');
+    Map<String, String> customHeaders = {'content-type': 'application/json'};
+    var finalResponse;
+    try {
+      final response =
+          await http.get(Uri.parse(_baseUrl + url), headers: customHeaders);
+      finalResponse = response;
+    } on SocketException {
+      print('No net');
+      throw FetchDataException('No Internet connection');
+    }
+    print('api get received!');
+    return finalResponse;
+  }
+
   dynamic _returnResponse(http.Response response) {
     print(response.statusCode);
     switch (response.statusCode) {

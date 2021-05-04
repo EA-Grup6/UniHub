@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAdmin = exports.getUsers = exports.deleteUser = exports.loginUser = exports.createUser = exports.helloWorld = void 0;
+exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = exports.helloWorld = void 0;
 const User_1 = __importDefault(require("../models/User"));
 function helloWorld(req, res) {
     return res.send('Hello World !!!');
@@ -11,8 +11,19 @@ function helloWorld(req, res) {
 exports.helloWorld = helloWorld;
 async function createUser(req, res) {
     let { username, password, tag } = req.body;
-    const user = { username: username, password: password, tag: tag };
-    let newUser = new User_1.default(user);
+    let newUser = new User_1.default();
+    newUser.username = username;
+    newUser.password = password;
+    newUser.fullname = '';
+    newUser.description = '';
+    newUser.university = '';
+    newUser.degree = '';
+    newUser.role = '';
+    newUser.subjectsDone = '';
+    newUser.subjectsRequested = '';
+    newUser.recommendations = '';
+    newUser.isAdmin = false;
+    newUser.phone = '';
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
@@ -54,8 +65,8 @@ async function loginUser(req, res) {
 }
 exports.loginUser = loginUser;
 async function deleteUser(req, res) {
-    const { username } = req.body;
-    const registeredUser = await User_1.default.findOne({ name: username });
+    const username = req.params;
+    const registeredUser = await User_1.default.findOne({ username: username });
     try {
         if (registeredUser != null) {
             User_1.default.findOneAndDelete({ username: registeredUser.username });
@@ -70,6 +81,30 @@ async function deleteUser(req, res) {
     }
 }
 exports.deleteUser = deleteUser;
+async function updateUser(req, res) {
+    let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsAsking } = req.body;
+    const updateData = {
+        password: password,
+        fullname: fullname,
+        description: description,
+        university: university,
+        degree: degree,
+        role: role,
+        subjectsDone: subjectsDone,
+        subjectsRequested: subjectsAsking,
+        phone: ''
+    };
+    console.log(updateData);
+    try {
+        var status = await User_1.default.findOneAndUpdate({ username: username }, { update: updateData });
+        console.log(status);
+        return res.status(200).send({ message: 'User correctly updated' });
+    }
+    catch {
+        return res.status(201).send({ message: "User couldn't be updated" });
+    }
+}
+exports.updateUser = updateUser;
 async function getUsers(req, res) {
     const users = await User_1.default.find();
     try {
@@ -105,3 +140,19 @@ async function getAdmin(req, res) {
     }
 }
 exports.getAdmin = getAdmin;
+async function getUser(req, res) {
+    let username = req.params.username;
+    let user = await User_1.default.findOne({ username: username });
+    try {
+        if (user != null) {
+            return res.status(200).header('Content Type - application/json').send(user);
+        }
+        else {
+            return res.status(201).send({ message: "User not found" });
+        }
+    }
+    catch {
+        return res.status(500).send({ message: "Internal server error" });
+    }
+}
+exports.getUser = getUser;

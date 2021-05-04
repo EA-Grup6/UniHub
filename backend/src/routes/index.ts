@@ -1,5 +1,6 @@
 import {Router} from 'express';
-import {helloWorld, createUser, loginUser, deleteUser, getUsers/*, getAdmin*/} from '../controllers/user.controller'
+import {helloWorld, createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
+updateUser, getUser} from '../controllers/user.controller'
 
 const router = Router();
     
@@ -12,6 +13,10 @@ router.route('/User/loginUser/').post(loginUser);
 router.route('/User/deleteUser/:username').delete(deleteUser);
 
 router.route('/User/getUsers').get(getUsers);
+
+router.route('/User/updateUser').post(updateUser);
+
+router.route('/User/getUser/:username').get(getUser);
 
 //router.route('User/getAdmin').get(getAdmin);
 

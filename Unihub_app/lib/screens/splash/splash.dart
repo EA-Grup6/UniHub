@@ -15,7 +15,7 @@ class Splash extends State<SplashScreen> {
       Timer(
           Duration(seconds: 2),
           () => {
-                if (finalUsername == '')
+                if (finalUsername == null)
                   {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/login', (Route<dynamic> route) => false)
@@ -47,7 +47,7 @@ class Splash extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset('assets/images/unihubLogoNoText.png',
+                Image.asset('assets/images/unihubLogo.png',
                     height: 400, width: 400),
               ],
             )));
