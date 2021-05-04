@@ -29,4 +29,11 @@ class EditProfileController {
     print("Estoy en response: " + response.body);
     return response.body;
   }
+
+  Future<dynamic> deleteProfile(String username) async {
+    final http.Response response =
+        await _helper.delete('/User/deleteUser/$username');
+    print("Response: " + response.body);
+    return response.statusCode;
+  }
 }

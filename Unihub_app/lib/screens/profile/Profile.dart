@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
@@ -115,6 +116,35 @@ class Profile extends State<ProfileScreen> {
                     prefs.clear();
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/login', (Route<dynamic> route) => false);
+                  },
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                  ),
+                  child: Text(
+                    'Delete your account',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    var status = await EditProfileController()
+                        .deleteProfile(finalUsername);
+                    if (status == 200) {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.clear();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/login', (Route<dynamic> route) => false);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "Couldn't delete account",
+                          toastLength: Toast.LENGTH_SHORT,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
                   },
                 )
               ])

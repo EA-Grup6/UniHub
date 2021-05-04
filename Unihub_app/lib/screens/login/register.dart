@@ -130,7 +130,7 @@ class Register extends State<RegisterScreen> {
                                               _nameController.text,
                                               _passwordController.text);
                                           Navigator.of(context)
-                                              .pushNamed('/editProfile');
+                                              .pushNamed('/login');
                                         }
                                       }),
                                 ])),
