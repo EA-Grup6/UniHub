@@ -5,6 +5,11 @@ class ForumScreen extends StatefulWidget {
 }
 
 class Forum extends State<ForumScreen> {
+  
+  final TextStyle _titleController = TextStyle();
+  final TextStyle _universityController = TextStyle();
+  final TextStyle _usernameController = TextStyle();
+  final TextStyle _descriptionController = TextStyle();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,13 @@ class Forum extends State<ForumScreen> {
             })
           ],
         ),
-      );
+        body: SingleChildScrollView(
+            padding: EdgeInsets.all(10),
+            child: ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: Form(
+                  
+            ))));
   }
 }
 
