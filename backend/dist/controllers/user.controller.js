@@ -82,7 +82,7 @@ async function deleteUser(req, res) {
 }
 exports.deleteUser = deleteUser;
 async function updateUser(req, res) {
-    let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsAsking } = req.body;
+    let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone } = req.body;
     const updateData = {
         password: password,
         fullname: fullname,
@@ -91,13 +91,12 @@ async function updateUser(req, res) {
         degree: degree,
         role: role,
         subjectsDone: subjectsDone,
-        subjectsRequested: subjectsAsking,
-        phone: ''
+        subjectsRequested: subjectsRequested,
+        phone: phone
     };
     console.log(updateData);
     try {
-        var status = await User_1.default.findOneAndUpdate({ username: username }, { update: updateData });
-        console.log(status);
+        await User_1.default.findOneAndUpdate({ username: username }, updateData);
         return res.status(200).send({ message: 'User correctly updated' });
     }
     catch {

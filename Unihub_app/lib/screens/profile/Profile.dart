@@ -1,12 +1,36 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/widgets/text_section.dart';
+
+String finalUsername;
+UserApp currentUser;
 
 class ProfileScreen extends StatefulWidget {
   Profile createState() => Profile();
 }
 
 class Profile extends State<ProfileScreen> {
+  @override
+  void initState() {
+    getValidationData().whenComplete(() async {
+      currentUser = UserApp.fromMap(
+          jsonDecode(await EditProfileController().getProfile(finalUsername)));
+    });
+    super.initState();
+  }
+
+  Future getValidationData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var username = preferences.getString('username');
+    setState(() {
+      finalUsername = username;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,18 +69,18 @@ class Profile extends State<ProfileScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TextSection("Username", "Toni Mur"),
-                  TextSection("Description",
-                      "Soy un estudiante acabando cuarto de carrera con una vocación por la enseñanza, etc etc"),
-                  TextSection("Role", "Profesor"),
+                  TextSection("Username", currentUser.fullname),
+                  TextSection("Description", currentUser.description),
+                  TextSection("Role", currentUser.role),
+                  TextSection("University", currentUser.university),
+                  TextSection("Degree", currentUser.degree),
                   TextSection(
-                      "University", "Universitat Politècnica Catalunya"),
-                  TextSection("Degree",
-                      "Doble titulació en Sistemes Aeroespacials i Telemàtica"),
-                  TextSection("Subjects already Done", "blablabla"),
-                  TextSection("Subjects Asking for", "bla bla bla"),
+                      "Subjects already Done", currentUser.subjectsDone),
+                  TextSection(
+                      "Subjects Asking for", currentUser.subjectsRequested),
                   TextSection("Recomendations", ""),
-                  TextSection("E-mail", "toni@mur.com"),
+                  TextSection("E-mail", currentUser.username),
+                  TextSection("Phone", currentUser.phone),
                 ],
               ),
               SizedBox(

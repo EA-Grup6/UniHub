@@ -73,7 +73,7 @@ export async function deleteUser (req: Request, res: Response){
 }
 
 export async function updateUser (req: Request, res: Response){
-    let{username, password, fullname, description, university, degree, role, subjectsDone, subjectsAsking} = req.body;
+    let{username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone} = req.body;
     const updateData = {
         password: password,
         fullname: fullname,
@@ -82,12 +82,11 @@ export async function updateUser (req: Request, res: Response){
         degree: degree,
         role: role,
         subjectsDone: subjectsDone,
-        subjectsRequested: subjectsAsking,
-        phone: ''};
+        subjectsRequested: subjectsRequested,
+        phone: phone};
     console.log(updateData);
     try {
-        var status = await User.findOneAndUpdate({username: username}, {update: updateData});
-        console.log(status);
+        await User.findOneAndUpdate({username: username}, updateData);
         return res.status(200).send({message: 'User correctly updated'});
     } catch {
         return res.status(201).send({message: "User couldn't be updated"});
@@ -101,6 +100,7 @@ export async function getUsers (req: Request, res: Response){
     try{
         if(users != null){
             return res.status(200).header('Content Type - application/json').send(users);
+
         } else {
             return res.status(404).send({message: "Users not found"});
         }

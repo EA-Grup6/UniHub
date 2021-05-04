@@ -1,6 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {RegisterComponent} from './register/register.component';
 import {MatDialogRef, MatDialog} from '@angular/material/dialog';
 import { ProfileComponent } from './profile/profile.component';

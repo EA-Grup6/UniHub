@@ -23,9 +23,8 @@ class EditProfileController {
   }
 
   Future<dynamic> updateProfile(UserApp user) async {
-    print(user);
     var json = user.toJSON();
-    print(json);
+    print('Envio este usuario: ' + json.toString());
     final http.Response response = await _helper.post('/User/updateUser', json);
     print("Estoy en response: " + response.body);
     return response.body;
