@@ -24,8 +24,8 @@ export class UserService {
     return this.http.post(this.url.urlUser + '/newUser/', user);
   }
   
-  deleteUser(username: string){
-    return this.http.delete(this.url.urlUser + '/deleteUser/' + `/${username}`);
+  deleteUser(user: User){
+    return this.http.delete(this.url.urlUser + '/deleteUser/' + `/${user.username}`);
   }
 
   getUsers(){

@@ -1,4 +1,4 @@
-import { UserService } from '../services/UserService';
+import { UserService } from '../services/userService';
 import {Component, OnInit, Output} from '@angular/core';
 import {User} from '../models/user';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
