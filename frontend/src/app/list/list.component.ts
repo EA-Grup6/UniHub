@@ -17,9 +17,13 @@ export class ListComponent implements OnInit {
   users: User[];
   user: User;
   currentUser: User;
-
+  //isAdmin: Boolean;
+  
   ngOnInit(): void {
     this.getUsers();
+    //this.isAdmin=false;
+    /*this.isAdminst(id);*/
+    
   }
 
   updateInfo(){
@@ -38,9 +42,15 @@ export class ListComponent implements OnInit {
     }
   }*/
 
-  public deleteUser(){
-    let user = new User();
-    user = this.currentUser;
+  public deleteUser(_id: String){
+    
+    if (confirm("Are you sure you want to delete it?")) {
+      console.log(_id);
+      this.userService.deleteUser(_id).subscribe((res) => {
+
+        this.updateInfo();
+      });
+    /*user = this.currentUser;
     this.userService.deleteUser(this.currentUser)
       .subscribe (res => {
         console.log('Res' + res);
@@ -49,8 +59,9 @@ export class ListComponent implements OnInit {
       err => {
         console.log(err);
         ListComponent.handleError(err);
-      });
+      });*/
   }
+}
 
   public getUsers() {
     this.userService.getUsers().subscribe((res) => {
@@ -58,6 +69,18 @@ export class ListComponent implements OnInit {
       console.log(this.users);
     });
   }
+
+  /*public isAdminst(_id: String){
+    this.userService.isAdminst(_id).subscribe((res) => {
+      let code = res.toString();
+      if (code=='200'){
+          this.isAdmin=true;
+      }
+    });
+
+  }
+  */
+
 
   private static handleError(err: HttpErrorResponse) {
     if ( err.status === 500 ) {

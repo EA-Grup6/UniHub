@@ -26,7 +26,7 @@ interface IUser extends Document {
     subjectsDone: string,
     subjectsRequested: string,
     recommendations: string,
-    isAdmin: boolean;
+    isAdmin: Boolean;
     phone: string,
 }
 

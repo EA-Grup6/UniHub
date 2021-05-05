@@ -7,7 +7,8 @@
     <button mat-button>About us</button>
     <button mat-button>Offers</button>
     <button *ngIf='!this.isLogged' mat-raised-button color="accent" (click)="onLoginClick()">Log In</button>
-    <button *ngIf='this.isLogged' mat-button>Your account</button>
+    <button *ngIf='this.isLogged' mat-button (click)="onYouraccountClick()">Your account</button>
+
     <button *ngIf='this.isLogged' mat-raised-button color="accent" (click)="onLogoutClick()">Log Out</button>
     <button *ngIf='this.isAdmin' mat-button (click)="onManageClick()">Manage User</button>
   

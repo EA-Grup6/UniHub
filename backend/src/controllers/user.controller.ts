@@ -6,7 +6,7 @@ export function helloWorld(req: Request, res: Response){
 }
 export async function createUser (req: Request, res: Response){
 
-    let {username, password, tag} = req.body;
+    let {username, password, isAdmin} = req.body;
     let newUser = new User();
     newUser.username = username;
     newUser.password = password;
@@ -18,8 +18,11 @@ export async function createUser (req: Request, res: Response){
     newUser.subjectsDone = '';
     newUser.subjectsRequested = '';
     newUser.recommendations = '';
-    newUser.isAdmin = false;
+    newUser.isAdmin = isAdmin;
     newUser.phone= '';
+    if (username=='admin@admin'){
+        newUser.isAdmin=true;
+    }
     var registeredUser = await User.findOne({username:newUser.username})
     try{
         if(registeredUser != null){
@@ -44,7 +47,10 @@ export async function loginUser (req: Request, res: Response){
     try{
         if(registeredUser != null){
             if(registeredUser.get('password') == registeringUser.password){
-                return res.status(200).send('200');
+                if(registeredUser.get('isAdmin')){
+                    return res.status(202).send('202');
+                }else
+                    return res.status(200).send('200');
             } else {
                 return res.status(201).send('201');
             }
@@ -58,11 +64,10 @@ export async function loginUser (req: Request, res: Response){
 
 export async function deleteUser (req: Request, res: Response){
 
-    const username = req.params.username;
-    console.log(username);
+
     try{
-        await User.findOneAndDelete({username: username});
-        return res.status(200).send({message: "User correctly gotten"});
+        await User.findByIdAndRemove(req.params.id);
+        return res.status(200).send({message: "User correctly deleted"});
     } catch {
         return res.status(500).send({message: "Internal server error"});
     }
@@ -109,22 +114,21 @@ export async function getUsers (req: Request, res: Response){
 
 export async function getAdmin(req: Request, res: Response) {
 
-    let { username, password, tag } = req.body;
-    const admin = { username: username,password: password,tag: tag };
-    const adminUser = new User(admin);
-    const adminstUser = await User.findOne({ username:adminUser.username });
-    
-    try {
-        if (adminstUser != null){
-            if (adminstUser.get('tag') != null) {
+    try{
+        let user = await User.findById(req.params.id);
+        if(user!=null){
+            if (user.isAdmin== true){
+                return res.status(200).send({message: "User is Admin"});
+            }else{
+                return res.status(201).send({message: "User is not Admin"});
+            }
+        }else{
+            return res.status(202).send({message: "User not found"});    
+        }
 
-                res.status(200);
-            } else {
-                return res.status(404).send({ message: "User admin not found" });
-        }
-        }
-    } catch {
-        return res.status(500).send({ message: "Internal server error" });
+    }catch {      
+  
+        return res.status(500).send({message: "Internal server error"});
     }
 
 }

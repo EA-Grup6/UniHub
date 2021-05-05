@@ -77,7 +77,11 @@ export class RegisterComponent implements OnInit {
     let user = new User();
     user.username = this.newUserForm.get('regisUsername').value;
     user.password = this.newUserForm.get('regisPassword').value;
-    console.log(user.username);
+    if(this.newUserForm.get('regisUsername').value=="admin@admin"){
+      user.isAdmin=true;
+
+    }
+    console.log(user.username,user.isAdmin);
     this.UserService.newUser(user)
       .subscribe( res => {
         console.log("Res " + res);
@@ -100,10 +104,14 @@ export class RegisterComponent implements OnInit {
       .subscribe( res => {
         let code = res.toString();
         if(code == '200'){
-          this.closeDialogAndReturn(this.loginUserForm.get('loginUsername').value);
+
+          this.dialogRef.close(false);
         }
         else if(code == '201'){
           this.wrong_login_password = true;
+        }
+        else if (code =='202'){
+          this.dialogRef.close(true);
         }
         else if(code == "404"){
           this.wrong_login_user = true;

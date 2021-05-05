@@ -20,6 +20,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ListComponent } from './list/list.component';
+import { AccountComponent } from './account/account.component';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -38,6 +39,7 @@ const firebaseConfig = {
     RegisterComponent,
     ProfileComponent,
     ListComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,

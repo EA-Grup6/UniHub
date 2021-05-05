@@ -7,10 +7,10 @@ export class User {
   password: String;
   isAdmin: Boolean;
 
-  constructor(_id:String = '', username:String = '', password:String = '', isAdmin:Boolean = false) {
+  constructor(_id:String = '', username:String = '', password:String = '', isAdmin:Boolean= false ) {
     this._id = _id;
     this.username = username;
     this.password = password;
-    this.isAdmin = this.isAdmin
+    this.isAdmin = isAdmin
   }
 }

@@ -24,12 +24,15 @@ export class UserService {
     return this.http.post(this.url.urlUser + '/newUser/', user);
   }
   
-  deleteUser(user: User){
-    return this.http.delete(this.url.urlUser + '/deleteUser/' + `/${user.username}`);
+  deleteUser(_id: String){
+    return this.http.delete(this.url.urlUser + '/deleteUser' + `/${_id}`);
   }
 
   getUsers(){
     return this.http.get<User[]>(this.url.urlUser + '/getUsers/');
   }
   
+  //isAdminst(_id: String){
+   // return this.http.get<User>(this.url.urlUser +'/getAdmin'+`/${_id}`);
+  //}
 }

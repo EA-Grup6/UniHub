@@ -30,12 +30,19 @@ export class AppComponent{
         height: 'auto',
       });
       MatDialogRef.afterClosed().subscribe(data=>{
-        this.isAdmin = data;
-        //console.log(this.username);
+        console.log(data)
+        this.isAdmin=data;
+        
+        
         if(data != null){
           this.isLogged=true;
         }
       });
+    }
+
+    onYouraccountClick(){
+      this.router.navigateByUrl('account');
+
     }
     onLogoutClick(){
       this.isLogged = false;
