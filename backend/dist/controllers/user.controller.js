@@ -70,7 +70,7 @@ async function loginUser(req, res) {
 exports.loginUser = loginUser;
 async function deleteUser(req, res) {
     try {
-        await User_1.default.findByIdAndRemove(req.params.id);
+        await User_1.default.findOneAndRemove({ username: req.params.username });
         return res.status(200).send({ message: "User correctly deleted" });
     }
     catch {

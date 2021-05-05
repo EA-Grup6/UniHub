@@ -63,7 +63,7 @@ export async function deleteUser (req: Request, res: Response){
 
 
     try{
-        await User.findByIdAndRemove(req.params.username);
+        await User.findOneAndRemove({username: req.params.username});
         return res.status(200).send({message: "User correctly deleted"});
     } catch {
         return res.status(500).send({message: "Internal server error"});
