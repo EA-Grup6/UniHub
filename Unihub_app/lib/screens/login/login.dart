@@ -8,6 +8,16 @@ class LoginScreen extends StatefulWidget {
   Login createState() => Login();
 }
 
+createToast(String message, Color color) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
+
 class Login extends State<LoginScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -113,26 +123,19 @@ class Login extends State<LoginScreen> {
                                                   .getInstance();
                                           prefs.setString(
                                               'username', _nameController.text);
-                                          Fluttertoast.showToast(
-                                              msg: "Logged correctly",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              timeInSecForIosWeb: 2,
-                                              backgroundColor: Colors.green,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
+                                          createToast("Logged in correctly",
+                                              Colors.green);
                                           Navigator.of(context)
                                               .pushNamedAndRemoveUntil(
                                                   '/homepage',
                                                   (Route<dynamic> route) =>
                                                       false);
+                                        } else if (response.statusCode == 201) {
+                                          createToast(
+                                              "Wrong password", Colors.red);
                                         } else {
-                                          Fluttertoast.showToast(
-                                              msg: response.body,
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              timeInSecForIosWeb: 2,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
+                                          createToast(
+                                              response.body, Colors.red);
                                         }
                                       }
                                     },

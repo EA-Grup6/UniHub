@@ -1,17 +1,28 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
-import 'package:unihub_app/widgets/text_section.dart';
+import 'package:unihub_app/widgets/textSection.dart';
 
 String finalUsername;
 UserApp currentUser;
 
 class ProfileScreen extends StatefulWidget {
   Profile createState() => Profile();
+}
+
+createToast(String message, Color color) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 class Profile extends State<ProfileScreen> {
@@ -99,6 +110,7 @@ class Profile extends State<ProfileScreen> {
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed('/editProfile');
+                    this.initState();
                   },
                 ),
                 TextButton(
@@ -128,26 +140,63 @@ class Profile extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                   onPressed: () async {
-                    var status = await EditProfileController()
-                        .deleteProfile(finalUsername);
-                    if (status == 200) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.clear();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/login', (Route<dynamic> route) => false);
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "Couldn't delete account",
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
+                    showAlertDialog(context);
                   },
                 )
               ])
             ])));
   }
+}
+
+showAlertDialog(BuildContext context) {
+  TextEditingController passwordController = new TextEditingController();
+  // set up the buttons
+  Widget confirmButton = TextButton(
+    child: Text("Confirm"),
+    onPressed: () async {
+      // Delete account checking if password is correct
+      if (passwordController.text == currentUser.password) {
+        var status = await EditProfileController().deleteProfile(finalUsername);
+        if (status == 200) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.clear();
+          createToast("Account correctly deleted", Colors.green);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login', (Route<dynamic> route) => false);
+        } else {
+          createToast("Couldn't delete account", Colors.red);
+        }
+      } else {
+        createToast("Wrong password", Colors.red);
+      }
+    },
+  );
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Are you sure you want to delete your account?"),
+    content: TextFormField(
+      controller: passwordController,
+      validator: (val) => val.isEmpty ? 'Enter your name' : null,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(bottom: 3),
+          labelText: "Please confirm with your password",
+          floatingLabelBehavior: FloatingLabelBehavior.always),
+    ),
+    actions: [cancelButton, confirmButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

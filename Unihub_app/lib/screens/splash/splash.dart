@@ -1,11 +1,22 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String finalUsername;
 
 class SplashScreen extends StatefulWidget {
   Splash createState() => Splash();
+}
+
+createToast(String message, Color color) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 class Splash extends State<SplashScreen> {
@@ -23,7 +34,8 @@ class Splash extends State<SplashScreen> {
                 else
                   {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/homepage', (Route<dynamic> route) => false)
+                        '/homepage', (Route<dynamic> route) => false),
+                    createToast('Welcome back, ' + finalUsername, Colors.green),
                   }
               });
     });

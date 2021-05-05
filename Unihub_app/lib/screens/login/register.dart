@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unihub_app/controllers/register_controller.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
   Register createState() => Register();
+}
+
+createToast(String message, Color color) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 class Register extends State<RegisterScreen> {
@@ -122,15 +134,28 @@ class Register extends State<RegisterScreen> {
                                             MaterialStateProperty.all<Color>(
                                                 Colors.blue),
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (_formKey.currentState.validate()) {
-                                          print(_nameController.text);
-                                          print(_passwordController.text);
-                                          RegisterController().registerUser(
-                                              _nameController.text,
-                                              _passwordController.text);
-                                          Navigator.of(context)
-                                              .pushNamed('/login');
+                                          final http.Response response =
+                                              await RegisterController()
+                                                  .registerUser(
+                                                      _nameController.text,
+                                                      _passwordController.text);
+                                          if (response.statusCode == 200) {
+                                            createToast(
+                                                "Account correctly created",
+                                                Colors.green);
+                                            Navigator.of(context)
+                                                .pushNamed('/login');
+                                          } else if (response.statusCode ==
+                                              201) {
+                                            createToast(
+                                                "There exists an account with this email",
+                                                Colors.green);
+                                          } else {
+                                            createToast(
+                                                response.body, Colors.red);
+                                          }
                                         }
                                       }),
                                 ])),
