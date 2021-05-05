@@ -24,10 +24,11 @@ class Homepage extends State<HomepageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageStorage(
+      body: SafeArea(
+          child: PageStorage(
         child: currentScreen,
         bucket: bucket,
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.menu_book_outlined),
         onPressed: () {

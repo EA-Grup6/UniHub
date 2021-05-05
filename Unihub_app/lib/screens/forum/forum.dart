@@ -23,10 +23,14 @@ class Forum extends State<ForumScreen> {
                 })
           ],
         ),
-        body: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
-            child:
-                ConstrainedBox(constraints: BoxConstraints(), child: Form())));
+        body: SafeArea(
+            child: SingleChildScrollView(
+                padding: EdgeInsets.all(10),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(),
+                    child: Form(
+                      child: Text('Hola'),
+                    )))));
   }
 }
 
