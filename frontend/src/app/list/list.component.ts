@@ -3,6 +3,7 @@ import { UserService } from '../services/userService';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -12,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ListComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   users: User[];
   user: User;
@@ -20,10 +21,10 @@ export class ListComponent implements OnInit {
   //isAdmin: Boolean;
   
   ngOnInit(): void {
-    this.getUsers();
+    
     //this.isAdmin=false;
     /*this.isAdminst(id);*/
-    
+    this.getUsers();
   }
 
   updateInfo(){
