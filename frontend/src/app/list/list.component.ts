@@ -42,11 +42,11 @@ export class ListComponent implements OnInit {
     }
   }*/
 
-  public deleteUser(_id: String){
+  public deleteUser(_username: String){
     
     if (confirm("Are you sure you want to delete it?")) {
-      console.log(_id);
-      this.userService.deleteUser(_id).subscribe((res) => {
+      console.log(_username);
+      this.userService.deleteUser(_username).subscribe((res) => {
 
         this.updateInfo();
       });

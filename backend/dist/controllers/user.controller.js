@@ -22,11 +22,8 @@ async function createUser(req, res) {
     newUser.subjectsDone = '';
     newUser.subjectsRequested = '';
     newUser.recommendations = '';
-    newUser.isAdmin = isAdmin;
+    newUser.isAdmin = false;
     newUser.phone = '';
-    if (username == 'admin@admin') {
-        newUser.isAdmin = true;
-    }
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {

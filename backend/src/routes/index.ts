@@ -10,7 +10,7 @@ router.route('/User/newUser/').post(createUser);
     
 router.route('/User/loginUser/').post(loginUser);
 
-router.route('/User/deleteUser/:id').delete(deleteUser);
+router.route('/User/deleteUser/:username').delete(deleteUser);
 
 router.route('/User/getUsers').get(getUsers);
 
