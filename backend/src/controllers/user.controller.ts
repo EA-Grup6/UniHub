@@ -18,7 +18,7 @@ export async function createUser (req: Request, res: Response){
     newUser.subjectsDone = '';
     newUser.subjectsRequested = '';
     newUser.recommendations = '';
-    newUser.isAdmin = isAdmin;
+    newUser.isAdmin = false;
     newUser.phone= '';
     var registeredUser = await User.findOne({username:newUser.username})
     try{
