@@ -20,9 +20,6 @@ export async function createUser (req: Request, res: Response){
     newUser.recommendations = '';
     newUser.isAdmin = isAdmin;
     newUser.phone= '';
-    if (username=='admin@admin'){
-        newUser.isAdmin=true;
-    }
     var registeredUser = await User.findOne({username:newUser.username})
     try{
         if(registeredUser != null){
