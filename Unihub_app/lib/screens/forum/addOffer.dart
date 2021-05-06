@@ -33,9 +33,16 @@ class AddOffer extends State<AddOfferScreen> {
   ];
   String valueTipo;
   List listTipo = [
-    "Clase",
-    "Ejercicios",
-    "Preparacion Examen",
+    "Class",
+    "Assignment",
+    "Training for an exam",
+  ];
+  String valueUniversity;
+  List listUniversity = [
+    "UPC, EETAC",
+    "UPC, ETSEIB",
+    "UPC, EEAAB",
+    "UPC, ETSETB",
   ];
 
   @override
@@ -88,6 +95,31 @@ class AddOffer extends State<AddOfferScreen> {
                                               FloatingLabelBehavior.always),
                                     ),
                                   ),
+                                  Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Choose the university:"),
+                                          DropdownButton(
+                                            value: valueUniversity,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                valueAsign = newValue;
+                                              });
+                                            },
+                                            items:
+                                                listUniversity.map((valueItem) {
+                                              return DropdownMenuItem(
+                                                value: valueItem,
+                                                child: Text(valueItem),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      )),
                                   Container(
                                       padding:
                                           EdgeInsets.fromLTRB(10, 10, 10, 10),

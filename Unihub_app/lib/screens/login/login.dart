@@ -120,7 +120,7 @@ class Login extends State<LoginScreen> {
                                                         _nameController.text,
                                                         _passwordController
                                                             .text);
-                                            print(response);
+                                            print(response.statusCode);
                                             if (response.statusCode == 200) {
                                               final SharedPreferences prefs =
                                                   await SharedPreferences

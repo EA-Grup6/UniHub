@@ -13,7 +13,7 @@ const schema = new Schema({
     recommendations: String,
     phone: String,
     isAdmin: Boolean,
-});
+}, {collection: 'User'});
 
 interface IUser extends Document {
     username: string;

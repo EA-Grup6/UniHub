@@ -16,7 +16,8 @@ class FeedPostSection extends StatelessWidget {
             border:
                 Border(bottom: BorderSide(color: Colors.grey[200], width: 1))),
         child: Container(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
             child: Row(
               children: [
                 Flexible(
@@ -36,7 +37,7 @@ class FeedPostSection extends StatelessWidget {
                         Align(
                             alignment: Alignment.centerLeft,
                             child: Container(
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: Text('Fullname of the User',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,

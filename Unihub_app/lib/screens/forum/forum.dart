@@ -14,6 +14,12 @@ class Forum extends State<ForumScreen> {
   final TextStyle _moneyController = TextStyle();
 
   @override
+  void initState() {
+    //Aquí se llama a la API cuando cargamos esta vista
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -80,6 +86,7 @@ class Forum extends State<ForumScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "btnAddOffer",
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).pushNamed('/addOffer');

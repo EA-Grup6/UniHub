@@ -28,6 +28,7 @@ class Homepage extends State<HomepageScreen> {
         bucket: bucket,
       )),
       floatingActionButton: FloatingActionButton(
+        heroTag: "btnOffers",
         child: Icon(Icons.menu_book_outlined),
         onPressed: () {
           setState(() {
