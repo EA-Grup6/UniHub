@@ -5,10 +5,13 @@ class ForumScreen extends StatefulWidget {
 }
 
 class Forum extends State<ForumScreen> {
+  Image _image;
   final TextStyle _titleController = TextStyle();
   final TextStyle _universityController = TextStyle();
   final TextStyle _usernameController = TextStyle();
   final TextStyle _descriptionController = TextStyle();
+  final TextStyle _statusController = TextStyle();
+  final TextStyle _moneyController = TextStyle();
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +26,61 @@ class Forum extends State<ForumScreen> {
                 })
           ],
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                padding: EdgeInsets.all(10),
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(),
-                    child: Form(
-                      child: Text('Hola'),
-                    )))));
+        body: ListView.separated(
+        padding: EdgeInsets.all(10),
+        separatorBuilder: (BuildContext context, int index) {
+          return Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              height: 0.5,
+              width: MediaQuery.of(context).size.width / 1.3,
+              child: Divider(),
+            ),
+          );
+        },
+        itemCount: 3, // numero de posts (request a la api y tal...),
+        itemBuilder: (BuildContext context, int index) {
+          // Map post = post[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage(
+                   'assets/images/unihubLogo.png'
+                ),
+                radius: 25,
+              ),
+              contentPadding: EdgeInsets.all(0),
+              title: Text('Doy clases de AERO'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('UPC, EETAC - Pol Casaña'),
+                  Text('Si quieres plantarle cara al Rojas, ven conmigo'),
+                  Row(
+                    children: <Widget>[
+                        Icon(
+                          Icons.recommend,
+                          color: Colors.blue,),
+                        Expanded(
+                          child: Text('6')
+                          ,),
+                        Icon(
+                            Icons.euro,
+                            color: Colors.green,
+                            ),
+                        Expanded(
+                          child: Text('10€/h')
+                          ,)
+                        ],
+                  ), 
+              ],
+          ),
+          onTap: (){}, //Ver perfil del usuario
+          ));
+        },
+      )
+    );
   }
 }
 
