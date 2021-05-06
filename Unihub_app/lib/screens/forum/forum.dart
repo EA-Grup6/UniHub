@@ -16,17 +16,17 @@ class Forum extends State<ForumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Academic offering"),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(context: context, delegate: DataSearch());
-                })
-          ],
-        ),
-        body: ListView.separated(
+      appBar: AppBar(
+        title: Text("Academic offering"),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
+              })
+        ],
+      ),
+      body: ListView.separated(
         padding: EdgeInsets.all(10),
         separatorBuilder: (BuildContext context, int index) {
           return Align(
@@ -42,44 +42,49 @@ class Forum extends State<ForumScreen> {
         itemBuilder: (BuildContext context, int index) {
           // Map post = post[index];
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage(
-                   'assets/images/unihubLogo.png'
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/unihubLogo.png'),
+                  radius: 25,
                 ),
-                radius: 25,
-              ),
-              contentPadding: EdgeInsets.all(0),
-              title: Text('Doy clases de AERO'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('UPC, EETAC - Pol Casaña'),
-                  Text('Si quieres plantarle cara al Rojas, ven conmigo'),
-                  Row(
-                    children: <Widget>[
+                contentPadding: EdgeInsets.all(0),
+                title: Text('Doy clases de AERO'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('UPC, EETAC - Pol Casaña'),
+                    Text('Si quieres plantarle cara al Rojas, ven conmigo'),
+                    Row(
+                      children: <Widget>[
                         Icon(
                           Icons.recommend,
-                          color: Colors.blue,),
+                          color: Colors.blue,
+                        ),
                         Expanded(
-                          child: Text('6')
-                          ,),
+                          child: Text('6'),
+                        ),
                         Icon(
-                            Icons.euro,
-                            color: Colors.green,
-                            ),
+                          Icons.euro,
+                          color: Colors.green,
+                        ),
                         Expanded(
-                          child: Text('10€/h')
-                          ,)
-                        ],
-                  ), 
-              ],
-          ),
-          onTap: (){}, //Ver perfil del usuario
-          ));
+                          child: Text('10€/h'),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                onTap: () {}, //Ver perfil del usuario
+              ));
         },
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed('/addOffer');
+        },
+      ),
     );
   }
 }
