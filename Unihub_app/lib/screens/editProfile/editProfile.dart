@@ -169,6 +169,7 @@ class EditProfile extends State<EditProfileScreen> {
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 child: TextFormField(
+                                  keyboardType: TextInputType.number,
                                   controller: _phoneController,
                                   decoration: InputDecoration(
                                       contentPadding:
