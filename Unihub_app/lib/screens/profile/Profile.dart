@@ -29,9 +29,8 @@ class Profile extends State<ProfileScreen> {
   @override
   void initState() {
     getValidationData().whenComplete(() async {
-      currentUser = UserApp.fromMap(jsonDecode(await EditProfileController()
-          .getProfile(finalUsername)
-          .whenComplete(() {})));
+      currentUser = UserApp.fromMap(
+          jsonDecode(await EditProfileController().getProfile(finalUsername)));
     });
     super.initState();
   }
@@ -114,7 +113,6 @@ class Profile extends State<ProfileScreen> {
                           ),
                           onPressed: () {
                             Navigator.of(context).pushNamed('/editProfile');
-                            this.initState();
                           },
                         ),
                         TextButton(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:unihub_app/screens/profile/Profile.dart';
-import 'package:unihub_app/screens/forum/forum.dart';
-
 import '../forum/forum.dart';
-import 'home.dart';
+import '../profile/profile.dart';
+import '../feed/feed.dart';
 
 class HomepageScreen extends StatefulWidget {
   Homepage createState() => Homepage();
@@ -12,14 +10,14 @@ class HomepageScreen extends StatefulWidget {
 class Homepage extends State<HomepageScreen> {
   int currentTab = 0;
   final List<Widget> screens = [
-    HomeScreen(),
+    FeedScreen(),
     //  Chat(),
     // Search()
     ProfileScreen()
   ];
   //
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = HomeScreen();
+  Widget currentScreen = FeedScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +52,7 @@ class Homepage extends State<HomepageScreen> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = HomeScreen();
+                        currentScreen = FeedScreen();
                         currentTab = 0;
                       });
                     },

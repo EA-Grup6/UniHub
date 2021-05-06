@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
 
-class HomeScreen extends StatefulWidget {
-  Home createState() => Home();
+class FeedScreen extends StatefulWidget {
+  Feed createState() => Feed();
 }
 
-class Home extends State<HomeScreen> {
+class Feed extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

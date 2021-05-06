@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:unihub_app/screens/profile/editingProfile.dart';
-import 'package:unihub_app/screens/splash/splash.dart';
+import 'screens/editProfile/editProfile.dart';
+import 'screens/splash/splash.dart';
 import 'screens/homepage/homepage.dart';
 import 'screens/login/login.dart';
 import 'screens/login/register.dart';
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       routes: {
         '/login': (BuildContext context) => LoginScreen(),
         '/register': (BuildContext context) => RegisterScreen(),
-        '/editProfile': (BuildContext context) => EditingProfileScreen(),
+        '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
       },
     );

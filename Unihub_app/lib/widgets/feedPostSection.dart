@@ -21,11 +21,14 @@ class FeedPostSection extends StatelessWidget {
               children: [
                 Flexible(
                     flex: 1,
-                    child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          child: Image.asset('assets/images/unihubLogo.png'),
-                        ))),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Image.asset('assets/images/unihubLogo.png'),
+                          )
+                        ])),
                 Flexible(
                     flex: 3,
                     child: Container(
@@ -37,6 +40,7 @@ class FeedPostSection extends StatelessWidget {
                               child: Text('Fullname of the User',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
                                   )),
                             )),
                         Align(

@@ -8,11 +8,11 @@ import 'package:unihub_app/models/user.dart';
 String finalUsername;
 UserApp currentUser;
 
-class EditingProfileScreen extends StatefulWidget {
-  EditingProfile createState() => EditingProfile();
+class EditProfileScreen extends StatefulWidget {
+  EditProfile createState() => EditProfile();
 }
 
-class EditingProfile extends State<EditingProfileScreen> {
+class EditProfile extends State<EditProfileScreen> {
   @override
   void initState() {
     getValidationData().whenComplete(() async {
