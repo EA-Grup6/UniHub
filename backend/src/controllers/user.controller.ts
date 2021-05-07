@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
+import University from '../models/University'
 
 export async function createUser (req: any, res: Response){
     const Btoken = req.headers['authorization'];
@@ -188,6 +189,32 @@ export async function getAdmin(req: any, res: Response) {
 export async function getUser(req: any, res: Response) {
     let username = req.params.username;
     let user = await User.findOne({username: username});
+    const Btoken = req.headers['authorization'];
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try{
+                    if(user!=null){
+                        return res.status(200).header('Content Type - application/json').send(user);
+                    } else {
+                        return res.status(201).send({message: "User not found"});
+                    }
+                } catch {
+                    return res.status(500).send({message: "Internal server error"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
+export async function getUniversities(req: any, res: Response){
+    let username = req.params.username;
+    let user = await University.find();
     const Btoken = req.headers['authorization'];
     if(typeof Btoken !== undefined){
         req.token = Btoken;

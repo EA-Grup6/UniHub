@@ -3,13 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = exports.helloWorld = void 0;
+exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-function helloWorld(req, res) {
-    return res.send('Hello World !!!');
-}
-exports.helloWorld = helloWorld;
+const University_1 = __importDefault(require("../models/University"));
 async function createUser(req, res) {
     const Btoken = req.headers['authorization'];
     let { username, password, isAdmin } = req.body;
@@ -26,6 +23,8 @@ async function createUser(req, res) {
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone = '';
+    newUser.following = [];
+    newUser.followers = [];
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
@@ -227,3 +226,33 @@ async function getUser(req, res) {
     }
 }
 exports.getUser = getUser;
+async function getUniversities(req, res) {
+    let username = req.params.username;
+    let user = await University_1.default.find();
+    const Btoken = req.headers['authorization'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    if (user != null) {
+                        return res.status(200).header('Content Type - application/json').send(user);
+                    }
+                    else {
+                        return res.status(201).send({ message: "User not found" });
+                    }
+                }
+                catch {
+                    return res.status(500).send({ message: "Internal server error" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.getUniversities = getUniversities;

@@ -100,7 +100,7 @@ export async function getFeed (req: any, res: Response){
 export async function getFeeds (req: any, res: Response){
     const Btoken = req.headers['authorization'];
     var following = req.body;
-    const feeds: FeedPublication[]=[];
+    const feeds: any[]=[];
     
 
     if(typeof Btoken !== undefined){

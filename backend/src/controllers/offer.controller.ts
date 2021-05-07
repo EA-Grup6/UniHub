@@ -3,7 +3,6 @@ import User from '../models/User'
 import Offer from '../models/offer'
 import FeedPublication from '../models/feedPublication'
 import jwt from 'jsonwebtoken'
-import offer from '../models/offer'
 
 export async function createOffer (req: any, res: Response){
     const Btoken = req.headers['authorization'];
@@ -16,7 +15,7 @@ export async function createOffer (req: any, res: Response){
             } else {
                 
                 let {username, title, content, publicationDate, university, subject, price, type} = req.body;
-                let newOffer = new offer;
+                let newOffer = new Offer();
                 newOffer.username= username;
                 newOffer.title =title;
                 newOffer.content= content;
@@ -101,7 +100,7 @@ export async function getOffer (req: any, res: Response){
 export async function getOffers (req: any, res: Response){
     const Btoken = req.headers['authorization'];
     var following = req.body;
-    const offers: Offer[]=[];
+    let offers: any[] = [];
     
 
     if(typeof Btoken !== undefined){
@@ -110,7 +109,6 @@ export async function getOffers (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-
                 try{
                     let cont= 0
                     while(cont<following.length){
@@ -121,12 +119,9 @@ export async function getOffers (req: any, res: Response){
                             while(cont2<offer.length){
                                 offers.push(offer[cont2])
                             }
-
                         }
                         cont++
                     }
-                    
-
                     if (offers.length !=0){
                         return res.status(200).header('Content Type - application/json').send(offers);
 
