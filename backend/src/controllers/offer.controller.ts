@@ -166,3 +166,31 @@ export async function updateOffer (req: any, res: Response){
     }
 
 }
+
+export async function updateLikesOffer (req: any, res: Response){
+    let{usernameLiking, _id} = req.body;
+    const Btoken = req.headers['authorization'];
+
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    const offer = await Offer.findById(_id);
+                    let liking = offer?.likes
+                    liking?.push(usernameLiking)
+                    await Offer.findByIdAndUpdate(_id, liking)
+                    return res.status(200).send({message: 'OfferLikes correctly updated'});
+                } catch {
+                    return res.status(201).send({message: "OfferLikes couldn't be updated"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+
+}

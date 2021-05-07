@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
 updateUser, getUser, getAdmin} from '../controllers/user.controller'
-import { getOffer, getOffers, updateOffer, deleteOffer, createOffer} from '../controllers/offer.controller'
-import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed } from '../controllers/feedPublication.controller'
+import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateLikesOffer} from '../controllers/offer.controller'
+import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed } from '../controllers/feedPublication.controller'
 
 const router = Router();
     
@@ -46,6 +46,12 @@ router.route('/User/getFeeds').post(getFeeds);
 router.route('/User/updateFeed').post(updateFeed);
 
 //Explore Feed
+
+//Likes & comments
+
+router.route('/User/Feeds/updateLikes').post(updateLikesFeed);
+
+router.route('/User/Offers/updateLikes').post(updateLikesOffer);
 
 
 //router.route('/User/loginUser/').put(loginUser); //Forgot password

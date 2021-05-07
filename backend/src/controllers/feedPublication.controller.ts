@@ -169,3 +169,31 @@ export async function updateFeed (req: any, res: Response){
 
 }
 
+export async function updateLikesFeed (req: any, res: Response){
+    let{usernameLiking, _id} = req.body;
+    const Btoken = req.headers['authorization'];
+
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    const feed = await FeedPublication.findById(_id);
+                    let liking = feed?.likes
+                    liking?.push(usernameLiking)
+                    await FeedPublication.findByIdAndUpdate(_id, liking)
+                    return res.status(200).send({message: 'FeedLikes correctly updated'});
+                } catch {
+                    return res.status(201).send({message: "FeedLikes couldn't be updated"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+
+}
+
