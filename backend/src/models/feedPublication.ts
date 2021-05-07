@@ -6,7 +6,7 @@ const schema = new Schema({
     content: String,
     comments: Array,
     likes: Array,
-});
+}, {collection: 'feedPublications'});
 
 interface IFeedPub extends Document {
     username: string;

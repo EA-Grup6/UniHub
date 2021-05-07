@@ -11,7 +11,7 @@ const schema = new Schema({
     type: String,
     comments: Array,
     likes: Array,
-});
+}, {collection: 'offers'});
 
 interface IOffer extends Document {
     username: string;
