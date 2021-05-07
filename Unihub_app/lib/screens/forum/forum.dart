@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/offerSection.dart';
+
 class ForumScreen extends StatefulWidget {
   Forum createState() => Forum();
 }
@@ -19,81 +21,50 @@ class Forum extends State<ForumScreen> {
     super.initState();
   }
 
+  List<String> listaContenidos = [
+    "Ofrezco clases de AERO",
+    "Quieres enfrentarte al Minimo 2 de EA? Habla conmigo!"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Academic offering"),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                showSearch(context: context, delegate: DataSearch());
-              })
-        ],
-      ),
-      body: ListView.separated(
-        padding: EdgeInsets.all(10),
-        separatorBuilder: (BuildContext context, int index) {
-          return Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              height: 0.5,
-              width: MediaQuery.of(context).size.width / 1.3,
-              child: Divider(),
-            ),
-          );
-        },
-        itemCount: 3, // numero de posts (request a la api y tal...),
-        itemBuilder: (BuildContext context, int index) {
-          // Map post = post[index];
-          return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/unihubLogo.png'),
-                  radius: 25,
-                ),
-                contentPadding: EdgeInsets.all(0),
-                title: Text('Doy clases de AERO'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('UPC, EETAC - Pol Casaña'),
-                    Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.'),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.recommend,
-                          color: Colors.blue,
-                        ),
-                        Expanded(
-                          child: Text('6'),
-                        ),
-                        Icon(
-                          Icons.euro,
-                          color: Colors.green,
-                        ),
-                        Expanded(
-                          child: Text('10€/h'),
-                        )
+        appBar: AppBar(
+          title: Text("Academic offering"),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showSearch(context: context, delegate: DataSearch());
+                })
+          ],
+        ),
+        body: SafeArea(
+            child: SingleChildScrollView(
+                padding: EdgeInsets.all(10),
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (String contenido in listaContenidos)
+                          new OfferSection(
+                              "Fullname of the user",
+                              "UPC, EETAC",
+                              "AERO",
+                              "Titulo de las ofertas",
+                              contenido,
+                              ["", ""],
+                              "10"),
                       ],
-                    ),
-                  ],
-                ),
-                onTap: () {}, //Ver perfil del usuario
-              ));
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "btnAddOffer",
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed('/addOffer');
-        },
-      ),
-    );
+                    )))),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "btnAddOffer",
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed('/addOffer');
+          },
+        ));
   }
 }
 

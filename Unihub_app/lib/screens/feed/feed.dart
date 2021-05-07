@@ -6,6 +6,14 @@ class FeedScreen extends StatefulWidget {
 }
 
 class Feed extends State<FeedScreen> {
+  List<String> listaContenidos = [
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.',
+    'Esto es una prueba de una sola linea',
+    'Esto es relleno',
+    'Esto es mas relleno',
+    'Estoy hasta los cojones del relleno'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,18 +28,9 @@ class Feed extends State<FeedScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FeedPostSection(
-                            "Esto es una prueba del límite de lineas",
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.',
-                            ["", ""],
-                            ["", ""]),
-                        FeedPostSection(
-                            "Esto es una prueba de una sola linea",
-                            "Aquí iría el contenido del post",
-                            ["", ""],
-                            ["", ""]),
-                        FeedPostSection("Fullname of the user",
-                            "Esto es para hacer relleno", ["", ""], ["", ""]),
+                        for (String contenido in listaContenidos)
+                          new FeedPostSection("Fullname of the user", contenido,
+                              ["", ""], ["", ""]),
                       ],
                     )))),
         floatingActionButton: FloatingActionButton(

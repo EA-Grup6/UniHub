@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../forum/forum.dart';
 import '../profile/profile.dart';
@@ -38,126 +40,67 @@ class Homepage extends State<HomepageScreen> {
           });
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
         child: Container(
-          height: 60,
+          height: 50,
+          width: MediaQuery.of(context).size.width -
+              MediaQuery.of(context).size.width * 0.2,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = FeedScreen();
-                        currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home,
-                          color:
-                              currentTab == 0 ? Colors.blue : Colors.grey[300],
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                            color: currentTab == 0
-                                ? Colors.blue
-                                : Colors.grey[300],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        //currentScreen =0;
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.search,
-                          color:
-                              currentTab == 1 ? Colors.blue : Colors.grey[300],
-                        ),
-                        Text(
-                          "Search",
-                          style: TextStyle(
-                            color: currentTab == 1
-                                ? Colors.blue
-                                : Colors.grey[300],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                MaterialButton(
-                  minWidth: 40,
+            children: [
+              MaterialButton(
+                  minWidth: 50,
+                  onPressed: () {
+                    setState(() {
+                      currentScreen = FeedScreen();
+                      currentTab = 0;
+                    });
+                  },
+                  child: Icon(
+                    Icons.home_outlined,
+                    color: currentTab == 0 ? Colors.blue : Colors.grey[400],
+                  )),
+              MaterialButton(
+                  minWidth: 50,
+                  onPressed: () {
+                    setState(() {
+                      //currentScreen =0;
+                      currentTab = 1;
+                    });
+                  },
+                  child: Icon(
+                    Icons.search,
+                    color: currentTab == 1 ? Colors.blue : Colors.grey[400],
+                  )),
+              MaterialButton(
+                  minWidth: 50,
                   onPressed: () {
                     setState(() {
                       //currentScreen = ;
                       currentTab = 2;
                     });
                   },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.chat_bubble_outline,
-                        color: currentTab == 2 ? Colors.blue : Colors.grey[300],
-                      ),
-                      Text(
-                        "Chat",
-                        style: TextStyle(
-                          color:
-                              currentTab == 2 ? Colors.blue : Colors.grey[300],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                MaterialButton(
-                  minWidth: 40,
+                  child: Icon(
+                    Icons.chat_bubble_outline,
+                    color: currentTab == 2 ? Colors.blue : Colors.grey[400],
+                  )),
+              MaterialButton(
+                  minWidth: 50,
                   onPressed: () {
                     setState(() {
                       currentScreen = ProfileScreen();
                       currentTab = 3;
                     });
                   },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.person_outlined,
-                        color: currentTab == 3 ? Colors.blue : Colors.grey[300],
-                      ),
-                      Text(
-                        "Profile",
-                        style: TextStyle(
-                          color:
-                              currentTab == 3 ? Colors.blue : Colors.grey[300],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ])
+                  child: Icon(
+                    Icons.person_outlined,
+                    color: currentTab == 3 ? Colors.blue : Colors.grey[400],
+                  ))
             ],
           ),
         ),
