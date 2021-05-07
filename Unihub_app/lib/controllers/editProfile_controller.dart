@@ -17,13 +17,13 @@ class EditProfileController {
     print('Envio este usuario: ' + json.toString());
     final http.Response response = await _helper.post('/User/updateUser', json);
     print("Estoy en response: " + response.body);
-    return response.body;
+    return response;
   }
 
   Future<dynamic> deleteProfile(String username) async {
     final http.Response response =
         await _helper.delete('/User/deleteUser/$username');
     print("Response: " + response.body);
-    return response.statusCode;
+    return response;
   }
 }
