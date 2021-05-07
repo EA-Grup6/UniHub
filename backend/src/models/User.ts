@@ -13,6 +13,8 @@ const schema = new Schema({
     recommendations: String,
     phone: String,
     isAdmin: Boolean,
+    followers: Array,
+    following: Array
 }, {collection: 'users'});
 
 interface IUser extends Document {
@@ -28,6 +30,8 @@ interface IUser extends Document {
     recommendations: string,
     isAdmin: Boolean;
     phone: string,
+    followers: Array<string>;
+    following: Array<string>;
 }
 
 export default model<IUser>('User',schema);

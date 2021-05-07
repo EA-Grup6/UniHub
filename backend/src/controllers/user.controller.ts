@@ -2,9 +2,6 @@ import {Request, Response} from 'express'
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
 
-export function helloWorld(req: Request, res: Response){
-    return res.send('Hello World !!!')
-}
 export async function createUser (req: any, res: Response){
     const Btoken = req.headers['authorization'];
 
@@ -22,6 +19,8 @@ export async function createUser (req: any, res: Response){
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone= '';
+    newUser.following= [];
+    newUser.followers=[];
     var registeredUser = await User.findOne({username:newUser.username});
     try{
         if(registeredUser != null){
