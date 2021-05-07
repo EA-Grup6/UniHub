@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:ui';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
 String finalUsername;
@@ -15,40 +15,27 @@ class ProfileScreen extends StatefulWidget {
   Profile createState() => Profile();
 }
 
-createToast(String message, Color color) {
-  return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIosWeb: 2,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0);
-}
-
 class Profile extends State<ProfileScreen> {
   @override
   void initState() {
-    getValidationData().whenComplete(() async {
-      currentUser = UserApp.fromMap(
-          jsonDecode(await EditProfileController().getProfile(finalUsername)));
-    });
+    getDataFromUser();
     super.initState();
   }
 
-  Future getValidationData() async {
+  Future<UserApp> getDataFromUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var username = preferences.getString('username');
-    setState(() {
-      finalUsername = username;
-    });
+    currentUser = UserApp.fromMap(
+        jsonDecode(await EditProfileController().getProfile(username)));
+    return currentUser;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getValidationData(),
-        builder: (context, futureUser) {
-          if (futureUser.data != null) {
+        future: getDataFromUser(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return Scaffold(
                 body: SafeArea(
                     child: Container(
@@ -162,8 +149,15 @@ class Profile extends State<ProfileScreen> {
                               ])
                         ]))));
           } else {
-            getValidationData();
-            return CircularProgressIndicator();
+            getDataFromUser();
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: CircularProgressIndicator(),
+                  )
+                ]);
           }
         });
   }
@@ -177,8 +171,9 @@ showAlertDialog(BuildContext context) {
     onPressed: () async {
       // Delete account checking if password is correct
       if (passwordController.text == currentUser.password) {
-        var status = await EditProfileController().deleteProfile(finalUsername);
-        if (status == 200) {
+        http.Response response =
+            await EditProfileController().deleteProfile(finalUsername);
+        if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
           createToast("Account correctly deleted", Colors.green);

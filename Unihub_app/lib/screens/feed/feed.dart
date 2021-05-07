@@ -11,15 +11,6 @@ class Feed extends State<FeedScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Feed"),
-          actions: <Widget>[
-            //Hay que poder hacer posts
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  //Lanza una alert para hacer el post;
-                  showAlertDialog(context);
-                })
-          ],
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -36,7 +27,14 @@ class Feed extends State<FeedScreen> {
                         FeedPostSection(
                             "_username", "_content", ["", ""], ["", ""]),
                       ],
-                    )))));
+                    )))),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "btnAddFeed",
+          child: Icon(Icons.add),
+          onPressed: () {
+            showAlertDialog(context);
+          },
+        ));
   }
 
   showAlertDialog(BuildContext context) {

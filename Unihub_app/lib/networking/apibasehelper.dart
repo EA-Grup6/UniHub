@@ -10,7 +10,9 @@ class ApiBaseHelper {
 
   Future<dynamic> post(String url, dynamic content) async {
     print('Api Post, url $url');
-    Map<String, String> customHeaders = {'content-type': 'application/json'};
+    Map<String, String> customHeaders = {
+      'content-type': 'application/json',
+    };
     var bodyF = jsonEncode(content);
     var finalResponse;
     try {

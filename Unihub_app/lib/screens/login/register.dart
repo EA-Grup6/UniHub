@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unihub_app/controllers/register_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:unihub_app/screens/login/login.dart';
 
 class RegisterScreen extends StatefulWidget {
   Register createState() => Register();
-}
-
-createToast(String message, Color color) {
-  return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIosWeb: 2,
-      backgroundColor: color,
-      textColor: Colors.white,
-      fontSize: 16.0);
 }
 
 class Register extends State<RegisterScreen> {

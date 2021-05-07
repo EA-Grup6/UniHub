@@ -1,9 +1,10 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/login/login.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -341,9 +342,17 @@ class EditProfile extends State<EditProfileScreen> {
                                           _subjectsaskingController.text,
                                           _phoneController.text,
                                         );
-                                        EditProfileController()
-                                            .updateProfile(updatedUser);
-                                        Navigator.of(context).pop();
+                                        http.Response response =
+                                            await EditProfileController()
+                                                .updateProfile(updatedUser);
+                                        if (response.statusCode == 200) {
+                                          createToast("User correctly updated",
+                                              Colors.green);
+                                          Navigator.of(context).pop();
+                                        } else {
+                                          createToast(
+                                              response.body, Colors.red);
+                                        }
                                       }
                                     },
                                   ),
