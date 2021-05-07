@@ -114,14 +114,14 @@ class Login extends State<LoginScreen> {
                                               .validate()) {
                                             print(_nameController.text);
                                             print(_passwordController.text);
-                                            final http.Response response =
+                                            final int response =
                                                 await LoginController()
                                                     .loginUser(
                                                         _nameController.text,
                                                         _passwordController
                                                             .text);
-                                            print(response.statusCode);
-                                            if (response.statusCode == 200) {
+                                            print(response);
+                                            if (response == 200) {
                                               final SharedPreferences prefs =
                                                   await SharedPreferences
                                                       .getInstance();
@@ -134,13 +134,11 @@ class Login extends State<LoginScreen> {
                                                       '/homepage',
                                                       (Route<dynamic> route) =>
                                                           false);
-                                            } else if (response.statusCode ==
-                                                201) {
+                                            } else if (response == 201) {
                                               createToast(
                                                   "Wrong password", Colors.red);
                                             } else {
-                                              createToast(
-                                                  response.body, Colors.red);
+                                              createToast('Error', Colors.red);
                                             }
                                           }
                                         },

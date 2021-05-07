@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/models/user.dart';
 
 import '../networking/apibasehelper.dart';
@@ -7,6 +8,9 @@ ApiBaseHelper _helper = ApiBaseHelper();
 
 class EditProfileController {
   Future<dynamic> getProfile(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('jwt');
+    var customHeader = {'authorization': token};
     final http.Response response = await _helper.get('/User/getUser/$username');
     print("Response: " + response.body);
     return response.body;

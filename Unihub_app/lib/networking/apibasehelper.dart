@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:unihub_app/networking/api_exceptions.dart';
 import 'dart:async';
@@ -12,6 +13,7 @@ class ApiBaseHelper {
     print('Api Post, url $url');
     Map<String, String> customHeaders = {
       'content-type': 'application/json',
+      'authorization': await getToken(),
     };
     var bodyF = jsonEncode(content);
     var finalResponse;
@@ -30,7 +32,10 @@ class ApiBaseHelper {
 
   Future<dynamic> get(String url) async {
     print('Api get, url $url');
-    Map<String, String> customHeaders = {'content-type': 'application/json'};
+    Map<String, String> customHeaders = {
+      'content-type': 'application/json',
+      'authorization': await getToken(),
+    };
     var finalResponse;
     try {
       final response =
@@ -48,7 +53,11 @@ class ApiBaseHelper {
     print('Api delete, url $url');
     var finalResponse;
     try {
-      final response = await http.delete(Uri.parse(_baseUrl + url));
+      Map<String, String> customHeaders = {
+        'authorization': await getToken(),
+      };
+      final response =
+          await http.delete(Uri.parse(_baseUrl + url), headers: customHeaders);
       finalResponse = response;
     } on SocketException {
       print('No net');
@@ -56,6 +65,15 @@ class ApiBaseHelper {
     }
     print('api delete received!');
     return finalResponse;
+  }
+
+  Future<String> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      return prefs.getString('jwt');
+    } catch (exception) {
+      return null;
+    }
   }
 
   dynamic _returnResponse(http.Response response) {
