@@ -69,8 +69,9 @@ async function loginUser(req, res) {
                 if (registeredUser.get('isAdmin')) {
                     return res.status(202).send(token);
                 }
-                else
+                else {
                     return res.status(200).send(token);
+                }
             }
             else {
                 return res.status(201).send('Wrong password');

@@ -60,7 +60,8 @@ class Forum extends State<ForumScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('UPC, EETAC - Pol Casaña'),
-                    Text('Si quieres plantarle cara al Rojas, ven conmigo'),
+                    Text(
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.'),
                     Row(
                       children: <Widget>[
                         Icon(
