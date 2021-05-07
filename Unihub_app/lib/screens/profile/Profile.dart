@@ -8,7 +8,6 @@ import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
-String finalUsername;
 UserApp currentUser;
 
 class ProfileScreen extends StatefulWidget {
@@ -37,6 +36,26 @@ class Profile extends State<ProfileScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
+                appBar: AppBar(
+                  title: Text("Your profile"),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.brush_rounded),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/editProfile');
+                        }),
+                    IconButton(
+                        icon: Icon(Icons.settings),
+                        onPressed: () {
+                          //Nos lleva a settings
+                        }),
+                    IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+                          logOut(context);
+                        })
+                  ],
+                ),
                 body: SafeArea(
                     child: Container(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -95,7 +114,7 @@ class Profile extends State<ProfileScreen> {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                TextButton(
+                                /*TextButton(
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
@@ -123,19 +142,15 @@ class Profile extends State<ProfileScreen> {
                                         fontSize: 20, color: Colors.white),
                                   ),
                                   onPressed: () async {
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.clear();
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/login',
-                                            (Route<dynamic> route) => false);
+                                    logOut(context);
                                   },
                                 ),
+                                */
                                 TextButton(
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                            Colors.blue),
+                                            Colors.red),
                                   ),
                                   child: Text(
                                     'Delete your account',
@@ -161,6 +176,13 @@ class Profile extends State<ProfileScreen> {
           }
         });
   }
+
+  logOut(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+  }
 }
 
 showAlertDialog(BuildContext context) {
@@ -171,8 +193,10 @@ showAlertDialog(BuildContext context) {
     onPressed: () async {
       // Delete account checking if password is correct
       if (passwordController.text == currentUser.password) {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        var username = preferences.getString('username');
         http.Response response =
-            await EditProfileController().deleteProfile(finalUsername);
+            await EditProfileController().deleteProfile(username);
         if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
