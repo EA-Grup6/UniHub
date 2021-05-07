@@ -27,30 +27,17 @@ async function createUser(req, res) {
     newUser.isAdmin = false;
     newUser.phone = '';
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
-    if (typeof Btoken !== undefined) {
-        req.token = Btoken;
-        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
-            if (error) {
-                return res.status(205).send({ message: 'Authorization error' });
-            }
-            else {
-                try {
-                    if (registeredUser != null) {
-                        return res.status(201).send({ message: "User already exists" });
-                    }
-                    else {
-                        let result = await newUser.save();
-                        return res.status(200).send(result);
-                    }
-                }
-                catch {
-                    return res.status(500).send({ message: "Internal server error" });
-                }
-            }
-        });
+    try {
+        if (registeredUser != null) {
+            return res.status(201).send({ message: "User already exists" });
+        }
+        else {
+            let result = await newUser.save();
+            return res.status(200).send(result);
+        }
     }
-    else {
-        return res.status(204).send({ message: 'Unauthorized' });
+    catch {
+        return res.status(500).send({ message: "Internal server error" });
     }
 }
 exports.createUser = createUser;
@@ -69,9 +56,8 @@ async function loginUser(req, res) {
                 if (registeredUser.get('isAdmin')) {
                     return res.status(202).send(token);
                 }
-                else {
+                else
                     return res.status(200).send(token);
-                }
             }
             else {
                 return res.status(201).send('Wrong password');
