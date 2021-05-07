@@ -30,10 +30,11 @@ class Homepage extends State<HomepageScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: "btnOffers",
         child: Icon(Icons.menu_book_outlined),
+        elevation: currentTab == 4 ? 15.0 : 0.0,
         onPressed: () {
           setState(() {
             currentScreen = ForumScreen();
-            currentTab = 0;
+            currentTab = 4;
           });
         },
       ),
@@ -62,11 +63,16 @@ class Homepage extends State<HomepageScreen> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: Colors.blue,
+                          color:
+                              currentTab == 0 ? Colors.blue : Colors.grey[300],
                         ),
                         Text(
                           "Home",
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(
+                            color: currentTab == 0
+                                ? Colors.blue
+                                : Colors.grey[300],
+                          ),
                         ),
                       ],
                     ),
@@ -75,8 +81,8 @@ class Homepage extends State<HomepageScreen> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        //currentScreen = ;
-                        //CurrentTab=0;
+                        //currentScreen =0;
+                        currentTab = 1;
                       });
                     },
                     child: Column(
@@ -84,11 +90,16 @@ class Homepage extends State<HomepageScreen> {
                       children: [
                         Icon(
                           Icons.search,
-                          color: Colors.blue,
+                          color:
+                              currentTab == 1 ? Colors.blue : Colors.grey[300],
                         ),
                         Text(
                           "Search",
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(
+                            color: currentTab == 1
+                                ? Colors.blue
+                                : Colors.grey[300],
+                          ),
                         ),
                       ],
                     ),
@@ -101,19 +112,22 @@ class Homepage extends State<HomepageScreen> {
                   onPressed: () {
                     setState(() {
                       //currentScreen = ;
-                      //CurrentTab=0;
+                      currentTab = 2;
                     });
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.chat_bubble_outline_outlined,
-                        color: Colors.blue,
+                        Icons.chat_bubble_outline,
+                        color: currentTab == 2 ? Colors.blue : Colors.grey[300],
                       ),
                       Text(
                         "Chat",
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color:
+                              currentTab == 2 ? Colors.blue : Colors.grey[300],
+                        ),
                       ),
                     ],
                   ),
@@ -123,7 +137,7 @@ class Homepage extends State<HomepageScreen> {
                   onPressed: () {
                     setState(() {
                       currentScreen = ProfileScreen();
-                      currentTab = 1;
+                      currentTab = 3;
                     });
                   },
                   child: Column(
@@ -131,11 +145,14 @@ class Homepage extends State<HomepageScreen> {
                     children: [
                       Icon(
                         Icons.person_outlined,
-                        color: Colors.blue,
+                        color: currentTab == 3 ? Colors.blue : Colors.grey[300],
                       ),
                       Text(
                         "Profile",
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color:
+                              currentTab == 3 ? Colors.blue : Colors.grey[300],
+                        ),
                       ),
                     ],
                   ),
