@@ -21,11 +21,17 @@ class Feed extends State<FeedScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FeedPostSection(
-                            "_username", "_content", ["", ""], ["", ""]),
+                            "Esto es una prueba del límite de lineas",
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.',
+                            ["", ""],
+                            ["", ""]),
                         FeedPostSection(
-                            "_username", "_content", ["", ""], ["", ""]),
-                        FeedPostSection(
-                            "_username", "_content", ["", ""], ["", ""]),
+                            "Esto es una prueba de una sola linea",
+                            "Aquí iría el contenido del post",
+                            ["", ""],
+                            ["", ""]),
+                        FeedPostSection("Fullname of the user",
+                            "Esto es para hacer relleno", ["", ""], ["", ""]),
                       ],
                     )))),
         floatingActionButton: FloatingActionButton(

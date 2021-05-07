@@ -22,29 +22,17 @@ export async function createUser (req: any, res: Response){
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone= '';
-    var registeredUser = await User.findOne({username:newUser.username})
-    if(typeof Btoken !== undefined){
-        req.token = Btoken;
-        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
-            if(error){
-                return res.status(205).send({message: 'Authorization error'});
-            } else {
-                try{
-                    if(registeredUser != null){
-                        return res.status(201).send({message: "User already exists"});
-                    } else {
-                        let result = await newUser.save();
-                        return res.status(200).send(result);
-                    }
-                } catch {
-                    return res.status(500).send({message: "Internal server error"});
-                }
-            }
-        });
-    } else {
-        return res.status(204).send({message: 'Unauthorized'});
+    var registeredUser = await User.findOne({username:newUser.username});
+    try{
+        if(registeredUser != null){
+            return res.status(201).send({message: "User already exists"});
+        } else {
+            let result = await newUser.save();
+            return res.status(200).send(result);
+        }
+    } catch {
+        return res.status(500).send({message: "Internal server error"});
     }
-
 }
 
 export async function loginUser (req: Request, res: Response){

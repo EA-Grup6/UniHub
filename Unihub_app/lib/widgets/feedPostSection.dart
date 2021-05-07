@@ -12,13 +12,61 @@ class FeedPostSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: Colors.grey[200], width: 1))),
+      decoration: BoxDecoration(
+          border:
+              Border(bottom: BorderSide(color: Colors.grey[200], width: 1))),
+      padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+      child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/unihubLogo.png'),
+            radius: 25,
+          ),
+          /*onPressed: () {
+                //Te tiene que llevar al perfil del usuario
+              }),*/
+          contentPadding: EdgeInsets.all(0),
+          title: Text(this._username,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              )),
+          subtitle:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              child: Text(this._content),
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.favorite_outline_rounded),
+                      alignment: Alignment.center,
+                      onPressed: () {
+                        //Tiene que añadir tu _id a la lista de likes del post
+                      }),
+                  IconButton(
+                      icon: Icon(Icons.messenger_outline_rounded),
+                      alignment: Alignment.center,
+                      onPressed: () {
+                        //Te tiene que llevar a los comentarios
+                      }),
+                  IconButton(
+                      icon: Icon(Icons.share_outlined),
+                      alignment: Alignment.center,
+                      onPressed: () {
+                        //Te tiene que llevar al dialogo para compartir el
+                      })
+                ])
+          ])),
+    );
+  }
+}
+/*
         child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
             child: Row(
+              
               children: [
                 Flexible(
                     flex: 1,
@@ -72,7 +120,4 @@ class FeedPostSection extends StatelessWidget {
                                 ]))
                       ]),
                     ))
-              ],
-            )));
-  }
-}
+              ],*/
