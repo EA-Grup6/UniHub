@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:unihub_app/screens/forum/addOffer.dart';
+import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
 import 'screens/splash/splash.dart';
 import 'screens/homepage/homepage.dart';
 import 'screens/login/login.dart';
-import 'screens/login/register.dart';
+import 'screens/register/register.dart';
 
 class App extends StatelessWidget {
   @override
