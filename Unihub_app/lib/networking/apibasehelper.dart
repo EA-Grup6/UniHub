@@ -7,7 +7,7 @@ import 'dart:async';
 import 'api_exceptions.dart';
 
 class ApiBaseHelper {
-  final String _baseUrl = "http://10.0.2.2:4000";
+  final String _baseUrl = "http://127.0.0.1:4000";
 
   Future<dynamic> post(String url, dynamic content) async {
     print('Api Post, url $url');
