@@ -8,6 +8,7 @@ import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/login/login.dart';
+import 'package:chips_choice/chips_choice.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -94,13 +95,14 @@ class EditProfile extends State<EditProfileScreen> {
     return degreesNamesList;
   }
 
-  Future getSubjects(String degreeParam) async {
+  Future<List<String>> getSubjects(String degreeParam) async {
     subjectsList = [];
     http.Response response =
         await EditProfileController().getDegree(degreeParam);
     Degree degree = Degree.fromMap(jsonDecode(response.body));
     subjectsList = new List<String>.from(degree.subjects);
     print(subjectsList);
+    return subjectsList;
   }
 
   //Campos que ya está rellenos autocompletar!
@@ -119,7 +121,8 @@ class EditProfile extends State<EditProfileScreen> {
   String universitySelected;
   String schoolSelected;
   String degreeSelected;
-  String subjectsSelected;
+  List<String> subjectsAskingSelected;
+  List<String> subjectsDoneSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -319,6 +322,29 @@ class EditProfile extends State<EditProfileScreen> {
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
+                              ),
+                              FutureBuilder<List<String>>(
+                                future: getSubjects(degreeSelected),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Container(
+                                        child: Column(children: [
+                                      Text('Subjects asking for'),
+                                      ChipsChoice<String>.multiple(
+                                          wrapped: false,
+                                          value: subjectsAskingSelected,
+                                          onChanged: (val) => setState(() =>
+                                              subjectsAskingSelected = val),
+                                          choiceItems:
+                                              C2Choice.listFrom<String, String>(
+                                                  source: subjectsList,
+                                                  value: (i, v) => v,
+                                                  label: (i, v) => v)),
+                                    ]));
+                                  } else {
+                                    return Container();
+                                  }
+                                },
                               ),
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),

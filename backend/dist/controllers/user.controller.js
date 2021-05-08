@@ -289,7 +289,9 @@ async function getDegrees(req, res) {
 exports.getDegrees = getDegrees;
 async function getSubjects(req, res) {
     let degreeParam = req.params.degree;
+    console.log(degreeParam);
     let degree = await Degree_1.default.findOne({ name: degreeParam });
+    console.log(degree === null || degree === void 0 ? void 0 : degree.toJSON.toString);
     const Btoken = req.headers['authorization'];
     if (typeof Btoken !== undefined) {
         req.token = Btoken;

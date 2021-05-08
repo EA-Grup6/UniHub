@@ -52,7 +52,7 @@ router.route('/Data/getUniversities').get(getUniversities);
 
 router.route('/Data/getDegrees/:school').get(getDegrees);
 
-router.route('/Data/getDegrees/:degree').get(getSubjects);
+router.route('/Data/getSubjects/:degree').get(getSubjects);
 
 //Explore Feed
 
