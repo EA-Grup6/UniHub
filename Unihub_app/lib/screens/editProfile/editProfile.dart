@@ -82,7 +82,7 @@ class EditProfile extends State<EditProfileScreen> {
     print(schoolsNamesList);
   }
 
-  Future getDegrees(String schoolParam) async {
+  Future<List<String>> getDegrees(String schoolParam) async {
     degreesList = [];
     degreesNamesList = [];
     subjectsList = [];
@@ -91,6 +91,7 @@ class EditProfile extends State<EditProfileScreen> {
     Faculty school = Faculty.fromMap(jsonDecode(response.body));
     degreesNamesList = new List<String>.from(school.degrees);
     print(degreesNamesList);
+    return degreesNamesList;
   }
 
   Future getSubjects(String degreeParam) async {
@@ -278,29 +279,35 @@ class EditProfile extends State<EditProfileScreen> {
                                     setState(() {
                                       schoolSelected = e;
                                     });
-                                    await getDegrees(e);
                                   },
                                 ),
                               ),
-                              Container(
-                                child: new DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: degreeSelected,
-                                  hint: Text('Degree'),
-                                  items: degreesNamesList.map((String e) {
-                                    return DropdownMenuItem<String>(
-                                      value: e,
-                                      child: Text(e),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String e) async {
-                                    setState(() {
-                                      schoolSelected = e;
-                                    });
-                                    await getSubjects(e);
-                                  },
-                                ),
-                              ),
+                              FutureBuilder<List<String>>(
+                                  future: getDegrees(schoolSelected),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                        child: new DropdownButton<String>(
+                                          isExpanded: true,
+                                          value: degreeSelected,
+                                          hint: Text('Degree'),
+                                          items: snapshot.data.map((String e) {
+                                            return DropdownMenuItem<String>(
+                                              value: e,
+                                              child: Text(e),
+                                            );
+                                          }).toList(),
+                                          onChanged: (String e) async {
+                                            setState(() {
+                                              degreeSelected = e;
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 child: TextFormField(
