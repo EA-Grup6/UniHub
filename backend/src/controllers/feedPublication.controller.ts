@@ -117,6 +117,7 @@ export async function getFeeds (req: any, res: Response){
                             let cont2= 0
                             while(cont2<feed.length){
                                 feeds.push(feed[cont2])
+                                cont2++
                             }
 
                         }
