@@ -1,9 +1,10 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin} from '../controllers/user.controller'
-import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateLikesOffer, updateBuys} from '../controllers/offer.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects} from '../controllers/user.controller'
+import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed } from '../controllers/feedPublication.controller'
-import { updateLikesComment, updateComment, getComments, createComment, deleteComment} from '../controllers/comments.controller'
+import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
+
 const router = Router();
     
 
@@ -24,26 +25,34 @@ router.route('User/getAdmin/:id').get(getAdmin);
 router.route('/User/updateUser').post(updateUser);
 
 //Offer Crud
-router.route('/User/newOffer').post(createOffer);
+router.route('/Offer/newOffer').post(createOffer);
 
-router.route('/User/deleteOffer/:id').delete(deleteOffer);
+router.route('/Offer/deleteOffer/:id').delete(deleteOffer);
 
-router.route('/User/getOffer/:username').get(getOffer);
+router.route('/Offer/getOffer/:username').get(getOffer);
 
-router.route('/User/getOffers/').post(getOffers);
+router.route('/Offer/getOffers/').post(getOffers);
 
-router.route('/User/updateOffer').post(updateOffer);
+router.route('/Offer/updateOffer').post(updateOffer);
 
 //Feed Crud
-router.route('/User/newFeed').post(createFeed);
+router.route('/Feed/newFeed').post(createFeed);
 
-router.route('/User/deleteFeed/:id').delete(deleteFeed);
+router.route('/Feed/deleteFeed/:id').delete(deleteFeed);
 
-router.route('/User/getFeed/:username').get(getFeed);
+router.route('/Feed/getFeed/:username').get(getFeed);
 
-router.route('/User/getFeeds').post(getFeeds);
+router.route('/Feed/getFeeds').post(getFeeds);
 
-router.route('/User/updateFeed').post(updateFeed);
+router.route('/Feed/updateFeed').post(updateFeed);
+
+//Get Universities/Faculties/Degrees/Subjects
+
+router.route('/Data/getUniversities').get(getUniversities);
+
+router.route('/Data/getDegrees/:school').get(getDegrees);
+
+router.route('/Data/getDegrees/:degree').get(getSubjects);
 
 //Explore Feed
 

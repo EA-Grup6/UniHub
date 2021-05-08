@@ -3,11 +3,21 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/models/Faculty.dart';
+import 'package:unihub_app/models/degree.dart';
+import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/login/login.dart';
 
 String finalUsername;
 UserApp currentUser;
+List<University> universitiesList = [];
+List<Faculty> schoolsList = [];
+List<Degree> degreesList = [];
+List<String> subjectsList = [];
+List<String> universitiesNamesList = [];
+List<String> schoolsNamesList = [];
+List<String> degreesNamesList = [];
 
 class EditProfileScreen extends StatefulWidget {
   EditProfile createState() => EditProfile();
@@ -19,6 +29,7 @@ class EditProfile extends State<EditProfileScreen> {
     getValidationData().whenComplete(() async {
       currentUser = UserApp.fromMap(
           jsonDecode(await EditProfileController().getProfile(finalUsername)));
+      getUniversities();
       _nameController.text = currentUser.fullname;
       _descriptionController.text = currentUser.description;
       _universityController.text = currentUser.university;
@@ -43,6 +54,54 @@ class EditProfile extends State<EditProfileScreen> {
     });
   }
 
+  Future getUniversities() async {
+    universitiesList = [];
+    universitiesNamesList = [];
+    schoolsNamesList = [];
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    http.Response response = await EditProfileController().getUniversities();
+    for (var university in jsonDecode(response.body)) {
+      universitiesList.add(University.fromMap(university));
+      universitiesNamesList.add(University.fromMap(university).name);
+      print(universitiesNamesList);
+    }
+  }
+
+  Future getSchools(String uniName) async {
+    schoolsNamesList = [];
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    for (var university in universitiesList) {
+      if (university.name == uniName) {
+        schoolsNamesList = new List<String>.from(university.schools);
+      }
+    }
+    print(schoolsNamesList);
+  }
+
+  Future getDegrees(String schoolParam) async {
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    http.Response response =
+        await EditProfileController().getSchool(schoolParam);
+    Faculty school = Faculty.fromMap(jsonDecode(response.body));
+    degreesNamesList = new List<String>.from(school.degrees);
+    print(degreesNamesList);
+  }
+
+  Future getSubjects(String degreeParam) async {
+    subjectsList = [];
+    http.Response response =
+        await EditProfileController().getDegree(degreeParam);
+    Degree degree = Degree.fromMap(jsonDecode(response.body));
+    subjectsList = new List<String>.from(degree.subjects);
+    print(subjectsList);
+  }
+
   //Campos que ya está rellenos autocompletar!
   //Universidad, grado, rol, asignaturas (hechas y solicitadas) son dropdown menus!
   final TextEditingController _nameController = TextEditingController();
@@ -56,6 +115,11 @@ class EditProfile extends State<EditProfileScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
+  String universitySelected;
+  String schoolSelected;
+  String degreeSelected;
+  String subjectsSelected;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,27 +245,60 @@ class EditProfile extends State<EditProfileScreen> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  controller: _universityController,
-                                  decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.only(bottom: 3),
-                                      labelText: "University",
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always),
+                                child: new DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: universitySelected,
+                                  hint: Text('University'),
+                                  items: universitiesNamesList.map((String e) {
+                                    return DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String e) {
+                                    setState(() {
+                                      universitySelected = e;
+                                    });
+                                    getSchools(e);
+                                  },
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  controller: _degreeController,
-                                  decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.only(bottom: 3),
-                                      labelText: "Degree",
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always),
+                                child: new DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: schoolSelected,
+                                  hint: Text('School'),
+                                  items: schoolsNamesList.map((String e) {
+                                    return DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String e) async {
+                                    setState(() {
+                                      schoolSelected = e;
+                                    });
+                                    await getDegrees(e);
+                                  },
+                                ),
+                              ),
+                              Container(
+                                child: new DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: degreeSelected,
+                                  hint: Text('Degree'),
+                                  items: degreesNamesList.map((String e) {
+                                    return DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String e) async {
+                                    setState(() {
+                                      schoolSelected = e;
+                                    });
+                                    await getSubjects(e);
+                                  },
                                 ),
                               ),
                               Container(

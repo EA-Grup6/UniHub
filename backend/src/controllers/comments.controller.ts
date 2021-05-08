@@ -1,6 +1,5 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
-import Offer from '../models/offer'
 import FeedPublication from '../models/feedPublication'
 import Comments from '../models/comments'
 

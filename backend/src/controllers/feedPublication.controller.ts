@@ -1,6 +1,5 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
-import Offer from '../models/offer'
 import FeedPublication from '../models/feedPublication'
 
 import jwt from 'jsonwebtoken'
@@ -59,7 +58,6 @@ export async function deleteFeed (req: any, res: Response){
     } else {
         return res.status(204).send({message: 'Unauthorized'});
     }
-    
 }
 
 export async function getFeed (req: any, res: Response){

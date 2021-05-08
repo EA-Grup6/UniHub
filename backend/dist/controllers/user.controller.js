@@ -3,16 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< Updated upstream
-exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
+exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
-=======
-exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
-const User_1 = __importDefault(require("../models/User"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
->>>>>>> Stashed changes
+const Faculty_1 = __importDefault(require("../models/Faculty"));
+const Degree_1 = __importDefault(require("../models/Degree"));
 async function createUser(req, res) {
     const Btoken = req.headers['authorization'];
     let { username, password, isAdmin } = req.body;
@@ -233,8 +229,7 @@ async function getUser(req, res) {
 }
 exports.getUser = getUser;
 async function getUniversities(req, res) {
-    let username = req.params.username;
-    let user = await University_1.default.find();
+    let listUniversities = await University_1.default.find();
     const Btoken = req.headers['authorization'];
     if (typeof Btoken !== undefined) {
         req.token = Btoken;
@@ -244,8 +239,8 @@ async function getUniversities(req, res) {
             }
             else {
                 try {
-                    if (user != null) {
-                        return res.status(200).header('Content Type - application/json').send(user);
+                    if (listUniversities.length != 0) {
+                        return res.status(200).header('Content Type - application/json').send(listUniversities);
                     }
                     else {
                         return res.status(201).send({ message: "User not found" });
@@ -262,3 +257,63 @@ async function getUniversities(req, res) {
     }
 }
 exports.getUniversities = getUniversities;
+async function getDegrees(req, res) {
+    let schoolParam = req.params.school;
+    let school = await Faculty_1.default.findOne({ name: schoolParam });
+    const Btoken = req.headers['authorization'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    if (school != null) {
+                        return res.status(200).header('Content Type - application/json').send(school);
+                    }
+                    else {
+                        return res.status(201).send({ message: "School not found" });
+                    }
+                }
+                catch {
+                    return res.status(500).send({ message: "Internal server error" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.getDegrees = getDegrees;
+async function getSubjects(req, res) {
+    let degreeParam = req.params.degree;
+    let degree = await Degree_1.default.findOne({ name: degreeParam });
+    const Btoken = req.headers['authorization'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    if (degree != null) {
+                        return res.status(200).header('Content Type - application/json').send(degree);
+                    }
+                    else {
+                        return res.status(201).send({ message: "Degree not found" });
+                    }
+                }
+                catch {
+                    return res.status(500).send({ message: "Internal server error" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.getSubjects = getSubjects;

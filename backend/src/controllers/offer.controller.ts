@@ -1,8 +1,7 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
-import Offer from '../models/offer'
-import FeedPublication from '../models/feedPublication'
 import jwt from 'jsonwebtoken'
+import Offer from '../models/offer';
 
 export async function createOffer (req: any, res: Response){
     const Btoken = req.headers['authorization'];

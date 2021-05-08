@@ -10,7 +10,6 @@ class EditProfileController {
   Future<dynamic> getProfile(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('jwt');
-    var customHeader = {'authorization': token};
     final http.Response response = await _helper.get('/User/getUser/$username');
     print("Response: " + response.body);
     return response.body;
@@ -27,6 +26,26 @@ class EditProfileController {
   Future<dynamic> deleteProfile(String username) async {
     final http.Response response =
         await _helper.delete('/User/deleteUser/$username');
+    print("Response: " + response.body);
+    return response;
+  }
+
+  Future<dynamic> getUniversities() async {
+    final http.Response response = await _helper.get('/Data/getUniversities');
+    print("Response: " + response.body);
+    return response;
+  }
+
+  Future<dynamic> getSchool(String school) async {
+    final http.Response response =
+        await _helper.get('/Data/getDegrees/$school');
+    print("Response: " + response.body);
+    return response;
+  }
+
+  Future<dynamic> getDegree(String degree) async {
+    final http.Response response =
+        await _helper.get('/Data/getSubjects/$degree');
     print("Response: " + response.body);
     return response;
   }

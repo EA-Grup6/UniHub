@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
