@@ -294,3 +294,45 @@ export async function getSubjects(req: any, res: Response){
     }
 }
 
+
+export async function updateFollowers (req: any, res: Response){
+    let{usernameFollowing, usernameFollowed} = req.body;
+    const Btoken = req.headers['authorization'];
+    const action = req.headers['action'];
+
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    const userfollowing = await User.findById({username: usernameFollowing});
+                    const userfollowed = await User.findById({username: usernameFollowed});
+                    let following = userfollowing?.following
+                    let followers = userfollowed?.followers
+                    if (action=='add'){
+                        followers?.push(usernameFollowing)
+                        following?.push(usernameFollowed)
+                        await User.findOneAndUpdate({username: usernameFollowing}, {following: following})
+                        await User.findOneAndUpdate({username: usernameFollowed}, {followers: followers})
+                        return res.status(200).send({message: 'Followers correctly updated'});
+                    }else
+                        following?.splice(following?.findIndex(usernameFollowed),1);
+                        followers?.splice(followers?.findIndex(usernameFollowing),1);
+                        await User.findByIdAndUpdate({username: usernameFollowing}, {following: following})
+                        await User.findByIdAndUpdate({username: usernameFollowed}, {followers: followers})
+                        return res.status(200).send({message: 'Followers correctly updated'});
+
+                } catch {
+                    return res.status(201).send({message: "Followers couldn't be updated"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+
+}
+

@@ -138,6 +138,35 @@ export async function getOffers (req: any, res: Response){
     }
 }
 
+export async function getOffersPrueba (req: any, res: Response){
+    const Btoken = req.headers['authorization'];
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                
+                try{
+                        const offers = await Offer.find();
+                        if (offers!=null){
+                            return res.status(200).header('Content Type - application/json').send(offers);
+                        }else
+                            return res.status(204).send({message: "There aren't any offers my dear"});
+            
+
+                } catch {
+                    return res.status(500).send({message: "Internal server error"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
+
 export async function updateOffer (req: any, res: Response){
     let{username, title, content, price } = req.body;
     const Btoken = req.headers['authorization'];

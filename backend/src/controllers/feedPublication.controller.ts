@@ -141,6 +141,34 @@ export async function getFeeds (req: any, res: Response){
 
 }
 
+export async function getFeedsPrueba (req: any, res: Response){
+    const Btoken = req.headers['authorization'];
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                
+                try{
+                        const feeds = await FeedPublication.find();
+                        if (feeds!=null){
+                            return res.status(200).header('Content Type - application/json').send(feeds);
+                        }else
+                            return res.status(204).send({message: "There aren't any feeds my dear"});
+            
+
+                } catch {
+                    return res.status(500).send({message: "Internal server error"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
 export async function updateFeed (req: any, res: Response){
     let{username, Content } = req.body;
     const Btoken = req.headers['authorization'];

@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects} from '../controllers/user.controller'
-import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer} from '../controllers/offer.controller'
-import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed } from '../controllers/feedPublication.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers} from '../controllers/user.controller'
+import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getOffersPrueba} from '../controllers/offer.controller'
+import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getFeedsPrueba } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
 
 const router = Router();
@@ -31,7 +31,9 @@ router.route('/Offer/deleteOffer/:id').delete(deleteOffer);
 
 router.route('/Offer/getOffer/:username').get(getOffer);
 
-router.route('/Offer/getOffers/').post(getOffers);
+router.route('/Offer/getOffers').post(getOffers);
+
+router.route('/Offer/getOffersPrueba').get(getOffersPrueba);
 
 router.route('/Offer/updateOffer').post(updateOffer);
 
@@ -43,6 +45,8 @@ router.route('/Feed/deleteFeed/:id').delete(deleteFeed);
 router.route('/Feed/getFeed/:username').get(getFeed);
 
 router.route('/Feed/getFeeds').post(getFeeds);
+
+router.route('/Feed/getFeedsPrueba').get(getFeedsPrueba);
 
 router.route('/Feed/updateFeed').post(updateFeed);
 
@@ -66,7 +70,7 @@ router.route('/Post/getComments').get(getComments);
 router.route('/Post/updateComment').post(updateComment);
 
 
-//Likes & Buys
+//Likes, Buys & following
 
 router.route('/User/Feeds/updateLikes').post(updateLikesFeed);
 
@@ -74,7 +78,9 @@ router.route('/User/Offers/updateLikes').post(updateLikesOffer);
 
 router.route('/User/Comments/updateLikes').post(updateLikesComment);
 
-router.route('/Offer/UpdateBuys').post(updateBuys);
+router.route('/Offer/updateBuys').post(updateBuys);
+
+router.route('/User/updateFollowers').post(updateFollowers);
 
 
 //router.route('/User/loginUser/').put(loginUser); //Forgot password
