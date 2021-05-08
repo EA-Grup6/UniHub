@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:unihub_app/controllers/offer_controller.dart';
 import '../../widgets/offerSection.dart';
 
 class ForumScreen extends StatefulWidget {
@@ -7,24 +7,13 @@ class ForumScreen extends StatefulWidget {
 }
 
 class Forum extends State<ForumScreen> {
-  Image _image;
-  final TextStyle _titleController = TextStyle();
-  final TextStyle _universityController = TextStyle();
-  final TextStyle _usernameController = TextStyle();
-  final TextStyle _descriptionController = TextStyle();
-  final TextStyle _statusController = TextStyle();
-  final TextStyle _moneyController = TextStyle();
-
   @override
   void initState() {
     //Aquí se llama a la API cuando cargamos esta vista
     super.initState();
   }
 
-  List<String> listaContenidos = [
-    "Ofrezco clases de AERO",
-    "Quieres enfrentarte al Minimo 2 de EA? Habla conmigo!"
-  ];
+  final List<String> listaContenidos = [];
 
   @override
   Widget build(BuildContext context) {

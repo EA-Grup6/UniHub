@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unihub_app/controllers/offer_controller.dart';
 
 class AddOfferScreen extends StatefulWidget {
   AddOffer createState() => AddOffer();
+}
+
+createToast(String message, Color color) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 class AddOffer extends State<AddOfferScreen> {
@@ -10,6 +22,8 @@ class AddOffer extends State<AddOfferScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _universityController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
   String valueAsign;
@@ -107,7 +121,7 @@ class AddOffer extends State<AddOfferScreen> {
                                             value: valueUniversity,
                                             onChanged: (newValue) {
                                               setState(() {
-                                                valueAsign = newValue;
+                                                valueUniversity = newValue;
                                               });
                                             },
                                             items:
@@ -172,7 +186,7 @@ class AddOffer extends State<AddOfferScreen> {
                                     padding:
                                         EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     child: TextFormField(
-                                      controller: _titleController,
+                                      controller: _descriptionController,
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
@@ -186,7 +200,7 @@ class AddOffer extends State<AddOfferScreen> {
                                         EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     child: TextFormField(
                                       keyboardType: TextInputType.number,
-                                      controller: _titleController,
+                                      controller: _priceController,
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
@@ -206,8 +220,25 @@ class AddOffer extends State<AddOfferScreen> {
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        final int response =
+                                            await OfferController().createOffer(
+                                                _titleController.text,
+                                                valueUniversity,
+                                                valueAsign,
+                                                valueTipo,
+                                                _typeController.text,
+                                                _priceController.text);
+                                        print(response);
+                                        if (response == 200) {
+                                          createToast("Offer Created Correctly",
+                                              Colors.green);
+                                          Navigator.of(context).pop();
+                                        } else {
+                                          createToast('Error', Colors.red);
+                                        }
+                                      }
                                     },
                                   )
                                 ]))))))));
