@@ -117,6 +117,7 @@ export async function getOffers (req: any, res: Response){
                             let cont2= 0
                             while(cont2<offer.length){
                                 offers.push(offer[cont2])
+                                cont2++
                             }
                         }
                         cont++
