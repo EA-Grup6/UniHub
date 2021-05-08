@@ -24,8 +24,8 @@ export async function createOffer (req: any, res: Response){
                 newOffer.subject=subject;
                 newOffer.price=price;
                 newOffer.type=type;
-                newOffer.likes=[];
-                newOffer.comments=[];
+                newOffer.buys=0;
+                newOffer.likes=[]
 
                 try{
 
@@ -77,7 +77,7 @@ export async function getOffer (req: any, res: Response){
                 const userfound = await User.findOne({username: username});
                 try{
                     if(userfound != null){
-                        const offers = await Offer.find(username)
+                        const offers = await Offer.find({username: username})
                         if (offers!=null){
                             return res.status(200).header('Content Type - application/json').send(offers);
                         }else
@@ -170,6 +170,8 @@ export async function updateOffer (req: any, res: Response){
 export async function updateLikesOffer (req: any, res: Response){
     let{usernameLiking, _id} = req.body;
     const Btoken = req.headers['authorization'];
+    
+    const action = req.headers['action'];
 
 
     if(typeof Btoken !== undefined){
@@ -179,11 +181,52 @@ export async function updateLikesOffer (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    const offer = await Offer.findById(_id);
+                    const offer = await Offer.findById({_id: _id});
                     let liking = offer?.likes
                     liking?.push(usernameLiking)
-                    await Offer.findByIdAndUpdate(_id, liking)
-                    return res.status(200).send({message: 'OfferLikes correctly updated'});
+                    if (action=='add'){
+                        liking?.push(usernameLiking)
+                        await Offer.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'OfferLikes correctly updated'});
+                    }else
+                        liking?.splice(liking?.findIndex(usernameLiking),1);
+                        await Offer.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'OfferLikes correctly updated'});
+                } catch {
+                    return res.status(201).send({message: "OfferLikes couldn't be updated"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+
+}
+
+//Añadir comprobaciones de Buy(Enlazado con Coins)
+export async function updateBuys (req: any, res: Response){
+    let{_id} = req.body;
+    const Btoken = req.headers['authorization'];
+
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    const offer = await Offer.findById({_id: _id});
+                    if (offer!= null){
+                        let buys: number = offer.buys;
+                        buys= buys +1;
+                        await Offer.findByIdAndUpdate({_id: _id},{buys:buys});
+                        return res.status(200).send({message: 'OfferBuys correctly updated'});
+                    }else
+                        return res.status(404).send({message: 'OfferBuys not found'});
+
+                    
+                    
                 } catch {
                     return res.status(201).send({message: "OfferLikes couldn't be updated"});
                 }

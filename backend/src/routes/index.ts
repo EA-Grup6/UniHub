@@ -1,9 +1,9 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
 updateUser, getUser, getAdmin} from '../controllers/user.controller'
-import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateLikesOffer} from '../controllers/offer.controller'
+import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateLikesOffer, updateBuys} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed } from '../controllers/feedPublication.controller'
-
+import { updateLikesComment, updateComment, getComments, createComment, deleteComment} from '../controllers/comments.controller'
 const router = Router();
     
 
@@ -47,11 +47,25 @@ router.route('/User/updateFeed').post(updateFeed);
 
 //Explore Feed
 
-//Likes & comments
+//Comments
+router.route('/Post/newComment').post(createComment);
+
+router.route('/Post/deleteComment/:id').delete(deleteComment);
+
+router.route('/Post/getComments').get(getComments);
+
+router.route('/Post/updateComment').post(updateComment);
+
+
+//Likes & Buys
 
 router.route('/User/Feeds/updateLikes').post(updateLikesFeed);
 
 router.route('/User/Offers/updateLikes').post(updateLikesOffer);
+
+router.route('/User/Comments/updateLikes').post(updateLikesComment);
+
+router.route('/Offer/UpdateBuys').post(updateBuys);
 
 
 //router.route('/User/loginUser/').put(loginUser); //Forgot password

@@ -15,6 +15,7 @@ const schema = new Schema({
     isAdmin: Boolean,
     followers: Array,
     following: Array
+    //Coins: Number
 }, {collection: 'users'});
 
 interface IUser extends Document {
@@ -32,6 +33,7 @@ interface IUser extends Document {
     phone: string,
     followers: Array<string>;
     following: Array<string>;
+    //Coins: Number
 }
 
 export default model<IUser>('User',schema);

@@ -7,10 +7,10 @@ const schema = new Schema({
     publicationDate: Date,
     university: String,
     subject: String,
-    price: Int16Array,
+    price: Number,
     type: String,
-    comments: Array,
-    likes: Array,
+    buys: Number,
+    likes: Array
 }, {collection: 'offers'});
 
 interface IOffer extends Document {
@@ -20,9 +20,9 @@ interface IOffer extends Document {
     publicationDate: Date;
     university: string;
     subject: string;
-    price: Int16Array;
+    price: number;
     type: String;
-    comments: Array<string>;
+    buys: number;
     likes: Array<string>;
 }
 

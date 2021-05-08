@@ -75,7 +75,7 @@ export async function getFeed (req: any, res: Response){
                 const userfound = await User.findOne({username: username});
                 try{
                     if(userfound != null){
-                        const feeds = await FeedPublication.find(username)
+                        const feeds = await FeedPublication.find({username: username})
                         if (feeds!=null){
                             return res.status(200).header('Content Type - application/json').send(feeds);
                         }else
@@ -96,7 +96,7 @@ export async function getFeed (req: any, res: Response){
 
 }
 
-//arreglar getfeeds con localstorage
+
 export async function getFeeds (req: any, res: Response){
     const Btoken = req.headers['authorization'];
     var following = req.body;
@@ -172,6 +172,7 @@ export async function updateFeed (req: any, res: Response){
 export async function updateLikesFeed (req: any, res: Response){
     let{usernameLiking, _id} = req.body;
     const Btoken = req.headers['authorization'];
+    const action = req.headers['action'];
 
 
     if(typeof Btoken !== undefined){
@@ -181,11 +182,17 @@ export async function updateLikesFeed (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    const feed = await FeedPublication.findById(_id);
+                    const feed = await FeedPublication.findById({_id: _id});
                     let liking = feed?.likes
-                    liking?.push(usernameLiking)
-                    await FeedPublication.findByIdAndUpdate(_id, liking)
-                    return res.status(200).send({message: 'FeedLikes correctly updated'});
+                    if (action=='add'){
+                        liking?.push(usernameLiking)
+                        await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'FeedLikes correctly updated'});
+                    }else
+                        liking?.splice(liking?.findIndex(usernameLiking),1);
+                        await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'FeedLikes correctly updated'});
+
                 } catch {
                     return res.status(201).send({message: "FeedLikes couldn't be updated"});
                 }
