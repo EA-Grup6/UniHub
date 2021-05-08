@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
+import 'package:unihub_app/screens/forum/forum.dart';
 
 class AddOfferScreen extends StatefulWidget {
   AddOffer createState() => AddOffer();

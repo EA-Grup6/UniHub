@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
+import 'package:unihub_app/models/offer.dart';
 import '../../widgets/offerSection.dart';
+import 'package:http/http.dart' as http;
 
 class ForumScreen extends StatefulWidget {
   Forum createState() => Forum();
@@ -10,14 +14,28 @@ class Forum extends State<ForumScreen> {
   @override
   void initState() {
     //Aquí se llama a la API cuando cargamos esta vista
+    getOffers();
     super.initState();
   }
 
-  final List<String> listaContenidos = [];
+  List<OfferApp> listOffers = [];
+
+  Future<List<OfferApp>> getOffers() async {
+    http.Response response = await OfferController().getOffers();
+    for (var offer in jsonDecode(response.body)) {
+      listOffers.add(OfferApp.fromMap(offer));
+      print(listOffers);
+    }
+    return listOffers;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder(
+        future: getOffers(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
         appBar: AppBar(
           title: Text("Academic offering"),
           actions: <Widget>[
@@ -36,15 +54,16 @@ class Forum extends State<ForumScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (String contenido in listaContenidos)
+                        for (OfferApp offer in listOffers)
                           new OfferSection(
-                              "Fullname of the user",
-                              "UPC, EETAC",
-                              "AERO",
-                              "Titulo de las ofertas",
-                              contenido,
-                              ["", ""],
-                              "10"),
+                              offer.username,
+                              offer.university,
+                              offer.subject,
+                              offer.title,
+                              offer.description,
+                              offer.likes,
+                              offer.price
+                              ),
                       ],
                     )))),
         floatingActionButton: FloatingActionButton(
@@ -55,7 +74,8 @@ class Forum extends State<ForumScreen> {
           },
         ));
   }
-}
+});
+}}
 
 class DataSearch extends SearchDelegate<String> {
   final subjects = [
