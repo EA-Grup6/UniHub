@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Environment} from "./environment";
+import {UrlApi} from "./UrlApi";
 import { HttpClient } from '@angular/common/http';
 import {User} from '../models/user'
 
@@ -9,11 +9,11 @@ import {User} from '../models/user'
 export class UserService {
   selectedUser: User;
   users: User[];
-  url: Environment;
+  url: UrlApi;
 
   constructor(private http: HttpClient) {
     this.selectedUser = new User();
-    this.url = new Environment();
+    this.url = new UrlApi();
   }
 
   loginUser(user: User){

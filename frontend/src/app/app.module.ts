@@ -22,16 +22,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ListComponent } from './list/list.component';
 import { AccountComponent } from './account/account.component';
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyApkwagvk0f4_C6ZZvKNK-ALSDFzq4HnOE",
-  authDomain: "sprint0-2cdf8.firebaseapp.com",
-  projectId: "sprint0-2cdf8",
-  storageBucket: "sprint0-2cdf8.appspot.com",
-  messagingSenderId: "659979771998",
-  appId: "1:659979771998:web:97bd639aef27f59a4014cf",
-  measurementId: "G-QRB59S4ZF0"
-};
+
 
 @NgModule({
   declarations: [
@@ -56,10 +47,7 @@ const firebaseConfig = {
     MatIconModule,
     ReactiveFormsModule,
     MatToolbarModule,
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule, // firestore
-    AngularFireAuthModule, // auth
-    AngularFireStorageModule, // storage
+
   ],
   exports: [
     BrowserModule,
