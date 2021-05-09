@@ -1,0 +1,52 @@
+version: '3'
+
+services: 
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    depends_on: 
+      - mongo
+    command: npm start
+    networks: 
+        - db-tier
+        - frontendNetwork
+
+  backoffice:
+    build: ./frontend
+    ports:
+      - "4200:80"
+    depends_on: 
+      - backend
+    networks: 
+      - frontendNetwork
+
+  frontend:
+    build: ./Unihub_app
+    ports:
+        - "27151:8080"
+    depends_on: 
+        - backend
+    networks: 
+        - backofficeNetwork
+      
+  mongo:
+        image: mongo
+        restart: always
+        volumes:
+          - mongo-data:/data/db
+        networks:
+          - db-tier
+
+
+
+networks:
+  backofficeNetwork:
+  frontendNetwork:
+
+  db-tier:
+    driver: bridge
+
+volumes:
+    mongo-data:
+        driver: local
