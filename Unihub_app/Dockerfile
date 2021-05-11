@@ -23,7 +23,7 @@ RUN flutter config --enable-web
 # Copy files to container and build
 RUN mkdir /app/
 COPY ./Unihub_app /app/
-WORKDIR /app/
+WORKDIR /app/Unihub_app
 RUN flutter build web
 
 # Stage 2 - Create the run-time image
