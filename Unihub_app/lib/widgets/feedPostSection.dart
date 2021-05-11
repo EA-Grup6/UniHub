@@ -4,8 +4,8 @@ class FeedPostSection extends StatelessWidget {
   Image _image;
   final String _username;
   final String _content;
-  final List<String> _likes;
-  final List<String> _comments;
+  final List<dynamic> _likes;
+  final List<dynamic> _comments;
 
   FeedPostSection(this._username, this._content, this._likes, this._comments);
 

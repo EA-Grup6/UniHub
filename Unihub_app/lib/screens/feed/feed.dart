@@ -1,45 +1,95 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class FeedScreen extends StatefulWidget {
   Feed createState() => Feed();
 }
 
 class Feed extends State<FeedScreen> {
-  List<String> listaContenidos = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sample text.',
-    'Esto es una prueba de una sola linea',
-    'Esto es relleno',
-    'Esto es mas relleno',
-    'Estoy hasta los cojones del relleno'
-  ];
+  @override
+  void initState() {
+    getAllFeeds();
+    //Aquí se llama a la API cuando cargamos esta vista
+    super.initState();
+  }
+
+  getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username');
+  }
+
+  final TextEditingController contentController = TextEditingController();
+
+  Future<List<FeedPublication>> getAllFeeds() async {
+    http.Response response = await FeedController().getFeedPubs();
+    List<FeedPublication> preFeedList = [];
+    for (var feedPub in jsonDecode(response.body)) {
+      preFeedList.add(FeedPublication.fromMap(feedPub));
+      print(FeedPublication.fromMap(feedPub));
+    }
+    return preFeedList;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Feed"),
-        ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                padding: EdgeInsets.all(10),
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (String contenido in listaContenidos)
-                          new FeedPostSection("Fullname of the user", contenido,
-                              ["", ""], ["", ""]),
-                      ],
-                    )))),
-        floatingActionButton: FloatingActionButton(
-          heroTag: "btnAddFeed",
-          child: Icon(Icons.add),
-          onPressed: () {
-            showAlertDialog(context);
-          },
-        ));
+    return FutureBuilder<List<FeedPublication>>(
+      future: getAllFeeds(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text("Feed"),
+              ),
+              body: SafeArea(
+                  child: SingleChildScrollView(
+                      padding: EdgeInsets.all(10),
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (FeedPublication publication in snapshot.data)
+                                new FeedPostSection(
+                                    publication.username,
+                                    publication.content,
+                                    publication.likes,
+                                    publication.comments),
+                            ],
+                          )))),
+              floatingActionButton: FloatingActionButton(
+                heroTag: "btnAddFeed",
+                child: Icon(Icons.add),
+                onPressed: () {
+                  showAlertDialog(context);
+                },
+              ));
+        } else {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text("Feed"),
+              ),
+              body: Container(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Text('No posts available')],
+              )),
+              floatingActionButton: FloatingActionButton(
+                heroTag: "btnAddFeed",
+                child: Icon(Icons.add),
+                onPressed: () {
+                  showAlertDialog(context);
+                },
+              ));
+        }
+      },
+    );
   }
 
   showAlertDialog(BuildContext context) {
@@ -48,6 +98,8 @@ class Feed extends State<FeedScreen> {
       child: Text("Create new post"),
       onPressed: () async {
         //Submit post
+        await FeedController()
+            .createFeedPub(await getUsername(), contentController.text);
         Navigator.pop(context);
       },
     );
@@ -61,6 +113,7 @@ class Feed extends State<FeedScreen> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
         content: TextFormField(
+          controller: contentController,
           keyboardType: TextInputType.multiline,
           minLines: 4,
           maxLines: null,

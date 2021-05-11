@@ -12,22 +12,19 @@ export async function createOffer (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                
-                let {username, title, content, publicationDate, university, subject, price, type} = req.body;
+                let {username, title, description, university, subject, price, type} = req.body;
                 let newOffer = new Offer();
-                newOffer.username= username;
-                newOffer.title =title;
-                newOffer.content= content;
-                newOffer.publicationDate= publicationDate;
-                newOffer.university=university;
-                newOffer.subject=subject;
-                newOffer.price=price;
-                newOffer.type=type;
-                newOffer.buys=0;
-                newOffer.likes=[]
-
+                newOffer.username = username;
+                newOffer.title = title;
+                newOffer.description = description;
+                newOffer.publicationDate = new Date();
+                newOffer.university = university;
+                newOffer.subject = subject;
+                newOffer.price = price;
+                newOffer.type = type;
+                newOffer.buys = 0;
+                newOffer.likes = [];
                 try{
-
                     let result = await newOffer.save();
                     return res.status(200).send({message: "Offer Publicado correctamente"});
                 } catch {

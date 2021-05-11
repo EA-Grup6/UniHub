@@ -13,25 +13,24 @@ class ForumScreen extends StatefulWidget {
 class Forum extends State<ForumScreen> {
   @override
   void initState() {
-    //Aquí se llama a la API cuando cargamos esta vista
     getOffers();
+    //Aquí se llama a la API cuando cargamos esta vista
     super.initState();
   }
 
-  List<OfferApp> listOffers = [];
-
   Future<List<OfferApp>> getOffers() async {
     http.Response response = await OfferController().getOffers();
+    List<OfferApp> preListOffers = [];
     for (var offer in jsonDecode(response.body)) {
-      listOffers.add(OfferApp.fromMap(offer));
-      print(listOffers);
+      preListOffers.add(OfferApp.fromMap(offer));
+      print(OfferApp.fromMap(offer));
     }
-    return listOffers;
+    return preListOffers;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<List<OfferApp>>(
         future: getOffers(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -54,15 +53,16 @@ class Forum extends State<ForumScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                for (OfferApp offer in listOffers)
+                                for (OfferApp offer in snapshot.data)
                                   new OfferSection(
-                                      offer.username,
-                                      offer.university,
-                                      offer.subject,
-                                      offer.title,
-                                      offer.description,
-                                      offer.likes,
-                                      offer.price.toString()),
+                                    offer.username,
+                                    offer.university,
+                                    offer.subject,
+                                    offer.title,
+                                    offer.description,
+                                    offer.likes,
+                                    offer.price.toString(),
+                                  ),
                               ],
                             )))),
                 floatingActionButton: FloatingActionButton(
@@ -86,6 +86,7 @@ class Forum extends State<ForumScreen> {
                 ),
                 body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [Text('No offers found')],
                 ),
                 floatingActionButton: FloatingActionButton(

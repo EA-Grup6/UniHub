@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
-import 'package:unihub_app/screens/forum/forum.dart';
 
 class AddOfferScreen extends StatefulWidget {
   AddOffer createState() => AddOffer();
@@ -26,6 +26,11 @@ class AddOffer extends State<AddOfferScreen> {
   final TextEditingController _universityController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+
+  getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get('username');
+  }
 
   String valueAsign;
   List listAsigns = [
@@ -54,11 +59,10 @@ class AddOffer extends State<AddOfferScreen> {
   ];
   String valueUniversity;
   List listUniversity = [
-    "UPC, EETAC",
-    "UPC, ETSEIB",
-    "UPC, EEAAB",
-    "UPC, ETSETB",
+    "UPC",
   ];
+  String valueCollege;
+  List listColleges = ['EETAC', 'EEAAB', 'ETSEIB'];
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +131,22 @@ class AddOffer extends State<AddOfferScreen> {
                                             },
                                             items:
                                                 listUniversity.map((valueItem) {
+                                              return DropdownMenuItem(
+                                                value: valueItem,
+                                                child: Text(valueItem),
+                                              );
+                                            }).toList(),
+                                          ),
+                                          Text("Choose the college:"),
+                                          DropdownButton(
+                                            value: valueCollege,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                valueCollege = newValue;
+                                              });
+                                            },
+                                            items:
+                                                listColleges.map((valueItem) {
                                               return DropdownMenuItem(
                                                 value: valueItem,
                                                 child: Text(valueItem),
@@ -223,14 +243,18 @@ class AddOffer extends State<AddOfferScreen> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
+                                        print('Desc: ' +
+                                            _descriptionController.text);
                                         final int response =
                                             await OfferController().createOffer(
-                                                _titleController.text,
-                                                valueUniversity,
-                                                valueAsign,
-                                                valueTipo,
-                                                _typeController.text,
-                                                _priceController.text);
+                                          await getUsername(),
+                                          _titleController.text,
+                                          valueUniversity,
+                                          valueAsign,
+                                          valueTipo,
+                                          _descriptionController.text,
+                                          _priceController.text,
+                                        );
                                         print(response);
                                         if (response == 200) {
                                           createToast("Offer Created Correctly",

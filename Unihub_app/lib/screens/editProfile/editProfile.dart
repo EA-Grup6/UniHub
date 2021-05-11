@@ -37,6 +37,8 @@ class EditProfile extends State<EditProfileScreen> {
       subjectsAskingSelected =
           new List<String>.from(currentUser.subjectsRequested);
       subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
+      universitySelected = currentUser.university;
+
       _passwordController.text = currentUser.password;
       _phoneController.text = currentUser.phone;
     });
@@ -66,6 +68,15 @@ class EditProfile extends State<EditProfileScreen> {
       universitiesList.add(University.fromMap(university));
       universitiesNamesList.add(University.fromMap(university).name);
       print(universitiesNamesList);
+    }
+    if (universitySelected != null) {
+      getSchools(universitySelected);
+      if (schoolSelected != null) {
+        getDegrees(schoolSelected);
+        if (degreeSelected != null) {
+          getSubjects(degreeSelected);
+        }
+      }
     }
   }
 
@@ -104,12 +115,8 @@ class EditProfile extends State<EditProfileScreen> {
     return subjectsList;
   }
 
-  //Campos que ya está rellenos autocompletar!
-  //Universidad, grado, rol, asignaturas (hechas y solicitadas) son dropdown menus!
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _universityController = TextEditingController();
-  final TextEditingController _degreeController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -472,9 +479,9 @@ class EditProfile extends State<EditProfileScreen> {
                                           _passwordController.text,
                                           _nameController.text,
                                           _descriptionController.text,
-                                          _universityController.text,
+                                          universitySelected,
                                           schoolSelected,
-                                          _degreeController.text,
+                                          degreeSelected,
                                           _roleController.text,
                                           subjectsDoneSelected,
                                           subjectsAskingSelected,
