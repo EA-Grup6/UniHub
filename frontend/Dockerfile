@@ -1,7 +1,7 @@
 # Stage 0, based on Node.js, to build and compile Angular
 FROM node:latest as node
 WORKDIR /app
-COPY ./frontend /app/
+COPY ./ /app/
 RUN npm install
 RUN npm run build -- --prod
 

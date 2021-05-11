@@ -22,11 +22,11 @@ RUN flutter config --enable-web
 
 # Copy files to container and build
 RUN mkdir /app/
-COPY ./Unihub_app /app/
+COPY ./ /app/
 WORKDIR /app/Unihub_app
 RUN flutter build web
 
 # Stage 2 - Create the run-time image
 FROM nginx:alpine
-COPY --from=build-env /app/Unihub_app/build/web /usr/share/nginx/html
+COPY --from=build-env /app/build/web /usr/share/nginx/html
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
