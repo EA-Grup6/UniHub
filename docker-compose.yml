@@ -10,7 +10,6 @@ services:
     command: npm start
     networks: 
         - db-tier
-        - frontendNetwork
         - backofficeNetwork
 
   backoffice:
@@ -22,15 +21,6 @@ services:
     networks: 
       - backofficeNetwork
 
-  frontend:
-    build: ./unihub_app
-    ports:
-        - "8080:8080"
-    depends_on: 
-        - backend
-    networks: 
-        - frontendNetwork
-      
   mongo:
         image: mongo
         restart: always
@@ -43,7 +33,6 @@ services:
 
 networks:
   backofficeNetwork:
-  frontendNetwork:
 
   db-tier:
     driver: bridge
