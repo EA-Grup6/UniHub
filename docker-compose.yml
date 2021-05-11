@@ -11,24 +11,25 @@ services:
     networks: 
         - db-tier
         - frontendNetwork
+        - backofficeNetwork
 
   backoffice:
     build: ./frontend
     ports:
-      - "4200:80"
+      - "80:4200"
     depends_on: 
       - backend
     networks: 
-      - frontendNetwork
+      - backofficeNetwork
 
   frontend:
     build: ./Unihub_app
     ports:
-        - "27151:8080"
+        - "8080:27151"
     depends_on: 
         - backend
     networks: 
-        - backofficeNetwork
+        - frontendNetwork
       
   mongo:
         image: mongo

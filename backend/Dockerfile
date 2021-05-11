@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /usr/src/app
 
-COPY . /usr/src/app
+COPY ./backend /usr/src/app
 
 RUN npm install
 #RUN npm ci --only=production
