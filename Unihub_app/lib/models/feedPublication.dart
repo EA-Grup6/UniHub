@@ -1,13 +1,13 @@
 class FeedPublication {
   final String username;
-  final DateTime publicationDate;
+  //final DateTime publicationDate;
   final String content;
-  final List<String> comments;
-  final List<String> likes;
+  final List<dynamic> comments;
+  final List<dynamic> likes;
 
   FeedPublication(
     this.username,
-    this.publicationDate,
+    //this.publicationDate,
     this.content,
     this.comments,
     this.likes,
@@ -16,7 +16,7 @@ class FeedPublication {
   factory FeedPublication.fromMap(Map<String, dynamic> json) {
     return FeedPublication(
       json['username'],
-      json['publicationDate'],
+      //json['publicationDate'],
       json['content'],
       json['comments'],
       json['likes'],
@@ -26,7 +26,7 @@ class FeedPublication {
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> newJSON = {
       'username': this.username,
-      'publicationDate': this.publicationDate,
+      //'publicationDate': this.publicationDate,
       'content': this.content,
       'comments': this.comments,
       'likes': this.likes,

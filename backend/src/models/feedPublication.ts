@@ -4,7 +4,7 @@ const schema = new Schema({
     username: String,
     publicationDate: Date,
     content: String,
-    //comments: Array,
+    comments: Array,
     likes: Array,
 }, {collection: 'feedPublications'});
 
@@ -12,7 +12,7 @@ interface IFeedPub extends Document {
     username: string;
     publicationDate: Date;
     content: string;
-    //comments: Array<string>;
+    comments: Array<string>;
     likes: Array<string>;
 }
 

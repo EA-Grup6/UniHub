@@ -7,19 +7,11 @@ class OfferApp {
   final String description;
   final int price;
   final List<dynamic> comments;
+  final int buys;
   final List<dynamic> likes;
 
-  OfferApp(
-    this.title,
-    this.username,
-    this.university,
-    this.subject,
-    this.type,
-    this.description,
-    this.price,
-    this.comments,
-    this.likes,
-  );
+  OfferApp(this.title, this.username, this.university, this.subject, this.type,
+      this.description, this.price, this.comments, this.buys, this.likes);
 
   factory OfferApp.fromMap(Map<String, dynamic> json) {
     return OfferApp(
@@ -31,6 +23,7 @@ class OfferApp {
       json['description'],
       json['price'],
       json['comments'],
+      json['buys'],
       json['likes'],
     );
   }
@@ -45,6 +38,7 @@ class OfferApp {
       'description': this.description,
       'price': this.price,
       'comments': this.comments,
+      'buys': this.buys,
       'likes': this.likes,
     };
     return newJSON;

@@ -6,15 +6,16 @@ import 'package:http/http.dart' as http;
 ApiBaseHelper _helper = ApiBaseHelper();
 
 class OfferController {
-  Future<dynamic> createOffer(String title, String university, String subject,
-      String type, String description, String price) async {
+  Future<dynamic> createOffer(String username, String title, String university,
+      String subject, String type, String description, String price) async {
     var body = {
+      'username': username,
       'title': title,
       'university': university,
       'subject': subject,
       'type': type,
       'description': description,
-      'price': price
+      'price': price,
     };
     print(body);
     final http.Response response = await _helper.post('/Offer/newOffer', body);

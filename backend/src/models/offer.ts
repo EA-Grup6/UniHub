@@ -3,7 +3,7 @@ import {Schema,model,Document} from 'mongoose';
 const schema = new Schema({
     username: String,
     title: String,
-    content: String,
+    description: String,
     publicationDate: Date,
     university: String,
     subject: String,
@@ -16,7 +16,7 @@ const schema = new Schema({
 interface IOffer extends Document {
     username: string;
     title: string;
-    content: string;
+    description: string;
     publicationDate: Date;
     university: string;
     subject: string;

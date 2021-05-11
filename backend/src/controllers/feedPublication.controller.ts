@@ -14,18 +14,15 @@ export async function createFeed (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                
-                let {content, publicationDate, username} = req.body;
-                let newFeed = new FeedPublication;
+                let {content, username} = req.body;
+                let newFeed = new FeedPublication();
                 newFeed.content= content;
-                newFeed.publicationDate= publicationDate;
+                newFeed.publicationDate= new Date();
                 newFeed.username=username;
-
                 newFeed.likes= [];
-                //newFeed.comments= [];
+                newFeed.comments= [];
                 try{
-
-                    let result = await newFeed.save();
+                    await newFeed.save();
                     return res.status(200).send({message: "Feed Publicado correctamente"});
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
@@ -141,24 +138,20 @@ export async function getFeeds (req: any, res: Response){
 
 }
 
-export async function getFeedsPrueba (req: any, res: Response){
+export async function getAllFeeds (req: any, res: Response){
     const Btoken = req.headers['authorization'];
-
     if(typeof Btoken !== undefined){
         req.token = Btoken;
         jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                
                 try{
                         const feeds = await FeedPublication.find();
                         if (feeds!=null){
                             return res.status(200).header('Content Type - application/json').send(feeds);
                         }else
                             return res.status(204).send({message: "There aren't any feeds my dear"});
-            
-
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
                 }

@@ -9,8 +9,9 @@ class OfferSection extends StatelessWidget {
   final String _content;
   final List<dynamic> _likes;
   final String _price;
+  //final int buys;
 
-  OfferSection(this._username, this._university, this._subject, this._title,
+  OfferSection(this._title, this._university, this._subject, this._username,
       this._content, this._likes, this._price);
 
   @override
