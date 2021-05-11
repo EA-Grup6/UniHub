@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {RegisterComponent} from './register/register.component';
 import {MatDialogRef, MatDialog} from '@angular/material/dialog';
-import { ProfileComponent } from './profile/profile.component';
 import { User } from './models/user';
 
 

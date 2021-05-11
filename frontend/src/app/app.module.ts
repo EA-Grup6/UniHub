@@ -14,13 +14,11 @@ import {MatIconModule} from "@angular/material/icon";
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ProfileComponent } from './profile/profile.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ListComponent } from './list/list.component';
-import { AccountComponent } from './account/account.component';
 
 
 
@@ -28,9 +26,7 @@ import { AccountComponent } from './account/account.component';
   declarations: [
     AppComponent,
     RegisterComponent,
-    ProfileComponent,
     ListComponent,
-    AccountComponent,
   ],
   imports: [
     BrowserModule,
