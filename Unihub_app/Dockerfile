@@ -24,6 +24,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 RUN ls
 COPY . /app/
+COPY ../unihub_app/web /app/web
 RUN ls
 WORKDIR /app/
 RUN ls
