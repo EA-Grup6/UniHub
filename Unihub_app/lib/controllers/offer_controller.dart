@@ -1,4 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/models/offer.dart';
 
 import '../networking/apibasehelper.dart';
@@ -9,8 +8,6 @@ ApiBaseHelper _helper = ApiBaseHelper();
 class OfferController {
   Future<dynamic> createOffer(String title, String university, String subject,
       String type, String description, String price) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('jwt');
     var body = {
       'title': title,
       'university': university,
@@ -42,14 +39,12 @@ class OfferController {
   }
 
   Future<dynamic> getOffers() async {
-    final http.Response response = await _helper.get('/Offer/getOffers/');
+    final http.Response response = await _helper.get('/Offer/getAllOffers');
     print("Response: " + response.body);
     return response;
   }
 
   Future<dynamic> getOffer(String username) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('jwt');
     final http.Response response =
         await _helper.get('/Offer/getOffer/$username');
     print("Response: " + response.body);

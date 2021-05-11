@@ -17,8 +17,8 @@ export async function createUser (req: any, res: Response){
     newUser.university = '';
     newUser.degree = '';
     newUser.role = '';
-    newUser.subjectsDone = '';
-    newUser.subjectsRequested = '';
+    newUser.subjectsDone = [];
+    newUser.subjectsRequested = [];
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone= '';

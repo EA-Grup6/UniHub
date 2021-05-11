@@ -138,7 +138,7 @@ export async function getOffers (req: any, res: Response){
     }
 }
 
-export async function getOffersPrueba (req: any, res: Response){
+export async function getAllOffers (req: any, res: Response){
     const Btoken = req.headers['authorization'];
 
     if(typeof Btoken !== undefined){

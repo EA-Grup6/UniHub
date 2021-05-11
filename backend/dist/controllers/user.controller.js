@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
+exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
@@ -20,8 +20,8 @@ async function createUser(req, res) {
     newUser.university = '';
     newUser.degree = '';
     newUser.role = '';
-    newUser.subjectsDone = '';
-    newUser.subjectsRequested = '';
+    newUser.subjectsDone = [];
+    newUser.subjectsRequested = [];
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone = '';
@@ -319,3 +319,44 @@ async function getSubjects(req, res) {
     }
 }
 exports.getSubjects = getSubjects;
+async function updateFollowers(req, res) {
+    let { usernameFollowing, usernameFollowed } = req.body;
+    const Btoken = req.headers['authorization'];
+    const action = req.headers['action'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    const userfollowing = await User_1.default.findById({ username: usernameFollowing });
+                    const userfollowed = await User_1.default.findById({ username: usernameFollowed });
+                    let following = userfollowing === null || userfollowing === void 0 ? void 0 : userfollowing.following;
+                    let followers = userfollowed === null || userfollowed === void 0 ? void 0 : userfollowed.followers;
+                    if (action == 'add') {
+                        followers === null || followers === void 0 ? void 0 : followers.push(usernameFollowing);
+                        following === null || following === void 0 ? void 0 : following.push(usernameFollowed);
+                        await User_1.default.findOneAndUpdate({ username: usernameFollowing }, { following: following });
+                        await User_1.default.findOneAndUpdate({ username: usernameFollowed }, { followers: followers });
+                        return res.status(200).send({ message: 'Followers correctly updated' });
+                    }
+                    else
+                        following === null || following === void 0 ? void 0 : following.splice(following === null || following === void 0 ? void 0 : following.findIndex(usernameFollowed), 1);
+                    followers === null || followers === void 0 ? void 0 : followers.splice(followers === null || followers === void 0 ? void 0 : followers.findIndex(usernameFollowing), 1);
+                    await User_1.default.findByIdAndUpdate({ username: usernameFollowing }, { following: following });
+                    await User_1.default.findByIdAndUpdate({ username: usernameFollowed }, { followers: followers });
+                    return res.status(200).send({ message: 'Followers correctly updated' });
+                }
+                catch {
+                    return res.status(201).send({ message: "Followers couldn't be updated" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.updateFollowers = updateFollowers;

@@ -5,9 +5,9 @@ class OfferApp {
   final String subject;
   final String type;
   final String description;
-  final String price;
-  final List<String> comments;
-  final List<String> likes;
+  final int price;
+  final List<dynamic> comments;
+  final List<dynamic> likes;
 
   OfferApp(
     this.title,

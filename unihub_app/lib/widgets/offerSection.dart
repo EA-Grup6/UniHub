@@ -7,7 +7,7 @@ class OfferSection extends StatelessWidget {
   final String _subject;
   final String _title;
   final String _content;
-  final List<String> _likes;
+  final List<dynamic> _likes;
   final String _price;
 
   OfferSection(this._username, this._university, this._subject, this._title,

@@ -93,75 +93,45 @@ class Profile extends State<ProfileScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              TextSection("Username", currentUser.fullname),
+                              TextSection("Full name", currentUser.fullname),
                               TextSection(
                                   "Description", currentUser.description),
                               TextSection("Role", currentUser.role),
                               TextSection("University", currentUser.university),
                               TextSection("Degree", currentUser.degree),
-                              TextSection("Subjects already Done",
-                                  currentUser.subjectsDone),
-                              TextSection("Subjects Asking for",
-                                  currentUser.subjectsRequested),
+                              TextSection(
+                                  "Subjects already done",
+                                  currentUser.subjectsDone.length == 0
+                                      ? 'None'
+                                      : currentUser.subjectsDone
+                                          .toSet()
+                                          .toString()),
+                              TextSection(
+                                  "Subjects asking for",
+                                  currentUser.subjectsRequested.length == 0
+                                      ? 'None'
+                                      : currentUser.subjectsRequested
+                                          .toSet()
+                                          .toString()),
                               TextSection("Recomendations", ""),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
                             ],
                           ),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                /*TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.blue),
-                                  ),
-                                  child: Text(
-                                    'Edit Profile',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/editProfile');
-                                  },
-                                ),
-                                TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.blue),
-                                  ),
-                                  child: Text(
-                                    'Log Out',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                  onPressed: () async {
-                                    logOut(context);
-                                  },
-                                ),
-                                */
-                                TextButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.red),
-                                  ),
-                                  child: Text(
-                                    'Delete your account',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                  onPressed: () async {
-                                    showAlertDialog(context);
-                                  },
-                                )
-                              ])
+                          TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red),
+                            ),
+                            child: Text(
+                              'Delete your account',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              showAlertDialog(context);
+                            },
+                          )
                         ]))));
           } else {
             getDataFromUser();

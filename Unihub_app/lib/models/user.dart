@@ -4,10 +4,11 @@ class UserApp {
   final String fullname;
   final String description;
   final String university;
+  final String school;
   final String degree;
   final String role;
-  final String subjectsDone;
-  final String subjectsRequested;
+  final List<dynamic> subjectsDone;
+  final List<dynamic> subjectsRequested;
   final String phone;
   String profilePhoto;
 
@@ -17,6 +18,7 @@ class UserApp {
       this.fullname,
       this.description,
       this.university,
+      this.school,
       this.degree,
       this.role,
       this.subjectsDone,
@@ -31,6 +33,7 @@ class UserApp {
       json['fullname'],
       json['description'],
       json['university'],
+      json['school'],
       json['degree'],
       json['role'],
       json['subjectsDone'],
@@ -47,6 +50,7 @@ class UserApp {
       'description': this.description,
       'university': this.university,
       'degree': this.degree,
+      'school': this.school,
       'role': this.role,
       'subjectsDone': this.subjectsDone,
       'subjectsRequested': this.subjectsRequested,

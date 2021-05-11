@@ -36,46 +36,69 @@ class Forum extends State<ForumScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
-        appBar: AppBar(
-          title: Text("Academic offering"),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(context: context, delegate: DataSearch());
-                })
-          ],
-        ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                padding: EdgeInsets.all(10),
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (OfferApp offer in listOffers)
-                          new OfferSection(
-                              offer.username,
-                              offer.university,
-                              offer.subject,
-                              offer.title,
-                              offer.description,
-                              offer.likes,
-                              offer.price
-                              ),
-                      ],
-                    )))),
-        floatingActionButton: FloatingActionButton(
-          heroTag: "btnAddOffer",
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).pushNamed('/addOffer');
-          },
-        ));
+                appBar: AppBar(
+                  title: Text("Academic offering"),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          showSearch(context: context, delegate: DataSearch());
+                        })
+                  ],
+                ),
+                body: SafeArea(
+                    child: SingleChildScrollView(
+                        padding: EdgeInsets.all(10),
+                        child: ConstrainedBox(
+                            constraints: BoxConstraints(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (OfferApp offer in listOffers)
+                                  new OfferSection(
+                                      offer.username,
+                                      offer.university,
+                                      offer.subject,
+                                      offer.title,
+                                      offer.description,
+                                      offer.likes,
+                                      offer.price.toString()),
+                              ],
+                            )))),
+                floatingActionButton: FloatingActionButton(
+                  heroTag: "btnAddOffer",
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/addOffer');
+                  },
+                ));
+          } else {
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text("Academic offering"),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          showSearch(context: context, delegate: DataSearch());
+                        })
+                  ],
+                ),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text('No offers found')],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  heroTag: "btnAddOffer",
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/addOffer');
+                  },
+                ));
+          }
+        });
   }
-});
-}}
+}
 
 class DataSearch extends SearchDelegate<String> {
   final subjects = [

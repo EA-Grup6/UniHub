@@ -33,11 +33,10 @@ class EditProfile extends State<EditProfileScreen> {
       getUniversities();
       _nameController.text = currentUser.fullname;
       _descriptionController.text = currentUser.description;
-      _universityController.text = currentUser.university;
-      _degreeController.text = currentUser.degree;
       _roleController.text = currentUser.role;
-      _subjectsdoneController.text = currentUser.subjectsDone;
-      _subjectsaskingController.text = currentUser.subjectsRequested;
+      subjectsAskingSelected =
+          new List<String>.from(currentUser.subjectsRequested);
+      subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
       _passwordController.text = currentUser.password;
       _phoneController.text = currentUser.phone;
     });
@@ -112,9 +111,6 @@ class EditProfile extends State<EditProfileScreen> {
   final TextEditingController _universityController = TextEditingController();
   final TextEditingController _degreeController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
-  final TextEditingController _subjectsdoneController = TextEditingController();
-  final TextEditingController _subjectsaskingController =
-      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
@@ -311,17 +307,34 @@ class EditProfile extends State<EditProfileScreen> {
                                       return Container();
                                     }
                                   }),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  controller: _roleController,
-                                  decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.only(bottom: 3),
-                                      labelText: "Role",
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always),
-                                ),
+                              FutureBuilder<List<String>>(
+                                future: getSubjects(degreeSelected),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Container(
+                                        child: Column(children: [
+                                      Text(subjectsDoneSelected == null ||
+                                              subjectsDoneSelected.length == 0
+                                          ? 'Subjects already done: No subjects selected'
+                                          : 'Subjects already done: ' +
+                                              subjectsDoneSelected
+                                                  .toString()
+                                                  .toString()),
+                                      ChipsChoice<String>.multiple(
+                                          wrapped: false,
+                                          value: subjectsDoneSelected,
+                                          onChanged: (val) => setState(
+                                              () => subjectsDoneSelected = val),
+                                          choiceItems:
+                                              C2Choice.listFrom<String, String>(
+                                                  source: subjectsList,
+                                                  value: (i, v) => v,
+                                                  label: (i, v) => v)),
+                                    ]));
+                                  } else {
+                                    return Container();
+                                  }
+                                },
                               ),
                               FutureBuilder<List<String>>(
                                 future: getSubjects(degreeSelected),
@@ -329,7 +342,13 @@ class EditProfile extends State<EditProfileScreen> {
                                   if (snapshot.hasData) {
                                     return Container(
                                         child: Column(children: [
-                                      Text('Subjects asking for'),
+                                      Text(subjectsAskingSelected == null ||
+                                              subjectsAskingSelected.length == 0
+                                          ? 'Subjects already done: No subjects selected'
+                                          : 'Subjects already done: ' +
+                                              subjectsAskingSelected
+                                                  .toString()
+                                                  .toString()),
                                       ChipsChoice<String>.multiple(
                                           wrapped: false,
                                           value: subjectsAskingSelected,
@@ -349,23 +368,11 @@ class EditProfile extends State<EditProfileScreen> {
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 child: TextFormField(
-                                  controller: _subjectsdoneController,
+                                  controller: _roleController,
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
-                                      labelText: "Subjects already done",
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  controller: _subjectsaskingController,
-                                  decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.only(bottom: 3),
-                                      labelText: "Subjects asking for",
+                                      labelText: "Role",
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -466,10 +473,11 @@ class EditProfile extends State<EditProfileScreen> {
                                           _nameController.text,
                                           _descriptionController.text,
                                           _universityController.text,
+                                          schoolSelected,
                                           _degreeController.text,
                                           _roleController.text,
-                                          _subjectsdoneController.text,
-                                          _subjectsaskingController.text,
+                                          subjectsDoneSelected,
+                                          subjectsAskingSelected,
                                           _phoneController.text,
                                         );
                                         http.Response response =

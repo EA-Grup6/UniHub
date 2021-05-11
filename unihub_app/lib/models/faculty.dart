@@ -1,5 +1,3 @@
-import 'package:unihub_app/models/degree.dart';
-
 class Faculty {
   final String name;
   final List<dynamic> degrees;
