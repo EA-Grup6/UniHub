@@ -4,7 +4,8 @@ import { isJSDocAugmentsTag } from 'typescript'
 
 export async function startConnection(){
 //127.0.0.1
-    const db = await mongoose.connect('mongodb://mongo:27017/UniHub',{ 
+//mongo
+    const db = await mongoose.connect('mongodb://unihub_mongo_1:27017/UniHub',{ 
         useNewUrlParser: true,
         useFindAndModify: false
     })
