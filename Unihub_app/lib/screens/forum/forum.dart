@@ -53,7 +53,7 @@ class Forum extends State<ForumScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                for (OfferApp offer in snapshot.data)
+                                for (OfferApp offer in snapshot.data.reversed)
                                   new OfferSection(
                                     offer.username,
                                     offer.university,
