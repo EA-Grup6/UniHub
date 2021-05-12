@@ -14,10 +14,10 @@ export async function createFeed (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                let {content, username} = req.body;
+                let {content, username, date} = req.body;
                 let newFeed = new FeedPublication();
                 newFeed.content= content;
-                newFeed.publicationDate= new Date();
+                newFeed.publicationDate= date;
                 newFeed.username=username;
                 newFeed.likes= [];
                 newFeed.comments= [];

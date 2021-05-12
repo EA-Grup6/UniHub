@@ -12,8 +12,11 @@ class FeedScreen extends StatefulWidget {
 }
 
 class Feed extends State<FeedScreen> {
+  String username;
+
   @override
   void initState() {
+    getUsername();
     getAllFeeds();
     //Aquí se llama a la API cuando cargamos esta vista
     super.initState();
@@ -21,7 +24,7 @@ class Feed extends State<FeedScreen> {
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('username');
+    this.username = prefs.getString('username');
   }
 
   final TextEditingController contentController = TextEditingController();
@@ -54,12 +57,16 @@ class Feed extends State<FeedScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              for (FeedPublication publication in snapshot.data)
+                              for (FeedPublication publication
+                                  in snapshot.data.reversed)
                                 new FeedPostSection(
-                                    publication.username,
-                                    publication.content,
-                                    publication.likes,
-                                    publication.comments),
+                                  publication.username,
+                                  publication.content,
+                                  publication.publicationDate,
+                                  publication.likes,
+                                  publication.comments,
+                                  this.username,
+                                ),
                             ],
                           )))),
               floatingActionButton: FloatingActionButton(
@@ -98,8 +105,8 @@ class Feed extends State<FeedScreen> {
       child: Text("Create new post"),
       onPressed: () async {
         //Submit post
-        await FeedController()
-            .createFeedPub(await getUsername(), contentController.text);
+        await FeedController().createFeedPub(await getUsername(),
+            contentController.text, DateTime.now().toString());
         Navigator.pop(context);
       },
     );
