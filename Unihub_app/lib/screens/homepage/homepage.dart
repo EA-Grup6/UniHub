@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../forum/forum.dart';
 import '../profile/profile.dart';
 import '../feed/feed.dart';
+import '../search/search.dart';
 
 class HomepageScreen extends StatefulWidget {
   Homepage createState() => Homepage();
@@ -12,8 +13,8 @@ class Homepage extends State<HomepageScreen> {
   final List<Widget> screens = [
     FeedScreen(),
     //  Chat(),
-    // Search()
-    ProfileScreen()
+    SearchScreen(),
+    ProfileScreen(),
   ];
   //
   final PageStorageBucket bucket = PageStorageBucket();
@@ -67,7 +68,7 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      //currentScreen =0;
+                      currentScreen = SearchScreen();
                       currentTab = 1;
                     });
                   },
