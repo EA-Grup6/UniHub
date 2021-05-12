@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:unihub_app/controllers/feed_controller.dart';
 
 class FeedPostSection extends StatelessWidget {
   Image _image;
+  final String _id;
   final String _usernamePub;
   final String _content;
   final DateTime publicationDate;
@@ -10,8 +12,8 @@ class FeedPostSection extends StatelessWidget {
   final List<dynamic> _comments;
   final String _usernameWatch;
 
-  FeedPostSection(this._usernamePub, this._content, this.publicationDate,
-      this._likes, this._comments, this._usernameWatch);
+  FeedPostSection(this._id, this._usernamePub, this._content,
+      this.publicationDate, this._likes, this._comments, this._usernameWatch);
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +51,19 @@ class FeedPostSection extends StatelessWidget {
               subtitle: Text(this._content),
               trailing: (this._usernamePub == this._usernameWatch)
                   ? IconButton(
-                      icon: Icon(Icons.expand_more),
+                      icon: Icon(Icons.delete_outline),
                       splashColor: Colors.transparent,
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        showAlertDialog(context);
+                      },
                     )
                   : IconButton(
                       icon: Icon(null),
+                      splashColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       onPressed: () {},
                     )),
           Row(
@@ -91,5 +98,36 @@ class FeedPostSection extends StatelessWidget {
                     })
               ])
         ]));
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget submitButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () async {
+        //delete post
+        await FeedController().deleteFeedPost(this._id);
+        Navigator.pop(context);
+      },
+    );
+    Widget dismissButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+        content: Text('Are you sure that you want to delete this post?'),
+        actions: [dismissButton, submitButton]);
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

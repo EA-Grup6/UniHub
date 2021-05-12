@@ -62,6 +62,7 @@ class Feed extends State<FeedScreen> {
                               for (FeedPublication publication
                                   in snapshot.data.reversed)
                                 new FeedPostSection(
+                                  publication.id,
                                   publication.username,
                                   publication.content,
                                   publication.publicationDate,
