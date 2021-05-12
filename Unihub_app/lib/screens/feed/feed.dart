@@ -24,7 +24,9 @@ class Feed extends State<FeedScreen> {
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    this.username = prefs.getString('username');
+    setState(() {
+      this.username = prefs.getString('username');
+    });
   }
 
   final TextEditingController contentController = TextEditingController();
@@ -105,8 +107,8 @@ class Feed extends State<FeedScreen> {
       child: Text("Create new post"),
       onPressed: () async {
         //Submit post
-        await FeedController().createFeedPub(await getUsername(),
-            contentController.text, DateTime.now().toString());
+        await FeedController().createFeedPub(
+            this.username, contentController.text, DateTime.now().toString());
         Navigator.pop(context);
       },
     );
