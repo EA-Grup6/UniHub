@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/models/feedPublication.dart';
 
 class SearchFeedPubsScreen extends StatelessWidget {
+  List<FeedPublication> listaPubs;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

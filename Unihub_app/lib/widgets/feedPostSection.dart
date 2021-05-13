@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
@@ -64,7 +67,7 @@ class FeedPostSection extends StatelessWidget {
                       splashColor: Colors.transparent,
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {},
+                      enableFeedback: false,
                     )),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -106,8 +109,9 @@ class FeedPostSection extends StatelessWidget {
       child: Text("Yes"),
       onPressed: () async {
         //delete post
-        await FeedController().deleteFeedPost(this._id);
-        Navigator.pop(context);
+        await FeedController().deleteFeedPost(this._id).whenComplete(() {
+          Navigator.pop(context);
+        });
       },
     );
     Widget dismissButton = TextButton(

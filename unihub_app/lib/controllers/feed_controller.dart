@@ -15,7 +15,6 @@ class FeedController {
 
   Future<dynamic> getFeedPubs() async {
     final http.Response response = await _helper.get('/Feed/getAllFeeds');
-    print("Response: " + response.body);
     return response;
   }
 

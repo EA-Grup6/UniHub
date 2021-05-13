@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/feedPublication.dart';
@@ -36,7 +35,7 @@ class Feed extends State<FeedScreen> {
     List<FeedPublication> preFeedList = [];
     for (var feedPub in jsonDecode(response.body)) {
       preFeedList.add(FeedPublication.fromMap(feedPub));
-      print(FeedPublication.fromMap(feedPub));
+      print(FeedPublication.fromMap(feedPub).toJSON().toString());
     }
     return preFeedList;
   }
@@ -103,14 +102,20 @@ class Feed extends State<FeedScreen> {
   }
 
   showAlertDialog(BuildContext context) {
+    contentController.text = '';
     // set up the buttons
     Widget submitButton = TextButton(
       child: Text("Create new post"),
       onPressed: () async {
         //Submit post
-        await FeedController().createFeedPub(
-            this.username, contentController.text, DateTime.now().toString());
-        Navigator.pop(context);
+        await FeedController()
+            .createFeedPub(this.username, contentController.text,
+                DateTime.now().toString())
+            .whenComplete(() {
+          this.build(this.context);
+          Navigator.pop(context);
+        });
+        this.initState();
       },
     );
     Widget dismissButton = TextButton(

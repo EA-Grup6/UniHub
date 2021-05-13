@@ -99,7 +99,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.filter_alt_outlined),
               onPressed: () {},
             )
           ]),
