@@ -27,6 +27,7 @@ async function createUser(req, res) {
     newUser.phone = '';
     newUser.following = [];
     newUser.followers = [];
+    newUser.profilePhoto = "https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg";
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
@@ -98,7 +99,7 @@ async function deleteUser(req, res) {
 }
 exports.deleteUser = deleteUser;
 async function updateUser(req, res) {
-    let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone } = req.body;
+    let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone, profilePhoto } = req.body;
     const Btoken = req.headers['authorization'];
     const updateData = {
         password: password,
@@ -109,7 +110,8 @@ async function updateUser(req, res) {
         role: role,
         subjectsDone: subjectsDone,
         subjectsRequested: subjectsRequested,
-        phone: phone
+        phone: phone,
+        profilePhoto: profilePhoto
     };
     console.log(updateData);
     if (typeof Btoken !== undefined) {

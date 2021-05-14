@@ -23,7 +23,8 @@ class UserApp {
       this.role,
       this.subjectsDone,
       this.subjectsRequested,
-      this.phone);
+      this.phone,
+      this.profilePhoto);
 
   factory UserApp.fromMap(Map<String, dynamic> json) {
     print(json['username']);
@@ -39,6 +40,7 @@ class UserApp {
       json['subjectsDone'],
       json['subjectsRequested'],
       json['phone'],
+      json['profilePhoto'],
     );
   }
 
@@ -54,7 +56,8 @@ class UserApp {
       'role': this.role,
       'subjectsDone': this.subjectsDone,
       'subjectsRequested': this.subjectsRequested,
-      'phone': this.phone
+      'phone': this.phone,
+      'profilePhoto': this.profilePhoto,
     };
     return newJSON;
   }

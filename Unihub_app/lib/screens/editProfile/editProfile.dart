@@ -9,6 +9,8 @@ import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -25,6 +27,8 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class EditProfile extends State<EditProfileScreen> {
+  final cloudinary = CloudinaryPublic('unihub-ea', 'ml_default', cache: false);
+
   @override
   void initState() {
     getValidationData().whenComplete(() async {
@@ -126,6 +130,7 @@ class EditProfile extends State<EditProfileScreen> {
   String degreeSelected;
   List<String> subjectsAskingSelected;
   List<String> subjectsDoneSelected;
+  String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +193,7 @@ class EditProfile extends State<EditProfileScreen> {
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
-                                                  "https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg"))),
+                                                  currentUser.profilePhoto))),
                                     ),
                                     Positioned(
                                         bottom: 0,
@@ -196,6 +201,7 @@ class EditProfile extends State<EditProfileScreen> {
                                         child: Container(
                                           height: 40,
                                           width: 40,
+                                          alignment: Alignment.center,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
@@ -203,9 +209,38 @@ class EditProfile extends State<EditProfileScreen> {
                                                   color: Theme.of(context)
                                                       .scaffoldBackgroundColor),
                                               color: Colors.blue),
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.white,
+                                          child: IconButton(
+                                            alignment: Alignment.center,
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () async {
+                                              var image = await ImagePicker()
+                                                  .getImage(
+                                                      source:
+                                                          ImageSource.camera);
+                                              try {
+                                                CloudinaryResponse response =
+                                                    await cloudinary.uploadFile(
+                                                        CloudinaryFile.fromFile(
+                                                            image.path,
+                                                            resourceType:
+                                                                CloudinaryResourceType
+                                                                    .Image));
+                                                createToast(
+                                                    'Image correctly uploaded',
+                                                    Colors.green);
+                                                currentUser.profilePhoto =
+                                                    response.url;
+                                              } on CloudinaryException catch (e) {
+                                                print(e.message);
+                                                print(e.request);
+                                                createToast(
+                                                    'Error while uploading the image',
+                                                    Colors.red);
+                                              }
+                                            },
                                           ),
                                         ))
                                   ],
@@ -486,6 +521,7 @@ class EditProfile extends State<EditProfileScreen> {
                                           subjectsDoneSelected,
                                           subjectsAskingSelected,
                                           _phoneController.text,
+                                          currentUser.profilePhoto,
                                         );
                                         http.Response response =
                                             await EditProfileController()
