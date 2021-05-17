@@ -48,7 +48,6 @@ class SearchFeedPubsScreen extends StatelessWidget {
                                     publication.publicationDate,
                                     publication.likes,
                                     publication.comments,
-                                    this.username,
                                   ),
                               ],
                             )))),

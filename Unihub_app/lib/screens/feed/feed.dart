@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/feedPublication.dart';
+import 'package:unihub_app/screens/addOffer/addOffer.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +13,11 @@ class FeedScreen extends StatefulWidget {
 
 class Feed extends State<FeedScreen> {
   String username;
+  List<FeedPublication> pubsList;
 
   @override
   void initState() {
     getUsername();
-    getAllFeeds();
     //Aquí se llama a la API cuando cargamos esta vista
     super.initState();
   }
@@ -26,6 +27,7 @@ class Feed extends State<FeedScreen> {
     setState(() {
       this.username = prefs.getString('username');
     });
+    return this.username;
   }
 
   final TextEditingController contentController = TextEditingController();
@@ -35,7 +37,6 @@ class Feed extends State<FeedScreen> {
     List<FeedPublication> preFeedList = [];
     for (var feedPub in jsonDecode(response.body)) {
       preFeedList.add(FeedPublication.fromMap(feedPub));
-      print(FeedPublication.fromMap(feedPub).toJSON().toString());
     }
     return preFeedList;
   }
@@ -51,31 +52,54 @@ class Feed extends State<FeedScreen> {
                 title: Text("Feed"),
               ),
               body: SafeArea(
-                  child: SingleChildScrollView(
-                      padding: EdgeInsets.all(10),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              for (FeedPublication publication
-                                  in snapshot.data.reversed)
-                                new FeedPostSection(
-                                  publication.id,
-                                  publication.username,
-                                  publication.content,
-                                  publication.publicationDate,
-                                  publication.likes,
-                                  publication.comments,
-                                  this.username,
-                                ),
-                            ],
-                          )))),
+                  child: ListView.builder(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        if (snapshot.data.reversed.elementAt(index).username ==
+                            this.username) {
+                          this.pubsList = new List<FeedPublication>.from(
+                              snapshot.data.reversed);
+                          return new Dismissible(
+                              key: ObjectKey(this.pubsList.elementAt(index)),
+                              child: new FeedPostSection(
+                                  this.pubsList.elementAt(index).id,
+                                  this.pubsList.elementAt(index).username,
+                                  this.pubsList.elementAt(index).content,
+                                  this
+                                      .pubsList
+                                      .elementAt(index)
+                                      .publicationDate,
+                                  this.pubsList.elementAt(index).likes,
+                                  this.pubsList.elementAt(index).comments),
+                              confirmDismiss: (direction) {
+                                if (this.pubsList.elementAt(index).username ==
+                                    this.username) {
+                                  return showDeletePostAlertDialog(
+                                      context, index);
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onDismissed: (direction) {});
+                        } else {
+                          return new FeedPostSection(
+                            snapshot.data.reversed.elementAt(index).id,
+                            snapshot.data.reversed.elementAt(index).username,
+                            snapshot.data.reversed.elementAt(index).content,
+                            snapshot.data.reversed
+                                .elementAt(index)
+                                .publicationDate,
+                            snapshot.data.reversed.elementAt(index).likes,
+                            snapshot.data.reversed.elementAt(index).comments,
+                          );
+                        }
+                      })),
               floatingActionButton: FloatingActionButton(
                 heroTag: "btnAddFeed",
                 child: Icon(Icons.add),
                 onPressed: () {
-                  showAlertDialog(context);
+                  showNewPostAlertDialog(context);
                 },
               ));
         } else {
@@ -84,16 +108,20 @@ class Feed extends State<FeedScreen> {
                 title: Text("Feed"),
               ),
               body: Container(
-                  child: Column(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              /*child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [Text('No posts available')],
-              )),
+              )),*/
               floatingActionButton: FloatingActionButton(
                 heroTag: "btnAddFeed",
                 child: Icon(Icons.add),
                 onPressed: () {
-                  showAlertDialog(context);
+                  showNewPostAlertDialog(context);
                 },
               ));
         }
@@ -101,23 +129,26 @@ class Feed extends State<FeedScreen> {
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  showNewPostAlertDialog(BuildContext context) {
     contentController.text = '';
     // set up the buttons
     Widget submitButton = TextButton(
-      child: Text("Create new post"),
-      onPressed: () async {
-        //Submit post
-        await FeedController()
-            .createFeedPub(this.username, contentController.text,
-                DateTime.now().toString())
-            .whenComplete(() {
-          this.build(this.context);
+        child: Text("Create new post"),
+        onPressed: () async {
+          //Submit post
+          http.Response response = await FeedController().createFeedPub(
+              this.username, contentController.text, DateTime.now().toString());
+          if (response.statusCode == 200) {
+            createToast('Post correctly uploaded', Colors.green);
+            setState(() {
+              print(jsonDecode(response.body));
+              pubsList.insert(
+                  0, FeedPublication.fromMap(jsonDecode(response.body)));
+            });
+          }
           Navigator.pop(context);
         });
-        this.initState();
-      },
-    );
+
     Widget dismissButton = TextButton(
       child: Text("Discard post"),
       onPressed: () {
@@ -138,6 +169,43 @@ class Feed extends State<FeedScreen> {
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
         ),
+        actions: [dismissButton, submitButton]);
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showDeletePostAlertDialog(BuildContext context, int index) {
+    // set up the buttons
+    Widget submitButton = TextButton(
+      child: Text("Yes"),
+      onPressed: () async {
+        //delete post
+        await FeedController()
+            .deleteFeedPost(this.pubsList.elementAt(index).id)
+            .whenComplete(() {
+          setState(() {
+            this.pubsList.removeAt(index);
+          });
+          Navigator.pop(context);
+        });
+      },
+    );
+    Widget dismissButton = TextButton(
+      child: Text("No"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+        content: Text('Are you sure that you want to delete this post?'),
         actions: [dismissButton, submitButton]);
 
     // show the dialog

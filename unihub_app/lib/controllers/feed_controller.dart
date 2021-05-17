@@ -10,7 +10,7 @@ class FeedController {
     print(body);
     final http.Response response = await _helper.post('/Feed/newFeed', body);
     print("Estoy en response " + response.body);
-    return response.statusCode;
+    return response;
   }
 
   Future<dynamic> getFeedPubs() async {

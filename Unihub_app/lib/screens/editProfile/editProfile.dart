@@ -12,7 +12,6 @@ import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:unihub_app/screens/profile/profile.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -109,12 +108,12 @@ class EditProfile extends State<EditProfileScreen> {
     return subjectsList;
   }
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _roleController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _password2Controller = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _roleController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _password2Controller = TextEditingController();
   String universitySelected;
   String schoolSelected;
   String degreeSelected;
@@ -123,17 +122,18 @@ class EditProfile extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final UserApp currentUser =
-        ModalRoute.of(context).settings.arguments as UserApp;
-    _nameController.text = currentUser.fullname;
-    _descriptionController.text = currentUser.description;
-    _roleController.text = currentUser.role;
-    universitySelected = currentUser.university;
-    subjectsAskingSelected =
-        new List<String>.from(currentUser.subjectsRequested);
-    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
-    _passwordController.text = currentUser.password;
-    _phoneController.text = currentUser.phone;
+    UserApp currentUser = ModalRoute.of(context).settings.arguments as UserApp;
+    setState(() {
+      _nameController.text = currentUser.fullname;
+      _descriptionController.text = currentUser.description;
+      _roleController.text = currentUser.role;
+      universitySelected = currentUser.university;
+      subjectsAskingSelected =
+          new List<String>.from(currentUser.subjectsRequested);
+      subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
+      _passwordController.text = currentUser.password;
+      _phoneController.text = currentUser.phone;
+    });
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -531,14 +531,13 @@ class EditProfile extends State<EditProfileScreen> {
                                         if (response.statusCode == 200) {
                                           createToast("User correctly updated",
                                               Colors.green);
-                                          Navigator.pushAndRemoveUntil(
+                                          Navigator.pop(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       HomepageScreen(),
                                                   settings: RouteSettings(
-                                                      arguments: updatedUser)),
-                                              (Route<dynamic> route) => false);
+                                                      arguments: updatedUser)));
                                         } else {
                                           createToast(
                                               response.body, Colors.red);

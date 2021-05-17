@@ -24,11 +24,11 @@ class Homepage extends State<HomepageScreen> {
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context).settings.arguments != null) {
-      currentTab = 3;
-      currentScreen = ProfileScreen();
-    } else {
-      currentTab = 0;
-    }
+      setState(() {
+        currentTab = 3;
+        currentScreen = ProfileScreen();
+      });
+    } else {}
     return Scaffold(
       body: SafeArea(
           child: PageStorage(

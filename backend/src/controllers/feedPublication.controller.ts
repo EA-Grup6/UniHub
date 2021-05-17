@@ -22,8 +22,8 @@ export async function createFeed (req: any, res: Response){
                 newFeed.likes= [];
                 newFeed.comments= [];
                 try{
-                    await newFeed.save();
-                    return res.status(200).send({message: "Feed Publicado correctamente"});
+                    let feedMod = await newFeed.save();
+                    return res.status(200).header('Content Type - application/json').send(feedMod);
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
                 }
