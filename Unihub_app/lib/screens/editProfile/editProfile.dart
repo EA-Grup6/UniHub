@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -47,6 +48,17 @@ class EditProfile extends State<EditProfileScreen> {
     setState(() {
       finalUsername = username;
     });
+    currentUser = ModalRoute.of(this.context).settings.arguments as UserApp;
+    //currentUser = new UserApp.fromMap(jsonDecode(await EditProfileController().getProfile(finalUsername)));
+    _nameController.text = currentUser.fullname;
+    _descriptionController.text = currentUser.description;
+    _roleController.text = currentUser.role;
+    _passwordController.text = currentUser.password;
+    _phoneController.text = currentUser.phone;
+    universitySelected = currentUser.university;
+    subjectsAskingSelected =
+        new List<String>.from(currentUser.subjectsRequested);
+    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
   }
 
   Future getUniversities() async {
@@ -122,18 +134,6 @@ class EditProfile extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserApp currentUser = ModalRoute.of(context).settings.arguments as UserApp;
-    setState(() {
-      _nameController.text = currentUser.fullname;
-      _descriptionController.text = currentUser.description;
-      _roleController.text = currentUser.role;
-      universitySelected = currentUser.university;
-      subjectsAskingSelected =
-          new List<String>.from(currentUser.subjectsRequested);
-      subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
-      _passwordController.text = currentUser.password;
-      _phoneController.text = currentUser.phone;
-    });
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -174,27 +174,26 @@ class EditProfile extends State<EditProfileScreen> {
                                 child: Stack(
                                   children: [
                                     Container(
-                                      width: 130,
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 4,
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                spreadRadius: 2,
-                                                blurRadius: 10,
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                offset: Offset(0, 2))
-                                          ],
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  currentUser.profilePhoto))),
-                                    ),
+                                        width: 130,
+                                        height: 130,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 4,
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  spreadRadius: 2,
+                                                  blurRadius: 10,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  offset: Offset(0, 2))
+                                            ],
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(currentUser
+                                                    .profilePhoto)))),
                                     Positioned(
                                         bottom: 0,
                                         right: 0,
