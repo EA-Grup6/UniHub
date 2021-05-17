@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SearchOffersScreen extends StatelessWidget {
+  final String keyword;
+
+  SearchOffersScreen(this.keyword);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

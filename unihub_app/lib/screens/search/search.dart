@@ -47,6 +47,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  String keyword;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -58,10 +60,10 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
             controller: _tabController,
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(50), // Creates border
-              color: Colors.white,
+              color: Colors.blue,
             ),
-            labelColor: Colors.blue,
-            unselectedLabelColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.blue,
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -81,7 +83,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onPressed: () {
-                            //Aqui llamo a la busqueda
+                            keyword = _searchController.text;
                           },
                         )
                       : null,
@@ -105,9 +107,9 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
           ]),
         ),
         body: TabBarView(controller: _tabController, children: [
-          SearchFeedPubsScreen(),
-          SearchOffersScreen(),
-          SearchProfilesScreen()
+          SearchFeedPubsScreen(keyword),
+          SearchOffersScreen(keyword),
+          SearchProfilesScreen(keyword)
         ]),
       ),
     );

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
-import 'package:cloudinary_public/cloudinary_public.dart';
 
 UserApp currentUser;
 
@@ -21,8 +21,6 @@ class Profile extends State<ProfileScreen> {
     getDataFromUser();
     super.initState();
   }
-
-  final cloudinary = CloudinaryPublic('unihub-ea', 'ml_default', cache: false);
 
   Future<UserApp> getDataFromUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -45,7 +43,12 @@ class Profile extends State<ProfileScreen> {
                     IconButton(
                         icon: Icon(Icons.brush_rounded),
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/editProfile');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditProfileScreen(),
+                                  settings:
+                                      RouteSettings(arguments: currentUser)));
                         }),
                     IconButton(
                         icon: Icon(Icons.settings),

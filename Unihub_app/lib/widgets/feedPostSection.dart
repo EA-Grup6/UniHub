@@ -73,7 +73,7 @@ class FeedPostSection extends StatelessWidget {
                           enableFeedback: false,
                         )),
               Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     IconButton(
                         icon: Icon(Icons.favorite_outline_rounded),

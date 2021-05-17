@@ -7,10 +7,12 @@ import 'package:unihub_app/models/Faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:unihub_app/screens/profile/profile.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -27,24 +29,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class EditProfile extends State<EditProfileScreen> {
-  final cloudinary = CloudinaryPublic('unihub-ea', 'ml_default', cache: false);
+  final cloudinary = CloudinaryPublic('unihub-ea', 'vempgg1i', cache: false);
 
   @override
   void initState() {
     getValidationData().whenComplete(() async {
-      currentUser = UserApp.fromMap(
-          jsonDecode(await EditProfileController().getProfile(finalUsername)));
-      getUniversities();
-      _nameController.text = currentUser.fullname;
-      _descriptionController.text = currentUser.description;
-      _roleController.text = currentUser.role;
-      subjectsAskingSelected =
-          new List<String>.from(currentUser.subjectsRequested);
-      subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
-      universitySelected = currentUser.university;
-
-      _passwordController.text = currentUser.password;
-      _phoneController.text = currentUser.phone;
+      await getUniversities();
     });
     super.initState();
   }
@@ -130,10 +120,20 @@ class EditProfile extends State<EditProfileScreen> {
   String degreeSelected;
   List<String> subjectsAskingSelected;
   List<String> subjectsDoneSelected;
-  String imageUrl;
 
   @override
   Widget build(BuildContext context) {
+    final UserApp currentUser =
+        ModalRoute.of(context).settings.arguments as UserApp;
+    _nameController.text = currentUser.fullname;
+    _descriptionController.text = currentUser.description;
+    _roleController.text = currentUser.role;
+    universitySelected = currentUser.university;
+    subjectsAskingSelected =
+        new List<String>.from(currentUser.subjectsRequested);
+    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
+    _passwordController.text = currentUser.password;
+    _phoneController.text = currentUser.phone;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -394,8 +394,9 @@ class EditProfile extends State<EditProfileScreen> {
                                       ChipsChoice<String>.multiple(
                                           wrapped: false,
                                           value: subjectsAskingSelected,
-                                          onChanged: (val) => setState(() =>
-                                              subjectsAskingSelected = val),
+                                          onChanged: (val) => setState(() {
+                                                subjectsAskingSelected = val;
+                                              }),
                                           choiceItems:
                                               C2Choice.listFrom<String, String>(
                                                   source: subjectsList,
@@ -509,6 +510,7 @@ class EditProfile extends State<EditProfileScreen> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
+                                        print(_nameController.text);
                                         UserApp updatedUser = new UserApp(
                                           currentUser.username,
                                           _passwordController.text,
@@ -529,7 +531,14 @@ class EditProfile extends State<EditProfileScreen> {
                                         if (response.statusCode == 200) {
                                           createToast("User correctly updated",
                                               Colors.green);
-                                          Navigator.of(context).pop();
+                                          Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomepageScreen(),
+                                                  settings: RouteSettings(
+                                                      arguments: updatedUser)),
+                                              (Route<dynamic> route) => false);
                                         } else {
                                           createToast(
                                               response.body, Colors.red);

@@ -9,7 +9,6 @@ ApiBaseHelper _helper = ApiBaseHelper();
 class EditProfileController {
   Future<dynamic> getProfile(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('jwt');
     final http.Response response = await _helper.get('/User/getUser/$username');
     print("Response: " + response.body);
     return response.body;

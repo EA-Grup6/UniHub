@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/screens/profile/profile.dart';
 import '../forum/forum.dart';
 import '../profile/profile.dart';
 import '../feed/feed.dart';
@@ -22,6 +23,12 @@ class Homepage extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (ModalRoute.of(context).settings.arguments != null) {
+      currentTab = 3;
+      currentScreen = ProfileScreen();
+    } else {
+      currentTab = 0;
+    }
     return Scaffold(
       body: SafeArea(
           child: PageStorage(
