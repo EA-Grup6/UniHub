@@ -49,7 +49,6 @@ class EditProfile extends State<EditProfileScreen> {
       finalUsername = username;
     });
     currentUser = ModalRoute.of(this.context).settings.arguments as UserApp;
-    //currentUser = new UserApp.fromMap(jsonDecode(await EditProfileController().getProfile(finalUsername)));
     _nameController.text = currentUser.fullname;
     _descriptionController.text = currentUser.description;
     _roleController.text = currentUser.role;
