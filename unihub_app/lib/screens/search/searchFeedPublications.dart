@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
@@ -15,9 +17,14 @@ class SearchFeedPubsScreen extends StatelessWidget {
     this.username = prefs.getString('username');
   }
 
-  initializeListAndUser() async {
+  Future<List<FeedPublication>> initializeListAndUser() async {
     getUsername();
-    List<FeedPublication> pubsList = await FeedController().getFeedPubs();
+
+    http.Response response = await FeedController().getFeedPubs();
+    List<FeedPublication> pubsList = [];
+    for (var feedPub in jsonDecode(response.body)) {
+      pubsList.add(FeedPublication.fromMap(feedPub));
+    }
     List<FeedPublication> filteredPubList =
         pubsList.where((FeedPublication) => pubsList.contains(keyword));
     return filteredPubList;

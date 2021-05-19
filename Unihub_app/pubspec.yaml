@@ -38,17 +38,9 @@ dependencies:
   provider: ^5.0.0
   firebase_storage: ^8.1.0
   firebase_core: ^1.2.0
-<<<<<<< Updated upstream
-  scoped_model: ^1.0.1
-  flutter_socket_io: ^0.6.0
-=======
-<<<<<<< HEAD
   google_maps_flutter: ^2.0.5
-=======
   scoped_model: ^1.0.1
   flutter_socket_io: ^0.6.0
->>>>>>> b3dc149399e33b72aec04afd5c912f94679ee2a9
->>>>>>> Stashed changes
 
 dev_dependencies:
   flutter_test:

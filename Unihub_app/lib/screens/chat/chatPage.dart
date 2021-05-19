@@ -18,7 +18,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildSingleMessage(Message message) {
     return Container(
-      alignment: message.senderID == widget.friend.chatID
+      alignment: message.senderID == widget.friend.username
           ? Alignment.centerLeft
           : Alignment.centerRight,
       padding: EdgeInsets.all(10.0),
@@ -31,7 +31,7 @@ class _ChatPageState extends State<ChatPage> {
     return ScopedModelDescendant<ChatController>(
       builder: (context, child, model) {
         List<Message> messages =
-            model.getMessagesForChatID(widget.friend.chatID);
+            model.getMessagesForChatID(widget.friend.username);
 
         return Container(
           height: MediaQuery.of(context).size.height * 0.75,
@@ -62,7 +62,7 @@ class _ChatPageState extends State<ChatPage> {
               FloatingActionButton(
                 onPressed: () {
                   model.sendMessage(
-                      textEditingController.text, widget.friend.chatID);
+                      textEditingController.text, widget.friend.username);
                   textEditingController.text = '';
                 },
                 elevation: 0,
@@ -79,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.friend.name),
+        title: Text(widget.friend.fullname),
       ),
       body: ListView(
         children: <Widget>[
@@ -89,3 +89,4 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+}

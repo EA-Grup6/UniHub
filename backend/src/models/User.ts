@@ -15,7 +15,6 @@ const schema = new Schema({
     isAdmin: Boolean,
     followers: Array,
     following: Array,
-    profilePhoto: String,
     //Coins: Number
 }, {collection: 'users'});
 
@@ -34,7 +33,6 @@ interface IUser extends Document {
     phone: string,
     followers: Array<string>;
     following: Array<string>;
-    profilePhoto: String;
     //Coins: Number
 }
 

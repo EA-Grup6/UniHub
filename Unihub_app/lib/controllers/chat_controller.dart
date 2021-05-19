@@ -8,8 +8,8 @@ import '../models/user.dart';
 import '../models/message.dart';
 
 class ChatController extends Model {
-  List<UserApp> friendList = List<UserApp>();
-  List<Message> messages = List<Message>();
+  List<UserApp> friendList = [];
+  List<Message> messages = [];
   SocketIO socketIO;
 
   SharedPreferences currentUser =

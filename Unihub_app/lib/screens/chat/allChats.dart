@@ -21,7 +21,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return chatPage(friend);
+          return ChatPage(friend);
         },
       ),
     );
@@ -35,7 +35,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
           itemBuilder: (BuildContext context, int index) {
             UserApp friend = model.friendList[index];
             return ListTile(
-              title: Text(friend.name),
+              title: Text(friend.fullname),
               onTap: () => friendClicked(friend),
             );
           },

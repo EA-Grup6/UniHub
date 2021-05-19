@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,8 @@ import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 String finalUsername;
 UserApp currentUser;
@@ -31,6 +33,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class EditProfile extends State<EditProfileScreen> {
   final cloudinary = CloudinaryPublic('unihub-ea', 'vempgg1i', cache: false);
+  fb.FirebaseStorage storage = fb.FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -42,83 +45,6 @@ class EditProfile extends State<EditProfileScreen> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isHidden = true;
-
-  Future getValidationData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var username = preferences.getString('username');
-    setState(() {
-      finalUsername = username;
-    });
-    currentUser = ModalRoute.of(this.context).settings.arguments as UserApp;
-    _nameController.text = currentUser.fullname;
-    _descriptionController.text = currentUser.description;
-    _roleController.text = currentUser.role;
-    _passwordController.text = currentUser.password;
-    _phoneController.text = currentUser.phone;
-    universitySelected = currentUser.university;
-    subjectsAskingSelected =
-        new List<String>.from(currentUser.subjectsRequested);
-    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
-  }
-
-  Future getUniversities() async {
-    universitiesList = [];
-    universitiesNamesList = [];
-    schoolsNamesList = [];
-    degreesList = [];
-    degreesNamesList = [];
-    subjectsList = [];
-    http.Response response = await EditProfileController().getUniversities();
-    for (var university in jsonDecode(response.body)) {
-      universitiesList.add(University.fromMap(university));
-      universitiesNamesList.add(University.fromMap(university).name);
-      print(universitiesNamesList);
-    }
-    if (universitySelected != null) {
-      getSchools(universitySelected);
-      if (schoolSelected != null) {
-        getDegrees(schoolSelected);
-        if (degreeSelected != null) {
-          getSubjects(degreeSelected);
-        }
-      }
-    }
-  }
-
-  Future getSchools(String uniName) async {
-    schoolsNamesList = [];
-    degreesList = [];
-    degreesNamesList = [];
-    subjectsList = [];
-    for (var university in universitiesList) {
-      if (university.name == uniName) {
-        schoolsNamesList = new List<String>.from(university.schools);
-      }
-    }
-    print(schoolsNamesList);
-  }
-
-  Future<List<String>> getDegrees(String schoolParam) async {
-    degreesList = [];
-    degreesNamesList = [];
-    subjectsList = [];
-    http.Response response =
-        await EditProfileController().getSchool(schoolParam);
-    Faculty school = Faculty.fromMap(jsonDecode(response.body));
-    degreesNamesList = new List<String>.from(school.degrees);
-    print(degreesNamesList);
-    return degreesNamesList;
-  }
-
-  Future<List<String>> getSubjects(String degreeParam) async {
-    subjectsList = [];
-    http.Response response =
-        await EditProfileController().getDegree(degreeParam);
-    Degree degree = Degree.fromMap(jsonDecode(response.body));
-    subjectsList = new List<String>.from(degree.subjects);
-    print(subjectsList);
-    return subjectsList;
-  }
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -192,6 +118,7 @@ class EditProfile extends State<EditProfileScreen> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
+                                                //Llamar a firebase para obtener la imagen con un futurebuilder!
                                                 image: NetworkImage(currentUser
                                                     .profilePhoto)))),
                                     Positioned(
@@ -214,33 +141,6 @@ class EditProfile extends State<EditProfileScreen> {
                                               Icons.edit,
                                               color: Colors.white,
                                             ),
-                                            /*
-                                            onPressed: () async {
-                                              var image = await ImagePicker()
-                                                  .getImage(
-                                                      source:
-                                                          ImageSource.camera);
-                                              try {
-                                                CloudinaryResponse response =
-                                                    await cloudinary.uploadFile(
-                                                        CloudinaryFile.fromFile(
-                                                            image.path,
-                                                            resourceType:
-                                                                CloudinaryResourceType
-                                                                    .Image));
-                                                createToast(
-                                                    'Image correctly uploaded',
-                                                    Colors.green);
-                                                currentUser.profilePhoto =
-                                                    response.url;
-                                              } on CloudinaryException catch (e) {
-                                                print(e.message);
-                                                print(e.request);
-                                                createToast(
-                                                    'Error while uploading the image',
-                                                    Colors.red);
-                                              }
-                                            },*/
                                             onPressed: () {
                                               showModalBottomSheet(
                                                   context: context,
@@ -287,8 +187,8 @@ class EditProfile extends State<EditProfileScreen> {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              /*onTap:
-                                                                  onImageFromCamera,*/
+                                                              onTap:
+                                                                  setImageFromCamera,
                                                             ),
                                                             InkWell(
                                                               child: Container(
@@ -321,9 +221,8 @@ class EditProfile extends State<EditProfileScreen> {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              /*
                                                               onTap:
-                                                                  onImageFromGallery,*/
+                                                                  setImageFromGallery,
                                                             ),
                                                           ],
                                                         ),
@@ -613,7 +512,6 @@ class EditProfile extends State<EditProfileScreen> {
                                           subjectsDoneSelected,
                                           subjectsAskingSelected,
                                           _phoneController.text,
-                                          currentUser.profilePhoto,
                                         );
                                         http.Response response =
                                             await EditProfileController()
@@ -650,5 +548,125 @@ class EditProfile extends State<EditProfileScreen> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  //TODO: migrar de Cloudinary a Firestore
+
+  void setImageFromCamera() async {
+    var image = await ImagePicker().getImage(source: ImageSource.camera);
+    var imageFile = File(image.path);
+    try {
+      if (kIsWeb) {
+        await storage
+            .ref('profilePhotos/' + currentUser.username + '.jpg')
+            .putData(await image.readAsBytes());
+      } else {
+        await storage
+            .ref('profilePhotos/' + currentUser.username + '.jpg')
+            .putFile(imageFile);
+      }
+      /*CloudinaryResponse response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image.path,
+              resourceType: CloudinaryResourceType.Image));
+      createToast('Image correctly uploaded', Colors.green);
+      currentUser.profilePhoto = response.url;*/
+    } on fb.FirebaseException catch (e) {
+      print(e.message);
+      //print(e.request);
+      createToast('Error while uploading the image', Colors.red);
+    }
+  }
+
+  void setImageFromGallery() async {
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
+    try {
+      /*
+      CloudinaryResponse response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image.path,
+              resourceType: CloudinaryResourceType.Image));
+      createToast('Image correctly uploaded', Colors.green);
+      currentUser.profilePhoto = response.url;*/
+    } on CloudinaryException catch (e) {
+      print(e.message);
+      print(e.request);
+      createToast('Error while uploading the image', Colors.red);
+    }
+  }
+
+  Future getValidationData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var username = preferences.getString('username');
+    setState(() {
+      finalUsername = username;
+    });
+    currentUser = ModalRoute.of(this.context).settings.arguments as UserApp;
+    _nameController.text = currentUser.fullname;
+    _descriptionController.text = currentUser.description;
+    _roleController.text = currentUser.role;
+    _passwordController.text = currentUser.password;
+    _phoneController.text = currentUser.phone;
+    universitySelected = currentUser.university;
+    subjectsAskingSelected =
+        new List<String>.from(currentUser.subjectsRequested);
+    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
+  }
+
+  Future getUniversities() async {
+    universitiesList = [];
+    universitiesNamesList = [];
+    schoolsNamesList = [];
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    http.Response response = await EditProfileController().getUniversities();
+    for (var university in jsonDecode(response.body)) {
+      universitiesList.add(University.fromMap(university));
+      universitiesNamesList.add(University.fromMap(university).name);
+      print(universitiesNamesList);
+    }
+    if (universitySelected != null) {
+      getSchools(universitySelected);
+      if (schoolSelected != null) {
+        getDegrees(schoolSelected);
+        if (degreeSelected != null) {
+          getSubjects(degreeSelected);
+        }
+      }
+    }
+  }
+
+  Future getSchools(String uniName) async {
+    schoolsNamesList = [];
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    for (var university in universitiesList) {
+      if (university.name == uniName) {
+        schoolsNamesList = new List<String>.from(university.schools);
+      }
+    }
+    print(schoolsNamesList);
+  }
+
+  Future<List<String>> getDegrees(String schoolParam) async {
+    degreesList = [];
+    degreesNamesList = [];
+    subjectsList = [];
+    http.Response response =
+        await EditProfileController().getSchool(schoolParam);
+    Faculty school = Faculty.fromMap(jsonDecode(response.body));
+    degreesNamesList = new List<String>.from(school.degrees);
+    print(degreesNamesList);
+    return degreesNamesList;
+  }
+
+  Future<List<String>> getSubjects(String degreeParam) async {
+    subjectsList = [];
+    http.Response response =
+        await EditProfileController().getDegree(degreeParam);
+    Degree degree = Degree.fromMap(jsonDecode(response.body));
+    subjectsList = new List<String>.from(degree.subjects);
+    print(subjectsList);
+    return subjectsList;
   }
 }

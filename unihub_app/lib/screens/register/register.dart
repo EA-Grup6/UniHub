@@ -138,6 +138,7 @@ class Register extends State<RegisterScreen> {
                                                 createToast(
                                                     "Account correctly created",
                                                     Colors.green);
+
                                                 Navigator.of(context)
                                                     .pushNamed('/login');
                                               } else if (response.statusCode ==
