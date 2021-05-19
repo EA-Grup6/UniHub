@@ -7,9 +7,22 @@ import 'dart:async';
 import 'api_exceptions.dart';
 
 class ApiBaseHelper {
-  final String _baseUrl = "http://127.0.0.1:4000";
+  String _baseUrl;
+
+  void setUrl() {
+    try {
+      if (Platform.isAndroid) {
+        _baseUrl = "http://10.0.2.2:4000";
+      } else {
+        _baseUrl = "http://127.0.0.1:4000";
+      }
+    } catch (e) {
+      _baseUrl = "http://127.0.0.1:4000";
+    }
+  }
 
   Future<dynamic> post(String url, dynamic content) async {
+    setUrl();
     print('Api Post, url $url');
     Map<String, String> customHeaders = {
       'content-type': 'application/json',
@@ -31,6 +44,7 @@ class ApiBaseHelper {
   }
 
   Future<dynamic> get(String url) async {
+    setUrl();
     print('Api get, url $url');
     Map<String, String> customHeaders = {
       'content-type': 'application/json',
@@ -50,6 +64,7 @@ class ApiBaseHelper {
   }
 
   Future<dynamic> delete(String url) async {
+    setUrl();
     print('Api delete, url $url');
     var finalResponse;
     try {
