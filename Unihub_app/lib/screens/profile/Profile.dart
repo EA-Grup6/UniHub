@@ -18,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 class Profile extends State<ProfileScreen> {
   @override
   void initState() {
-    getDataFromUser();
     super.initState();
   }
 
@@ -140,7 +139,6 @@ class Profile extends State<ProfileScreen> {
                           )
                         ]))));
           } else {
-            getDataFromUser();
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

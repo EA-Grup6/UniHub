@@ -60,16 +60,16 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
             controller: _tabController,
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(50), // Creates border
-              color: Colors.blue,
+              color: Colors.white,
             ),
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.blue,
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.white,
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('Search'),
             Container(
-              width: 300,
+              width: 150,
               height: 40,
               child: TextField(
                 controller: _searchController,

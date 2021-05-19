@@ -13,6 +13,7 @@ import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 String finalUsername;
 UserApp currentUser;
@@ -213,6 +214,7 @@ class EditProfile extends State<EditProfileScreen> {
                                               Icons.edit,
                                               color: Colors.white,
                                             ),
+                                            /*
                                             onPressed: () async {
                                               var image = await ImagePicker()
                                                   .getImage(
@@ -238,6 +240,96 @@ class EditProfile extends State<EditProfileScreen> {
                                                     'Error while uploading the image',
                                                     Colors.red);
                                               }
+                                            },*/
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  clipBehavior: Clip.hardEdge,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                            top:
+                                                                Radius.circular(
+                                                                    24)),
+                                                  ),
+                                                  builder: (context) {
+                                                    return SafeArea(
+                                                      child: IntrinsicHeight(
+                                                        child: Column(
+                                                          children: <Widget>[
+                                                            InkWell(
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            16),
+                                                                child: Row(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Icon(
+                                                                        Icons
+                                                                            .camera,
+                                                                        color: Colors
+                                                                            .grey
+                                                                            .shade800),
+                                                                    VerticalDivider(),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Text(
+                                                                        'Use camera',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                18,
+                                                                            fontWeight:
+                                                                                FontWeight.w300),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              /*onTap:
+                                                                  onImageFromCamera,*/
+                                                            ),
+                                                            InkWell(
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            16),
+                                                                child: Row(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Icon(
+                                                                      Icons
+                                                                          .image,
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade800,
+                                                                    ),
+                                                                    VerticalDivider(),
+                                                                    Expanded(
+                                                                      child:
+                                                                          Text(
+                                                                        'Choose from gallery',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                18,
+                                                                            fontWeight:
+                                                                                FontWeight.w300),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              /*
+                                                              onTap:
+                                                                  onImageFromGallery,*/
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  });
                                             },
                                           ),
                                         ))
