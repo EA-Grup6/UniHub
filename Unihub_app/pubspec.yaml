@@ -37,6 +37,8 @@ dependencies:
   cloudinary_public: ^0.8.1+1
   provider: ^5.0.0
   firebase_core: ^1.2.0
+  scoped_model: ^1.0.1
+  flutter_socket_io: ^0.6.0
 
 dev_dependencies:
   flutter_test:
