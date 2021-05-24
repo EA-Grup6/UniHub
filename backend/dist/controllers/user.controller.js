@@ -11,7 +11,7 @@ const Faculty_1 = __importDefault(require("../models/Faculty"));
 const Degree_1 = __importDefault(require("../models/Degree"));
 async function createUser(req, res) {
     const Btoken = req.headers['authorization'];
-    let { username, password, isAdmin } = req.body;
+    let { username, password } = req.body;
     let newUser = new User_1.default();
     newUser.username = username;
     newUser.password = password;
@@ -27,7 +27,6 @@ async function createUser(req, res) {
     newUser.phone = '';
     newUser.following = [];
     newUser.followers = [];
-    newUser.profilePhoto = "https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg";
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {

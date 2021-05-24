@@ -4,6 +4,8 @@
         android:label="UniHub"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY" 
+                  android:value="AIzaSyB2s9b8rEY3r7PWQQLl_aSTmh0Zft7xySw"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

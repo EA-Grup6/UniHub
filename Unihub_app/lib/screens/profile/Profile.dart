@@ -89,8 +89,9 @@ class Profile extends State<ProfileScreen> {
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
                                       //Llamar a Firebase también para recoger la imagen dentro del futurebuilder
-                                      image: NetworkImage(
-                                          currentUser.profilePhoto))),
+                                     // image: NetworkImage(
+                                       //   currentUser.profilePhoto)
+                                       )),
                             ),
                           ])),
                           SizedBox(

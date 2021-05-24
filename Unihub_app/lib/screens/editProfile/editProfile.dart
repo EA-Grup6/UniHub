@@ -119,8 +119,9 @@ class EditProfile extends State<EditProfileScreen> {
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
                                                 //Llamar a firebase para obtener la imagen con un futurebuilder!
-                                                image: NetworkImage(currentUser
-                                                    .profilePhoto)))),
+                                                //image: NetworkImage(currentUser
+                                                  //  .profilePhoto)
+                                                  ))),
                                     Positioned(
                                         bottom: 0,
                                         right: 0,
