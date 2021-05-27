@@ -190,9 +190,9 @@ export async function updateFeed (req: any, res: Response){
 }
 
 export async function updateLikesFeed (req: any, res: Response){
-    let{usernameLiking, _id} = req.body;
+    let{username, _id} = req.body;
     const Btoken = req.headers['authorization'];
-    const action = req.headers['action'];
+    const action = req.params.action;
 
 
     if(typeof Btoken !== undefined){
@@ -205,14 +205,15 @@ export async function updateLikesFeed (req: any, res: Response){
                     const feed = await FeedPublication.findById({_id: _id});
                     let liking = feed?.likes
                     if (action=='add'){
-                        liking?.push(usernameLiking)
+                        liking?.push(username)
                         await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
                         return res.status(200).send({message: 'FeedLikes correctly updated'});
-                    }else
-                        liking?.splice(liking?.findIndex(usernameLiking),1);
+                    }else{
+                        console.log('The index is: ' + findUsername(username, liking));
+                        liking?.splice(liking?.findIndex(findUsername),1);
                         await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
                         return res.status(200).send({message: 'FeedLikes correctly updated'});
-
+                    }
                 } catch {
                     return res.status(201).send({message: "FeedLikes couldn't be updated"});
                 }
@@ -224,3 +225,10 @@ export async function updateLikesFeed (req: any, res: Response){
 
 }
 
+function findUsername(username: String, liking:any){
+    for(var count=0;count<liking?.length;count++){
+        if(liking[count] == username){
+            return count;
+        }
+    }
+}

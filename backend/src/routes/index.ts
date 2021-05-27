@@ -74,7 +74,7 @@ router.route('/Post/updateComment').post(updateComment);
 
 //Likes, Buys & following
 
-router.route('/User/Feeds/updateLikes').post(updateLikesFeed);
+router.route('/Feed/updateLikes/:action').post(updateLikesFeed);
 
 router.route('/User/Offers/updateLikes').post(updateLikesOffer);
 

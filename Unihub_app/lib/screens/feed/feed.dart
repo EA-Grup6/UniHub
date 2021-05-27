@@ -62,7 +62,7 @@ class Feed extends State<FeedScreen> {
                               snapshot.data.reversed);
                           return new Dismissible(
                               key: ObjectKey(this.pubsList.elementAt(index)),
-                              child: new FeedPostSection(
+                              child: new FeedPost(
                                   this.pubsList.elementAt(index).id,
                                   this.pubsList.elementAt(index).username,
                                   this.pubsList.elementAt(index).content,
@@ -71,7 +71,8 @@ class Feed extends State<FeedScreen> {
                                       .elementAt(index)
                                       .publicationDate,
                                   this.pubsList.elementAt(index).likes,
-                                  this.pubsList.elementAt(index).comments),
+                                  this.pubsList.elementAt(index).comments,
+                                  this.username),
                               confirmDismiss: (direction) {
                                 if (this.pubsList.elementAt(index).username ==
                                     this.username) {
@@ -83,16 +84,16 @@ class Feed extends State<FeedScreen> {
                               },
                               onDismissed: (direction) {});
                         } else {
-                          return new FeedPostSection(
-                            snapshot.data.reversed.elementAt(index).id,
-                            snapshot.data.reversed.elementAt(index).username,
-                            snapshot.data.reversed.elementAt(index).content,
-                            snapshot.data.reversed
-                                .elementAt(index)
-                                .publicationDate,
-                            snapshot.data.reversed.elementAt(index).likes,
-                            snapshot.data.reversed.elementAt(index).comments,
-                          );
+                          return new FeedPost(
+                              snapshot.data.reversed.elementAt(index).id,
+                              snapshot.data.reversed.elementAt(index).username,
+                              snapshot.data.reversed.elementAt(index).content,
+                              snapshot.data.reversed
+                                  .elementAt(index)
+                                  .publicationDate,
+                              snapshot.data.reversed.elementAt(index).likes,
+                              snapshot.data.reversed.elementAt(index).comments,
+                              this.username);
                         }
                       })),
               floatingActionButton: FloatingActionButton(

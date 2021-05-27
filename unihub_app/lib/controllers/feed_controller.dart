@@ -29,4 +29,11 @@ class FeedController {
         await _helper.get('/User/getUserImage/$username');
     return response.body;
   }
+
+  Future<dynamic> setLikes(String username, String action, String id) async {
+    var body = {'username': username, '_id': id};
+    final http.Response response =
+        await _helper.post('/Feed/updateLikes/$action', body);
+    return response.statusCode;
+  }
 }

@@ -48,13 +48,14 @@ class SearchFeedPubsScreen extends StatelessWidget {
                               children: [
                                 for (FeedPublication publication
                                     in snapshot.data.reversed)
-                                  new FeedPostSection(
+                                  new FeedPost(
                                     publication.id,
                                     publication.username,
                                     publication.content,
                                     publication.publicationDate,
                                     publication.likes,
                                     publication.comments,
+                                    this.username,
                                   ),
                               ],
                             )))),

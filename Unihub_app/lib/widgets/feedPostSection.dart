@@ -1,20 +1,23 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/widgets/feedPostSection.dart';
 
-class FeedPostSection extends StatelessWidget {
-  Image _image;
+class FeedPost extends StatefulWidget {
+  const FeedPost(this._id, this._username, this._content, this.publicationDate,
+      this._likes, this._comments, this._myUsername);
+
+  FeedPostSection createState() => FeedPostSection();
   final String _id;
   final String _username;
   final String _content;
   final DateTime publicationDate;
   final List<dynamic> _likes;
   final List<dynamic> _comments;
+  final String _myUsername;
+}
 
-  FeedPostSection(this._id, this._username, this._content, this.publicationDate,
-      this._likes, this._comments);
+class FeedPostSection extends State<FeedPost> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -43,32 +46,69 @@ class FeedPostSection extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('#$_username',
+                            Text('#' + widget._username,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16.0,
                                 )),
-                            Text(Jiffy(publicationDate).fromNow().toString(),
+                            Text(
+                                Jiffy(widget.publicationDate)
+                                    .fromNow()
+                                    .toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 12.0,
                                     color: Colors.grey[600])),
                           ],
                         )),
-                    subtitle: Text(this._content),
+                    subtitle: Text(this.widget._content),
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         IconButton(
-                            icon: Icon(Icons.favorite_outline_rounded),
+                            icon: this
+                                    .widget
+                                    ._likes
+                                    .contains(this.widget._myUsername)
+                                ? Icon(Icons.favorite_rounded,
+                                    color: Colors.red)
+                                : Icon(Icons.favorite_outline_rounded),
                             splashColor: Colors.transparent,
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             alignment: Alignment.center,
-                            onPressed: () {
-                              //Tiene que añadir tu username a la lista de likes
+                            onPressed: () async {
+                              if (!this
+                                  .widget
+                                  ._likes
+                                  .contains(this.widget._myUsername)) {
+                                await FeedController().setLikes(
+                                    this.widget._myUsername,
+                                    'add',
+                                    this.widget._id);
+                                setState(() {
+                                  this
+                                      .widget
+                                      ._likes
+                                      .add(this.widget._myUsername);
+                                });
+                              } else {
+                                await FeedController().setLikes(
+                                    this.widget._myUsername,
+                                    'remove',
+                                    this.widget._id);
+                                setState(() {
+                                  this
+                                      .widget
+                                      ._likes
+                                      .remove(this.widget._myUsername);
+                                });
+                              }
                             }),
+                        Expanded(
+                          child: Text(this.widget._likes.length.toString()),
+                        ),
                         IconButton(
                             icon: Icon(Icons.messenger_outline_rounded),
                             splashColor: Colors.transparent,
@@ -78,6 +118,9 @@ class FeedPostSection extends StatelessWidget {
                             onPressed: () {
                               //Te tiene que llevar a los comentarios (nueva vista)
                             }),
+                        Expanded(
+                          child: Text(this.widget._comments.length.toString()),
+                        ),
                         IconButton(
                             icon: Icon(Icons.share_outlined),
                             splashColor: Colors.transparent,
@@ -108,7 +151,7 @@ class FeedPostSection extends StatelessWidget {
       child: Text("Yes"),
       onPressed: () async {
         //delete post
-        await FeedController().deleteFeedPost(this._id).whenComplete(() {
+        await FeedController().deleteFeedPost(this.widget._id).whenComplete(() {
           Navigator.pop(context);
         });
       },
@@ -135,8 +178,8 @@ class FeedPostSection extends StatelessWidget {
   }
 
   getUserImage() async {
-    String urlImage = await FeedController().getUserImage(this._username);
-    print(urlImage);
+    String urlImage =
+        await FeedController().getUserImage(this.widget._username);
     return urlImage;
   }
 }

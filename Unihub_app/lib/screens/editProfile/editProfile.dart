@@ -567,9 +567,6 @@ class EditProfile extends State<EditProfileScreen> {
             fileName: currentUser.username);
         if (response.isSuccessful) {
           createToast('Image correctly uploaded', Colors.green);
-          await cloudinary.deleteFile(
-            url: currentUser.profilePhoto,
-          );
           currentUser.profilePhoto = response.secureUrl;
         }
       } else {
@@ -580,9 +577,6 @@ class EditProfile extends State<EditProfileScreen> {
             fileName: currentUser.username);
         if (response.isSuccessful) {
           createToast('Image correctly uploaded', Colors.green);
-          await cloudinary.deleteFile(
-            url: currentUser.profilePhoto,
-          );
           currentUser.profilePhoto = response.secureUrl;
         }
       }
