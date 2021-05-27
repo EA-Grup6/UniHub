@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers} from '../controllers/user.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage} from '../controllers/user.controller'
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
@@ -49,6 +49,8 @@ router.route('/Feed/getFeeds').post(getFeeds);
 router.route('/Feed/getAllFeeds').get(getAllFeeds);
 
 router.route('/Feed/updateFeed').post(updateFeed);
+
+router.route('/User/getUserImage/:username').get(getUserImage);
 
 //Get Universities/Faculties/Degrees/Subjects
 

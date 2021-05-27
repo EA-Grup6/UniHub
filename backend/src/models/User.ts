@@ -1,6 +1,7 @@
 import {Schema,model,Document} from 'mongoose';
 
 const schema = new Schema({
+    _id: String,
     username: String,
     password: String,
     fullname: String,
@@ -11,14 +12,16 @@ const schema = new Schema({
     subjectsDone: Array,
     subjectsRequested: Array,
     recommendations: String,
-    phone: String,
     isAdmin: Boolean,
+    phone: String,
     followers: Array,
     following: Array,
+    profilePhoto: String,
     //Coins: Number
 }, {collection: 'users'});
 
 interface IUser extends Document {
+    _id: string,
     username: string;
     password: string;
     fullname: string;
@@ -33,6 +36,7 @@ interface IUser extends Document {
     phone: string,
     followers: Array<string>;
     following: Array<string>;
+    profilePhoto: String;
     //Coins: Number
 }
 

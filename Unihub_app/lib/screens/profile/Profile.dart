@@ -8,14 +8,21 @@ import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 UserApp currentUser;
+String imageUser;
+Image usrImg;
 
 class ProfileScreen extends StatefulWidget {
   Profile createState() => Profile();
 }
 
 class Profile extends State<ProfileScreen> {
+  fb.FirebaseStorage storage = fb.FirebaseStorage.instance;
+
   @override
   void initState() {
     super.initState();
@@ -71,28 +78,27 @@ class Profile extends State<ProfileScreen> {
                           Center(
                               child: Stack(children: [
                             Container(
-                              width: 130,
-                              height: 130,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 4,
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: 2,
-                                        blurRadius: 10,
-                                        color: Colors.black.withOpacity(0.5),
-                                        offset: Offset(0, 2))
-                                  ],
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
+                                width: 130,
+                                height: 130,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 4,
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 2,
+                                          blurRadius: 10,
+                                          color: Colors.black.withOpacity(0.5),
+                                          offset: Offset(0, 2))
+                                    ],
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
                                       fit: BoxFit.cover,
                                       //Llamar a Firebase también para recoger la imagen dentro del futurebuilder
-                                     // image: NetworkImage(
-                                       //   currentUser.profilePhoto)
-                                       )),
-                            ),
+                                      image: NetworkImage(
+                                          currentUser.profilePhoto),
+                                    ))),
                           ])),
                           SizedBox(
                             height: 15,

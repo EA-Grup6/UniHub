@@ -23,4 +23,10 @@ class FeedController {
     print('Response: ' + response.body);
     return response;
   }
+
+  Future<dynamic> getUserImage(String username) async {
+    final http.Response response =
+        await _helper.get('/User/getUserImage/$username');
+    return response.body;
+  }
 }

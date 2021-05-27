@@ -3,16 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
+exports.getUserImage = exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
 const Faculty_1 = __importDefault(require("../models/Faculty"));
 const Degree_1 = __importDefault(require("../models/Degree"));
+let mongoose = require('mongoose');
 async function createUser(req, res) {
     const Btoken = req.headers['authorization'];
     let { username, password } = req.body;
     let newUser = new User_1.default();
+    newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
     newUser.fullname = '';
@@ -27,6 +29,7 @@ async function createUser(req, res) {
     newUser.phone = '';
     newUser.following = [];
     newUser.followers = [];
+    newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
         if (registeredUser != null) {
@@ -361,3 +364,29 @@ async function updateFollowers(req, res) {
     }
 }
 exports.updateFollowers = updateFollowers;
+async function getUserImage(req, res) {
+    let username = req.params.username;
+    const Btoken = req.headers['authorization'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    let user = await User_1.default.findOne({ username: username });
+                    let userImage = user === null || user === void 0 ? void 0 : user.profilePhoto;
+                    return res.status(200).send(userImage);
+                }
+                catch {
+                    return res.status(201).send({ message: "Database error while trying to find profile photo" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.getUserImage = getUserImage;

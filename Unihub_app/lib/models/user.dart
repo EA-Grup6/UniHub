@@ -10,6 +10,7 @@ class UserApp {
   final List<dynamic> subjectsDone;
   final List<dynamic> subjectsRequested;
   final String phone;
+  String profilePhoto;
 
   UserApp(
       this.username,
@@ -22,7 +23,8 @@ class UserApp {
       this.role,
       this.subjectsDone,
       this.subjectsRequested,
-      this.phone);
+      this.phone,
+      this.profilePhoto);
 
   factory UserApp.fromMap(Map<String, dynamic> json) {
     print(json['username']);
@@ -38,6 +40,7 @@ class UserApp {
       json['subjectsDone'],
       json['subjectsRequested'],
       json['phone'],
+      json['profilePhoto'],
     );
   }
 
@@ -54,6 +57,7 @@ class UserApp {
       'subjectsDone': this.subjectsDone,
       'subjectsRequested': this.subjectsRequested,
       'phone': this.phone,
+      'profilePhoto': this.profilePhoto,
     };
     return newJSON;
   }

@@ -4,12 +4,14 @@ import jwt from 'jsonwebtoken'
 import University from '../models/University'
 import Faculty from '../models/Faculty';
 import Degree from '../models/Degree';
+let mongoose = require('mongoose');
 
 export async function createUser (req: any, res: Response){
     const Btoken = req.headers['authorization'];
 
     let {username, password} = req.body;
     let newUser = new User();
+    newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
     newUser.fullname = '';
@@ -24,6 +26,7 @@ export async function createUser (req: any, res: Response){
     newUser.phone= '';
     newUser.following= [];
     newUser.followers=[];
+    newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User.findOne({username:newUser.username});
     try{
         if(registeredUser != null){
@@ -335,5 +338,29 @@ export async function updateFollowers (req: any, res: Response){
         return res.status(204).send({message: 'Unauthorized'});
     }
 
+}
+
+export async function getUserImage (req: any, res: Response){
+    let username = req.params.username;
+    const Btoken = req.headers['authorization'];
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    let user = await User.findOne({username: username});
+                    let userImage = user?.profilePhoto;
+                    return res.status(200).send(userImage);
+                } catch {
+                    return res.status(201).send({message: "Database error while trying to find profile photo"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
 }
 

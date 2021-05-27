@@ -9,11 +9,12 @@ import 'package:unihub_app/models/Faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fb;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -26,13 +27,15 @@ List<String> subjectsList = [];
 List<String> universitiesNamesList = [];
 List<String> schoolsNamesList = [];
 List<String> degreesNamesList = [];
+Image imageUser;
 
 class EditProfileScreen extends StatefulWidget {
   EditProfile createState() => EditProfile();
 }
 
 class EditProfile extends State<EditProfileScreen> {
-  final cloudinary = CloudinaryPublic('unihub-ea', 'vempgg1i', cache: false);
+  final cloudinary =
+      Cloudinary('181174856115133', 'vFmY1fKzbfKPeCkVTowq0EWVgic', 'unihub-ea');
   fb.FirebaseStorage storage = fb.FirebaseStorage.instance;
 
   @override
@@ -119,9 +122,8 @@ class EditProfile extends State<EditProfileScreen> {
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
                                                 //Llamar a firebase para obtener la imagen con un futurebuilder!
-                                                //image: NetworkImage(currentUser
-                                                  //  .profilePhoto)
-                                                  ))),
+                                                image: NetworkImage(currentUser
+                                                    .profilePhoto)))),
                                     Positioned(
                                         bottom: 0,
                                         right: 0,
@@ -142,7 +144,7 @@ class EditProfile extends State<EditProfileScreen> {
                                               Icons.edit,
                                               color: Colors.white,
                                             ),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               showModalBottomSheet(
                                                   context: context,
                                                   clipBehavior: Clip.hardEdge,
@@ -513,6 +515,7 @@ class EditProfile extends State<EditProfileScreen> {
                                           subjectsDoneSelected,
                                           subjectsAskingSelected,
                                           _phoneController.text,
+                                          currentUser.profilePhoto,
                                         );
                                         http.Response response =
                                             await EditProfileController()
@@ -555,24 +558,41 @@ class EditProfile extends State<EditProfileScreen> {
 
   void setImageFromCamera() async {
     var image = await ImagePicker().getImage(source: ImageSource.camera);
-    var imageFile = File(image.path);
     try {
       if (kIsWeb) {
-        await storage
-            .ref('profilePhotos/' + currentUser.username + '.jpg')
-            .putData(await image.readAsBytes());
+        final response = await cloudinary.uploadFile(
+            fileBytes: await image.readAsBytes(),
+            resourceType: CloudinaryResourceType.image,
+            folder: 'profilePhotos',
+            fileName: currentUser.username);
+        if (response.isSuccessful) {
+          createToast('Image correctly uploaded', Colors.green);
+          await cloudinary.deleteFile(
+            url: currentUser.profilePhoto,
+          );
+          currentUser.profilePhoto = response.secureUrl;
+        }
       } else {
-        await storage
-            .ref('profilePhotos/' + currentUser.username + '.jpg')
-            .putFile(imageFile);
+        final response = await cloudinary.uploadFile(
+            filePath: image.path,
+            resourceType: CloudinaryResourceType.image,
+            folder: 'profilePhotos',
+            fileName: currentUser.username);
+        if (response.isSuccessful) {
+          createToast('Image correctly uploaded', Colors.green);
+          await cloudinary.deleteFile(
+            url: currentUser.profilePhoto,
+          );
+          currentUser.profilePhoto = response.secureUrl;
+        }
       }
       /*CloudinaryResponse response = await cloudinary.uploadFile(
           CloudinaryFile.fromFile(image.path,
               resourceType: CloudinaryResourceType.Image));
       createToast('Image correctly uploaded', Colors.green);
       currentUser.profilePhoto = response.url;*/
-    } on fb.FirebaseException catch (e) {
-      print(e.message);
+    } on Exception catch (e) {
+      print(e);
       //print(e.request);
       createToast('Error while uploading the image', Colors.red);
     }
@@ -581,15 +601,33 @@ class EditProfile extends State<EditProfileScreen> {
   void setImageFromGallery() async {
     var image = await ImagePicker().getImage(source: ImageSource.gallery);
     try {
-      /*
-      CloudinaryResponse response = await cloudinary.uploadFile(
+      if (kIsWeb) {
+        final response = await cloudinary.uploadFile(
+            fileBytes: await image.readAsBytes(),
+            resourceType: CloudinaryResourceType.image,
+            folder: 'profilePhotos');
+        if (response.isSuccessful) {
+          createToast('Image correctly uploaded', Colors.green);
+          currentUser.profilePhoto = response.secureUrl;
+        }
+      } else {
+        final response = await cloudinary.uploadFile(
+            filePath: image.path,
+            resourceType: CloudinaryResourceType.image,
+            folder: 'profilePhotos');
+        if (response.isSuccessful) {
+          createToast('Image correctly uploaded', Colors.green);
+          currentUser.profilePhoto = response.secureUrl;
+        }
+      }
+      /*CloudinaryResponse response = await cloudinary.uploadFile(
           CloudinaryFile.fromFile(image.path,
               resourceType: CloudinaryResourceType.Image));
       createToast('Image correctly uploaded', Colors.green);
       currentUser.profilePhoto = response.url;*/
-    } on CloudinaryException catch (e) {
-      print(e.message);
-      print(e.request);
+    } on Exception catch (e) {
+      print(e);
+      //print(e.request);
       createToast('Error while uploading the image', Colors.red);
     }
   }
