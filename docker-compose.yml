@@ -11,6 +11,7 @@ services:
     networks: 
         - db-tier
         - backofficeNetwork
+        - frontendNetwork
 
   backoffice:
     build: ./frontend
@@ -20,6 +21,15 @@ services:
       - backend
     networks: 
       - backofficeNetwork
+
+  frontend:
+    build: ./unihub_app
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - backend
+    networks: 
+      - frontendNetwork
 
   mongo:
         image: mongo
@@ -31,6 +41,7 @@ services:
 
 networks:
   backofficeNetwork:
+  frontendNetwork:
 
   db-tier:
     driver: bridge
