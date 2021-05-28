@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
-import 'package:unihub_app/widgets/feedPostSection.dart';
 
 class FeedPost extends StatefulWidget {
   const FeedPost(this._id, this._username, this._content, this.publicationDate,
@@ -133,14 +132,7 @@ class FeedPostSection extends State<FeedPost> {
                       ])
                 ]));
           } else {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(),
-                  )
-                ]);
+            return Container();
           }
         });
   }

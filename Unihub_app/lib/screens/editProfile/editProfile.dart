@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,13 +8,11 @@ import 'package:unihub_app/models/Faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
-import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:firebase_storage/firebase_storage.dart' as fb;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 String finalUsername;
@@ -36,7 +33,6 @@ class EditProfileScreen extends StatefulWidget {
 class EditProfile extends State<EditProfileScreen> {
   final cloudinary =
       Cloudinary('181174856115133', 'vFmY1fKzbfKPeCkVTowq0EWVgic', 'unihub-ea');
-  fb.FirebaseStorage storage = fb.FirebaseStorage.instance;
 
   @override
   void initState() {
@@ -614,11 +610,6 @@ class EditProfile extends State<EditProfileScreen> {
           currentUser.profilePhoto = response.secureUrl;
         }
       }
-      /*CloudinaryResponse response = await cloudinary.uploadFile(
-          CloudinaryFile.fromFile(image.path,
-              resourceType: CloudinaryResourceType.Image));
-      createToast('Image correctly uploaded', Colors.green);
-      currentUser.profilePhoto = response.url;*/
     } on Exception catch (e) {
       print(e);
       //print(e.request);

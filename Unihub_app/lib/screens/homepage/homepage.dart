@@ -26,7 +26,7 @@ class Homepage extends State<HomepageScreen> {
     if (ModalRoute.of(context).settings.arguments != null) {
       setState(() {
         currentTab = 3;
-        currentScreen = ProfileScreen();
+        currentScreen = new ProfileScreen();
       });
     } else {}
     return Scaffold(

@@ -22,9 +22,6 @@ class AddOffer extends State<AddOfferScreen> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _subjectController = TextEditingController();
-  final TextEditingController _universityController = TextEditingController();
-  final TextEditingController _typeController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
   getUsername() async {

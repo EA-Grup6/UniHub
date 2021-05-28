@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class OfferSection extends StatelessWidget {
-  Image _image;
   final String _username;
   final String _university;
   final String _subject;

@@ -8,20 +8,21 @@ import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
-import 'package:firebase_storage/firebase_storage.dart' as fb;
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 UserApp currentUser;
 String imageUser;
 Image usrImg;
+bool myProfile;
 
 class ProfileScreen extends StatefulWidget {
+  /*const ProfileScreen(this.myProfile, this.username);
+  final bool myProfile;
+  final String username;*/
   Profile createState() => Profile();
 }
 
 class Profile extends State<ProfileScreen> {
-  fb.FirebaseStorage storage = fb.FirebaseStorage.instance;
+  String username;
 
   @override
   void initState() {
@@ -29,8 +30,11 @@ class Profile extends State<ProfileScreen> {
   }
 
   Future<UserApp> getDataFromUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var username = preferences.getString('username');
+    //if (this.widget.myProfile) {
+    if (true) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      username = preferences.getString('username');
+    }
     currentUser = UserApp.fromMap(
         jsonDecode(await EditProfileController().getProfile(username)));
     return currentUser;

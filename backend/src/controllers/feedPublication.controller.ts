@@ -209,7 +209,6 @@ export async function updateLikesFeed (req: any, res: Response){
                         await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
                         return res.status(200).send({message: 'FeedLikes correctly updated'});
                     }else{
-                        console.log('The index is: ' + findUsername(username, liking));
                         liking?.splice(liking?.findIndex(findUsername),1);
                         await FeedPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
                         return res.status(200).send({message: 'FeedLikes correctly updated'});
