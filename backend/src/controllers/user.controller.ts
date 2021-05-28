@@ -7,8 +7,6 @@ import Degree from '../models/Degree';
 let mongoose = require('mongoose');
 
 export async function createUser (req: any, res: Response){
-    const Btoken = req.headers['authorization'];
-
     let {username, password} = req.body;
     let newUser = new User();
     newUser._id = new mongoose.Types.ObjectId();
@@ -24,14 +22,15 @@ export async function createUser (req: any, res: Response){
     newUser.recommendations = '';
     newUser.isAdmin = false;
     newUser.phone= '';
-    newUser.following= [];
-    newUser.followers=[];
+    newUser.following = [];
+    newUser.followers = [];
     newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User.findOne({username:newUser.username});
     try{
         if(registeredUser != null){
             return res.status(201).send({message: "User already exists"});
         } else {
+            console.log(newUser);
             let result = await newUser.save();
             return res.status(200).send(result);
         }

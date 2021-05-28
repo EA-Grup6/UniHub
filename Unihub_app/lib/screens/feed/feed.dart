@@ -146,8 +146,8 @@ class Feed extends State<FeedScreen> {
               pubsList.insert(
                   0, FeedPublication.fromMap(jsonDecode(response.body)));
             });
+            Navigator.pop(context);
           }
-          Navigator.pop(context);
         });
 
     Widget dismissButton = TextButton(

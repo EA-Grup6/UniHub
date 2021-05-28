@@ -29,7 +29,14 @@ services:
         networks:
           - db-tier
 
-
+  flutter:
+    image: flutter
+    ports:
+      -"3000:3000"
+    depend_on:
+      - backend
+    networks:  
+      - backofficeNetwork   
 
 networks:
   backofficeNetwork:
