@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:unihub_app/screens/profile/profile.dart';
+import 'package:unihub_app/screens/profile/Profile.dart';
 import '../forum/forum.dart';
-import '../profile/profile.dart';
 import '../feed/feed.dart';
 import '../search/search.dart';
 
@@ -15,7 +14,7 @@ class Homepage extends State<HomepageScreen> {
     FeedScreen(),
     //  Chat(),
     SearchScreen(),
-    ProfileScreen(),
+    ProfileScreen()
   ];
   //
   final PageStorageBucket bucket = PageStorageBucket();
@@ -26,7 +25,7 @@ class Homepage extends State<HomepageScreen> {
     if (ModalRoute.of(context).settings.arguments != null) {
       setState(() {
         currentTab = 3;
-        currentScreen = new ProfileScreen();
+        currentScreen = ProfileScreen();
       });
     } else {}
     return Scaffold(
