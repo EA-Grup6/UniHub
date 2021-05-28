@@ -11,7 +11,6 @@ const Faculty_1 = __importDefault(require("../models/Faculty"));
 const Degree_1 = __importDefault(require("../models/Degree"));
 let mongoose = require('mongoose');
 async function createUser(req, res) {
-    const Btoken = req.headers['authorization'];
     let { username, password } = req.body;
     let newUser = new User_1.default();
     newUser._id = new mongoose.Types.ObjectId();
@@ -36,6 +35,7 @@ async function createUser(req, res) {
             return res.status(201).send({ message: "User already exists" });
         }
         else {
+            console.log(newUser);
             let result = await newUser.save();
             return res.status(200).send(result);
         }
