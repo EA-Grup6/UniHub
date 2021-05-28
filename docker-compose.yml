@@ -32,7 +32,7 @@ services:
   flutter:
     build: ./unihub_app
     ports:
-      -"3000:3000"
+      - "3000:3000"
     depends_on:
       - backend
     networks:  
