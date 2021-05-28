@@ -33,7 +33,7 @@ services:
     image: flutter
     ports:
       -"3000:3000"
-    depend_on:
+    depends_on:
       - backend
     networks:  
       - backofficeNetwork   
