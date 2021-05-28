@@ -113,8 +113,16 @@ class Profile extends State<ProfileScreen> {
                               TextSection(
                                   "Description", currentUser.description),
                               TextSection("Role", currentUser.role),
-                              TextSection("University", currentUser.university),
-                              TextSection("Degree", currentUser.degree),
+                              TextSection(
+                                  "University",
+                                  currentUser.university == null
+                                      ? 'Not Selected'
+                                      : currentUser.university),
+                              TextSection(
+                                  "Degree",
+                                  currentUser.degree == null
+                                      ? 'Not Selected'
+                                      : currentUser.degree),
                               TextSection(
                                   "Subjects already done",
                                   currentUser.subjectsDone.length == 0
@@ -129,7 +137,6 @@ class Profile extends State<ProfileScreen> {
                                       : currentUser.subjectsRequested
                                           .toSet()
                                           .toString()),
-                              TextSection("Recomendations", ""),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
                             ],

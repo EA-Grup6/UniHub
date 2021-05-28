@@ -117,7 +117,6 @@ class EditProfile extends State<EditProfileScreen> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                //Llamar a firebase para obtener la imagen con un futurebuilder!
                                                 image: NetworkImage(currentUser
                                                     .profilePhoto)))),
                                     Positioned(
@@ -293,24 +292,32 @@ class EditProfile extends State<EditProfileScreen> {
                                   },
                                 ),
                               ),
-                              Container(
-                                child: new DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: schoolSelected,
-                                  hint: Text('School'),
-                                  items: schoolsNamesList.map((String e) {
-                                    return DropdownMenuItem<String>(
-                                      value: e,
-                                      child: Text(e),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String e) async {
-                                    setState(() {
-                                      schoolSelected = e;
-                                    });
-                                  },
-                                ),
-                              ),
+                              FutureBuilder<List<String>>(
+                                  future: getSchools(universitySelected),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                        child: new DropdownButton<String>(
+                                          isExpanded: true,
+                                          value: schoolSelected,
+                                          hint: Text('School'),
+                                          items: snapshot.data.map((String e) {
+                                            return DropdownMenuItem<String>(
+                                              value: e,
+                                              child: Text(e),
+                                            );
+                                          }).toList(),
+                                          onChanged: (String e) async {
+                                            setState(() {
+                                              schoolSelected = e;
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
                               FutureBuilder<List<String>>(
                                   future: getDegrees(schoolSelected),
                                   builder: (context, snapshot) {
@@ -550,8 +557,6 @@ class EditProfile extends State<EditProfileScreen> {
     });
   }
 
-  //TODO: migrar de Cloudinary a Firestore
-
   void setImageFromCamera() async {
     var image = await ImagePicker().getImage(source: ImageSource.camera);
     try {
@@ -576,11 +581,6 @@ class EditProfile extends State<EditProfileScreen> {
           currentUser.profilePhoto = response.secureUrl;
         }
       }
-      /*CloudinaryResponse response = await cloudinary.uploadFile(
-          CloudinaryFile.fromFile(image.path,
-              resourceType: CloudinaryResourceType.Image));
-      createToast('Image correctly uploaded', Colors.green);
-      currentUser.profilePhoto = response.url;*/
     } on Exception catch (e) {
       print(e);
       //print(e.request);
@@ -629,13 +629,15 @@ class EditProfile extends State<EditProfileScreen> {
     _roleController.text = currentUser.role;
     _passwordController.text = currentUser.password;
     _phoneController.text = currentUser.phone;
-    universitySelected = currentUser.university;
+    currentUser.university == null
+        ? universitySelected = currentUser.university
+        : universitySelected = 'Not Selected';
     subjectsAskingSelected =
         new List<String>.from(currentUser.subjectsRequested);
     subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
   }
 
-  Future getUniversities() async {
+  Future<List<String>> getUniversities() async {
     universitiesList = [];
     universitiesNamesList = [];
     schoolsNamesList = [];
@@ -646,20 +648,21 @@ class EditProfile extends State<EditProfileScreen> {
     for (var university in jsonDecode(response.body)) {
       universitiesList.add(University.fromMap(university));
       universitiesNamesList.add(University.fromMap(university).name);
-      print(universitiesNamesList);
     }
-    if (universitySelected != null) {
+    print(universitiesNamesList);
+    universitiesNamesList.add('Not Selected');
+    if (universitySelected != 'Not Selected' || universitySelected != null) {
       getSchools(universitySelected);
-      if (schoolSelected != null) {
+      if (schoolSelected != null || schoolSelected != 'Not Selected') {
         getDegrees(schoolSelected);
-        if (degreeSelected != null) {
+        if (degreeSelected != null || degreeSelected != 'Not Selected') {
           getSubjects(degreeSelected);
         }
       }
     }
   }
 
-  Future getSchools(String uniName) async {
+  Future<List<String>> getSchools(String uniName) async {
     schoolsNamesList = [];
     degreesList = [];
     degreesNamesList = [];
@@ -670,6 +673,8 @@ class EditProfile extends State<EditProfileScreen> {
       }
     }
     print(schoolsNamesList);
+    schoolsNamesList.add('Not Selected');
+    return schoolsNamesList;
   }
 
   Future<List<String>> getDegrees(String schoolParam) async {
@@ -681,6 +686,7 @@ class EditProfile extends State<EditProfileScreen> {
     Faculty school = Faculty.fromMap(jsonDecode(response.body));
     degreesNamesList = new List<String>.from(school.degrees);
     print(degreesNamesList);
+    degreesNamesList.add('Not Selected');
     return degreesNamesList;
   }
 
