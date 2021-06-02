@@ -139,9 +139,8 @@ class Profile extends State<ProfileScreen> {
                                           .toString()),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
-                            ],
-                          ),
-                          TextButton(
+
+                              TextButton(
                             style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all<Color>(Colors.red),
@@ -154,8 +153,28 @@ class Profile extends State<ProfileScreen> {
                             onPressed: () async {
                               showAlertDialog(context);
                             },
+                          ),
+                            TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red),
+                            ),
+                            child: Text(
+                              'Erase Your Data GDPR',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              showAlertDialog2(context);
+                            },
                           )
-                        ]))));
+
+
+                            ],
+                          ),
+                          
+                                                  ]))));
+
           } else {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -232,3 +251,63 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+
+/////////////////////
+
+showAlertDialog2(BuildContext context) {
+  TextEditingController passwordController = new TextEditingController();
+  // set up the buttons
+  Widget confirmButton = TextButton(
+    child: Text("Confirm"),
+    onPressed: () async {
+      // Delete account checking if password is correct
+      if (passwordController.text == currentUser.password) {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        var username = preferences.getString('username');
+        http.Response response =
+            await EditProfileController().deleteALL(username); //DELETEALL
+        if (response.statusCode == 200) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.clear();
+          createToast("Account correctly deleted", Colors.green);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login', (Route<dynamic> route) => false);
+        } else {
+          createToast("Couldn't delete account", Colors.red);
+        }
+      } else {
+        createToast("Wrong password", Colors.red);
+      }
+    },
+  );
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Are you sure you want to delete your account and all your content related to it?"),
+    content: TextFormField(
+      controller: passwordController,
+      validator: (val) => val.isEmpty ? 'Enter your name' : null,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(bottom: 3),
+          labelText: "Please confirm with your password",
+          floatingLabelBehavior: FloatingLabelBehavior.always),
+    ),
+    actions: [cancelButton, confirmButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+

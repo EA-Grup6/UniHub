@@ -3,12 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserImage = exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
+exports.getUserImage = exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteAll = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
 const Faculty_1 = __importDefault(require("../models/Faculty"));
 const Degree_1 = __importDefault(require("../models/Degree"));
+const feedPublication_1 = __importDefault(require("../models/feedPublication"));
+const offer_1 = __importDefault(require("../models/offer"));
 let mongoose = require('mongoose');
 async function createUser(req, res) {
     let { username, password } = req.body;
@@ -100,6 +102,33 @@ async function deleteUser(req, res) {
     }
 }
 exports.deleteUser = deleteUser;
+///////////
+async function deleteAll(req, res) {
+    const Btoken = req.headers['authorization'];
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    await User_1.default.findOneAndRemove({ username: req.params.username });
+                    await feedPublication_1.default.find({ feedPublication: req.params.username });
+                    await offer_1.default.find({ offer: req.params.username });
+                    return res.status(200).send({ message: "Data erased correctly" });
+                }
+                catch {
+                    return res.status(500).send({ message: "Internal server error" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.deleteAll = deleteAll;
 async function updateUser(req, res) {
     let { username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone, profilePhoto } = req.body;
     const Btoken = req.headers['authorization'];

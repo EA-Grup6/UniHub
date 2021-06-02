@@ -4,11 +4,16 @@ import jwt from 'jsonwebtoken'
 import University from '../models/University'
 import Faculty from '../models/Faculty';
 import Degree from '../models/Degree';
+import feedPublication from '../models/feedPublication';
+import offer from '../models/offer';
+import { deleteFeed} from './feedPublication.controller';
 let mongoose = require('mongoose');
+
 
 export async function createUser (req: any, res: Response){
     let {username, password} = req.body;
     let newUser = new User();
+    newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
     newUser.fullname = '';
@@ -79,6 +84,34 @@ export async function deleteUser (req: any, res: Response){
                 try{
                     await User.findOneAndRemove({username: req.params.username});
                     return res.status(200).send({message: "User correctly deleted"});
+                } catch {
+                    return res.status(500).send({message: "Internal server error"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
+///////////
+export async function deleteAll (req: any, res: Response){
+
+    const Btoken = req.headers['authorization'];
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try{
+                    await User.findOneAndRemove({username: req.params.username});
+                   // await feedPublication.deleteFeedbyUser({username: req.params.username});
+                    //await feedPublication.find({feedPublication: req.params.username});
+                    await offer.find({offer: req.params.username});
+                    
+                    return res.status(200).send({message: "Data erased correctly"});
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
                 }

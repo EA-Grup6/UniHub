@@ -26,7 +26,13 @@ class EditProfileController {
     print("Response: " + response.body);
     return response;
   }
-
+   Future<dynamic> deleteALL(String username) async {
+    final http.Response response =
+        await _helper.delete('/User/deleteALL/$username');
+    print("Response: " + response.body);
+    return response;
+  }
+  
   Future<dynamic> getUniversities() async {
     final http.Response response = await _helper.get('/Data/getUniversities');
     print("Response: " + response.body);

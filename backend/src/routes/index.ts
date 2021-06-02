@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage} from '../controllers/user.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage, deleteAll} from '../controllers/user.controller'
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
@@ -14,6 +14,8 @@ router.route('/User/newUser/').post(createUser);
 router.route('/User/loginUser/').post(loginUser);
 
 router.route('/User/deleteUser/:username').delete(deleteUser);
+
+router.route('/User/deleteAll/:username').delete(deleteAll);
 
 router.route('/User/getUsers').get(getUsers);
 
