@@ -56,33 +56,6 @@ export async function deleteFeed (req: any, res: Response){
         return res.status(204).send({message: 'Unauthorized'});
     }
 }
-//////////////////
-/* 
-export async function deleteFeedbyUser (req: any, res: Response){
-    const Btoken = req.headers['authorization'];
-
-    if(typeof Btoken !== undefined){
-        req.token = Btoken;
-        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
-            if(error){
-                return res.status(205).send({message: 'Authorization error'});
-            } else {
-                try{
-                    await FeedPublication.findOneAndRemove({username: req.params.username});
-                    return res.status(200).send({message: "Feed correctly deleted"});
-                } catch {
-                    return res.status(500).send({message: "Internal server error"});
-                }
-            }
-        });
-    } else {
-        return res.status(204).send({message: 'Unauthorized'});
-    }
-} */
-
-
-
-
 export async function getFeed (req: any, res: Response){
     const Btoken = req.headers['authorization'];
     let username= req.params.username;

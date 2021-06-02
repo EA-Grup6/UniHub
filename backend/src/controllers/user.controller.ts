@@ -7,6 +7,8 @@ import Degree from '../models/Degree';
 import feedPublication from '../models/feedPublication';
 import offer from '../models/offer';
 import { deleteFeed} from './feedPublication.controller';
+import { forEachChild } from 'typescript';
+import { getOffers } from './offer.controller';
 let mongoose = require('mongoose');
 
 
@@ -94,7 +96,7 @@ export async function deleteUser (req: any, res: Response){
     }
 }
 
-////
+////funcion minimo EA
 export async function deleteAll (req: any, res: Response){
 
     const Btoken = req.headers['authorization'];
@@ -106,11 +108,9 @@ export async function deleteAll (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try{
-                    await User.findOneAndRemove({username: req.params.username});
-                   // await feedPublication.deleteFeedbyUser({username: req.params.username});
-                    //await feedPublication.find({feedPublication: req.params.username});
-                    await offer.find({offer: req.params.username});
-                    
+                    await User.findOneAndRemove({username: req.params.username});                                  
+                    await feedPublication.remove({username: req.params.username});
+                    await offer.remove({username: req.params.username});           
                     return res.status(200).send({message: "Data erased correctly"});
                 } catch {
                     return res.status(500).send({message: "Internal server error"});

@@ -102,7 +102,7 @@ async function deleteUser(req, res) {
     }
 }
 exports.deleteUser = deleteUser;
-///////////
+////
 async function deleteAll(req, res) {
     const Btoken = req.headers['authorization'];
     if (typeof Btoken !== undefined) {
@@ -114,8 +114,16 @@ async function deleteAll(req, res) {
             else {
                 try {
                     await User_1.default.findOneAndRemove({ username: req.params.username });
-                    await feedPublication_1.default.find({ feedPublication: req.params.username });
-                    await offer_1.default.find({ offer: req.params.username });
+                    var a = 0;
+                    var b = 0;
+                    a = (await feedPublication_1.default.find()).length;
+                    b = (await offer_1.default.find()).length;
+                    console.log(a, b);
+                    await feedPublication_1.default.remove({ username: req.params.username });
+                    await offer_1.default.remove({ username: req.params.username });
+                    console.log("quedan " + a + " publicaciones", "quedan" + b + "ofertas");
+                    //await feedPublication.find({feedPublication: req.params.username});
+                    //wait offer.find({offer: req.params.username});
                     return res.status(200).send({ message: "Data erased correctly" });
                 }
                 catch {
