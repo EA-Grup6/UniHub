@@ -94,7 +94,7 @@ export async function deleteUser (req: any, res: Response){
     }
 }
 
-///////////
+////
 export async function deleteAll (req: any, res: Response){
 
     const Btoken = req.headers['authorization'];
