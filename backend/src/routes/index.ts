@@ -4,7 +4,7 @@ updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateF
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
-
+import { getFaqs } from '../controllers/faqs.controller'
 const router = Router();
     
 
@@ -86,5 +86,9 @@ router.route('/User/updateFollowers').post(updateFollowers);
 
 
 //router.route('/User/loginUser/').put(loginUser); //Forgot password
+
+//FAQS
+
+router.route('/Faqs').get(getFaqs);
 
 export default router;

@@ -9,6 +9,7 @@ let mongoose = require('mongoose');
 export async function createUser (req: any, res: Response){
     let {username, password} = req.body;
     let newUser = new User();
+    newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
     newUser.fullname = '';

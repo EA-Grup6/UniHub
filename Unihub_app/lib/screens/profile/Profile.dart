@@ -4,10 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/controllers/faqs_controller.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
+import 'package:unihub_app/screens/faqs/faqs.dart';
 
 UserApp currentUser;
 String imageUser;
@@ -63,6 +65,11 @@ class Profile extends State<ProfileScreen> {
                     IconButton(
                         icon: Icon(Icons.settings),
                         onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FaqsScreen(),
+                              ));
                           //Nos lleva a settings
                         }),
                     IconButton(

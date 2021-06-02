@@ -5,6 +5,7 @@ import 'screens/splash/splash.dart';
 import 'screens/homepage/homepage.dart';
 import 'screens/login/login.dart';
 import 'screens/register/register.dart';
+import 'screens/faqs/faqs.dart';
 
 class App extends StatelessWidget {
   @override
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
         '/addOffer': (BuildContext context) => AddOfferScreen(),
+        '/faqs': (BuildContext context) => FaqsScreen(),
       },
     );
   }
