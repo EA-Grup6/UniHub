@@ -4,7 +4,6 @@
 
 2-En backend iniciar el servicio: npm run start
 
-3-En frontend iniciar el servicio ng serve --prod (para desarrollo)
+3-En backoffice iniciar el servicio ng serve 
 
-   3.1 - Si falla el port cerrar ventana actual o hacer ng serve --port #puerto 
-   3.2 - Si al cargar el servicio sale en blanco es probable que no hayas puesto --prod
+4-En flutter iniciar el servicio con flutter run
