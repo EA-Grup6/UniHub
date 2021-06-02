@@ -9,6 +9,7 @@ let mongoose = require('mongoose');
 export async function createUser (req: any, res: Response){
     let {username, password} = req.body;
     let newUser = new User();
+    newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
     newUser.fullname = '';
@@ -23,6 +24,7 @@ export async function createUser (req: any, res: Response){
     newUser.phone= '';
     newUser.following = [];
     newUser.followers = [];
+    newUser.badges = [];
     newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User.findOne({username:newUser.username});
     try{

@@ -139,6 +139,11 @@ class Profile extends State<ProfileScreen> {
                                           .toString()),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
+                              TextSection(
+                                  "Badges",
+                                  currentUser.badges.length == 0
+                                      ? 'No badges'
+                                      : currentUser.badges.toSet().toString()),
                             ],
                           ),
                           TextButton(

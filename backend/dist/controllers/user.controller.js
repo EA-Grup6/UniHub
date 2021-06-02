@@ -28,6 +28,7 @@ async function createUser(req, res) {
     newUser.phone = '';
     newUser.following = [];
     newUser.followers = [];
+    newUser.badges = [];
     newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {

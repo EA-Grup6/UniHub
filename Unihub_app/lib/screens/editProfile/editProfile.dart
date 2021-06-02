@@ -519,6 +519,7 @@ class EditProfile extends State<EditProfileScreen> {
                                           subjectsAskingSelected,
                                           _phoneController.text,
                                           currentUser.profilePhoto,
+                                          currentUser.badges,
                                         );
                                         http.Response response =
                                             await EditProfileController()
