@@ -8,6 +8,7 @@ import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
+import 'package:unihub_app/screens/Stadistics/stadistics.dart';
 
 UserApp currentUser;
 String imageUser;
@@ -153,6 +154,24 @@ class Profile extends State<ProfileScreen> {
                             ),
                             onPressed: () async {
                               showAlertDialog(context);
+                            },
+                          ),
+                          TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.yellow),
+                            ),
+                            child: Text(
+                              'App Stadistics',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StadisticsScreen(),
+                                  ));
                             },
                           )
                         ]))));

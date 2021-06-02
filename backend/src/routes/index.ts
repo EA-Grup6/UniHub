@@ -4,10 +4,11 @@ updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateF
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
+import { getStadistics } from '../controllers/stadistics.controller';
 
 const router = Router();
     
-
+router.route('/Statistics/get').get(getStadistics);
 
 router.route('/User/newUser/').post(createUser);
     
