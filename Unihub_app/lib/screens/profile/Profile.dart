@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/configuration/configuration.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
@@ -63,6 +64,10 @@ class Profile extends State<ProfileScreen> {
                     IconButton(
                         icon: Icon(Icons.settings),
                         onPressed: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => Configuration(),
+                                  ));
                           //Nos lleva a settings
                         }),
                     IconButton(

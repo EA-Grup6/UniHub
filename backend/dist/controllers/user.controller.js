@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserImage = exports.updateFollowers = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
+exports.getUserImage = exports.updateFollowers = exports.updateConf = exports.getSubjects = exports.getDegrees = exports.getUniversities = exports.getUser = exports.getAdmin = exports.getUsers = exports.updateUser = exports.deleteUser = exports.loginUser = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
@@ -28,6 +28,9 @@ async function createUser(req, res) {
     newUser.phone = '';
     newUser.following = [];
     newUser.followers = [];
+    newUser.privatemode = false;
+    newUser.notifications = false;
+    newUser.security = false;
     newUser.profilePhoto = 'https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg';
     var registeredUser = await User_1.default.findOne({ username: newUser.username });
     try {
@@ -323,6 +326,37 @@ async function getSubjects(req, res) {
     }
 }
 exports.getSubjects = getSubjects;
+async function updateConf(req, res) {
+    let { notifications, privatemode, security } = req.body;
+    const Btoken = req.headers['authorization'];
+    const updateData = {
+        notifications: notifications,
+        privatemode: privatemode,
+        security: security,
+    };
+    console.log(updateData);
+    if (typeof Btoken !== undefined) {
+        req.token = Btoken;
+        jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
+            if (error) {
+                return res.status(205).send({ message: 'Authorization error' });
+            }
+            else {
+                try {
+                    await User_1.default.findOneAndUpdate({ username: req.params.username }, updateData);
+                    return res.status(200).send({ message: 'User correctly updated' });
+                }
+                catch {
+                    return res.status(201).send({ message: "User couldn't be updated" });
+                }
+            }
+        });
+    }
+    else {
+        return res.status(204).send({ message: 'Unauthorized' });
+    }
+}
+exports.updateConf = updateConf;
 async function updateFollowers(req, res) {
     let { usernameFollowing, usernameFollowed } = req.body;
     const Btoken = req.headers['authorization'];

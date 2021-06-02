@@ -46,4 +46,12 @@ class EditProfileController {
     print("Response: " + response.body);
     return response;
   }
+
+  Future<dynamic> updateConf(String username, bool notifications, bool private, bool security) async {
+    var body = {"notifications": notifications.toString(), "privatemode": private.toString(), "security": security.toString()};
+    final http.Response response =
+        await _helper.post('/User/updateConf/$username',body);
+    print("Response: " + response.body);
+    return response;
+  }
 }

@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage} from '../controllers/user.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage, updateConf} from '../controllers/user.controller'
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
@@ -23,6 +23,8 @@ router.route('User/getAdmin/:id').get(getAdmin);
 
 //profile update
 router.route('/User/updateUser').post(updateUser);
+
+router.route('/User/updateConf/:username').post(updateConf);
 
 //Offer Crud
 router.route('/Offer/newOffer').post(createOffer);
