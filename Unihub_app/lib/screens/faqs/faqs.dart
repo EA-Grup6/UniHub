@@ -9,7 +9,7 @@ import 'package:unihub_app/models/faqs.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class FaqsScreen extends StatefulWidget {
-  FaqsScreen createState() => FaqsScreen();
+  FaqsScreens createState() => FaqsScreens();
 }
 
 class FaqsScreens extends State<FaqsScreen> {
@@ -36,7 +36,6 @@ class FaqsScreens extends State<FaqsScreen> {
     return FutureBuilder<List<Faqs>>(
       future: getFaqs(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
           return Scaffold(
               appBar: AppBar(
                 title: Text("FAQS"),
@@ -61,25 +60,9 @@ class FaqsScreens extends State<FaqsScreen> {
                                 ),
                               ),
                         );
-                      });
-            ),
-        } else {
-          return Scaffold(
-              appBar: AppBar(
-                title: Text("Faqs"),
-              ),
-              body: Container(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              /*child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Text('No posts available')],
-              )),*/
-          );
-        },
+                      }),
+              ));
+
       },
     );
   }
