@@ -104,15 +104,23 @@ export async function getOfferSubject (req: any, res: Response){
             } else {
                 let {university, subject, type} = req.body;
                 try{
+                        const offers= null;
                         if (university!=null && subject!=null && type!=null){
                             const offers = await Offer.find({subject: subject, type: type, university: university})
-                            if (offers!=null){
-                                return res.status(200).header('Content Type - application/json').send(offers);
-                            }else
-                                return res.status(204).send({message: "There aren't offers for this subject my dear"});
+
+                        }else if (university!=null && subject==null && type!=null){
+                            const offers = await Offer.find({type: type, university: university})
+                        }else if (university!=null && subject==null && type==null){
+                            const offers = await Offer.find({university: university})
+                        }else if (university!=null && subject!=null && type==null){
+                            const offers = await Offer.find({subject: subject, university: university})
+                        }else if (university==null && subject==null && type!=null){
+                            const offers = await Offer.find({type: type})
                         }
-
-
+                        if (offers!=null){
+                            return res.status(200).header('Content Type - application/json').send(offers);
+                        }else
+                            return res.status(204).send({message: "There aren't offers for this search my dear"});
 
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
