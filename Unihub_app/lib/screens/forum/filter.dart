@@ -62,7 +62,7 @@ class Filter extends State<FilterScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Add Offer",
+            "Filter Offers",
             style: TextStyle(color: Colors.blue),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -95,26 +95,13 @@ class Filter extends State<FilterScreen> {
                                     height: 20,
                                   ),
                                   Container(
-                                    padding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: TextFormField(
-                                      controller: _titleController,
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              EdgeInsets.only(bottom: 3),
-                                          labelText: "Title of the offer",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always),
-                                    ),
-                                  ),
-                                  Container(
                                       padding:
                                           EdgeInsets.fromLTRB(10, 10, 10, 10),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Choose the university:"),
+                                          Text("Filter by university:"),
                                           DropdownButton(
                                             value: valueUniversity,
                                             onChanged: (newValue) {
@@ -130,7 +117,7 @@ class Filter extends State<FilterScreen> {
                                               );
                                             }).toList(),
                                           ),
-                                          Text("Choose the college:"),
+                                          Text("Filter by the college:"),
                                           DropdownButton(
                                             value: valueCollege,
                                             onChanged: (newValue) {
@@ -155,7 +142,7 @@ class Filter extends State<FilterScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Choose the subject:"),
+                                          Text("Filter by the subject:"),
                                           DropdownButton(
                                             value: valueAsign,
                                             onChanged: (newValue) {
@@ -179,7 +166,7 @@ class Filter extends State<FilterScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Type:"),
+                                          Text("Filter by type:"),
                                           DropdownButton(
                                             value: valueTipo,
                                             onChanged: (newValue) {
@@ -196,33 +183,6 @@ class Filter extends State<FilterScreen> {
                                           ),
                                         ],
                                       )),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: TextFormField(
-                                      controller: _descriptionController,
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              EdgeInsets.only(bottom: 3),
-                                          labelText: "Description",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.number,
-                                      controller: _priceController,
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              EdgeInsets.only(bottom: 3),
-                                          labelText: "Price (€/h)",
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.always),
-                                    ),
-                                  ),
                                   TextButton(
                                     style: ButtonStyle(
                                       backgroundColor:
@@ -230,34 +190,11 @@ class Filter extends State<FilterScreen> {
                                               Colors.blue),
                                     ),
                                     child: Text(
-                                      'Add Offer to the feed',
+                                      'Filter the feed',
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        print('Desc: ' +
-                                            _descriptionController.text);
-                                        final int response =
-                                            await OfferController().createOffer(
-                                          await getUsername(),
-                                          _titleController.text,
-                                          valueUniversity,
-                                          valueAsign,
-                                          valueTipo,
-                                          _descriptionController.text,
-                                          _priceController.text,
-                                        );
-                                        print(response);
-                                        if (response == 200) {
-                                          createToast("Offer Created Correctly",
-                                              Colors.green);
-                                          Navigator.of(context).pop();
-                                        } else {
-                                          createToast('Error', Colors.red);
-                                        }
-                                      }
-                                    },
+                                    onPressed: () async {},
                                   )
                                 ]))))))));
   }
