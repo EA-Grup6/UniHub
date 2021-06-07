@@ -86,7 +86,7 @@ router.route('/User/Comments/updateLikes').post(updateLikesComment);
 
 router.route('/Offer/updateBuys').post(updateBuys);
 
-router.route('/User/updateFollowers').post(updateFollowers);
+router.route('/User/updateFollowers/:action').post(updateFollowers);
 
 
 //router.route('/User/loginUser/').put(loginUser); //Forgot password

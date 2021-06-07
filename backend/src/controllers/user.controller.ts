@@ -331,9 +331,9 @@ export async function getSubjects(req: any, res: Response){
 
 
 export async function updateFollowers (req: any, res: Response){
-    let{usernameFollowing, usernameFollowed} = req.body;
+    let{follower, followed} = req.body;
     const Btoken = req.headers['authorization'];
-    const action = req.headers['action'];
+    const action = req.params.action;
 
 
     if(typeof Btoken !== undefined){
@@ -343,23 +343,34 @@ export async function updateFollowers (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    const userfollowing = await User.findById({username: usernameFollowing});
-                    const userfollowed = await User.findById({username: usernameFollowed});
-                    let following = userfollowing?.following
-                    let followers = userfollowed?.followers
-                    if (action=='add'){
-                        followers?.push(usernameFollowing)
-                        following?.push(usernameFollowed)
-                        await User.findOneAndUpdate({username: usernameFollowing}, {following: following})
-                        await User.findOneAndUpdate({username: usernameFollowed}, {followers: followers})
+                    console.log('The user ' + follower + ' is trying to follow ' + followed);
+                    const userfollowing = await User.findOne({username: follower});
+                    const userfollowed = await User.findOne({username: followed});
+                    let following = userfollowing?.following;
+                    let followers = userfollowed?.followers;
+                    console.log('following: ' + following);
+                    console.log('followers: ' + followers);
+                    if (action=='follow'){
+                        followers?.push(follower);
+                        following?.push(followed);
+                        console.log('new following: ' + following);
+                        console.log('new followers: ' + followers);
+                        await User.findOneAndUpdate({username: follower}, {following: following})
+                        await User.findOneAndUpdate({username: followed}, {followers: followers})
                         return res.status(200).send({message: 'Followers correctly updated'});
-                    }else
-                        following?.splice(following?.findIndex(usernameFollowed),1);
-                        followers?.splice(followers?.findIndex(usernameFollowing),1);
-                        await User.findByIdAndUpdate({username: usernameFollowing}, {following: following})
-                        await User.findByIdAndUpdate({username: usernameFollowed}, {followers: followers})
+                    } else if (action=='unfollow') {
+                        const followerIndex = findUsername(follower, followers);
+                        const followingIndex = findUsername(followed, following);
+                        if(followerIndex != null && followingIndex != null){
+                            followers?.splice(followerIndex, 1);
+                            following?.splice(followingIndex, 1);
+                        }
+                        console.log('new following: ' + following);
+                        console.log('new followers: ' + followers);
+                        await User.findOneAndUpdate({username: follower}, {following: following})
+                        await User.findOneAndUpdate({username: followed}, {followers: followers})
                         return res.status(200).send({message: 'Followers correctly updated'});
-
+                    }
                 } catch {
                     return res.status(201).send({message: "Followers couldn't be updated"});
                 }
@@ -392,6 +403,14 @@ export async function getUserImage (req: any, res: Response){
         });
     } else {
         return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
+function findUsername(username: String, list:any){
+    for(var count=0;count<list?.length;count++){
+        if(list[count] == username){
+            return count;
+        }
     }
 }
 

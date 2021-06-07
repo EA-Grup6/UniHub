@@ -353,9 +353,9 @@ async function getSubjects(req, res) {
 }
 exports.getSubjects = getSubjects;
 async function updateFollowers(req, res) {
-    let { usernameFollowing, usernameFollowed } = req.body;
+    let { follower, followed } = req.body;
     const Btoken = req.headers['authorization'];
-    const action = req.headers['action'];
+    const action = req.params.action;
     if (typeof Btoken !== undefined) {
         req.token = Btoken;
         jsonwebtoken_1.default.verify(req.token, 'mykey', async (error, authData) => {
@@ -364,23 +364,35 @@ async function updateFollowers(req, res) {
             }
             else {
                 try {
-                    const userfollowing = await User_1.default.findById({ username: usernameFollowing });
-                    const userfollowed = await User_1.default.findById({ username: usernameFollowed });
+                    console.log('The user ' + follower + ' is trying to follow ' + followed);
+                    const userfollowing = await User_1.default.findOne({ username: follower });
+                    const userfollowed = await User_1.default.findOne({ username: followed });
                     let following = userfollowing === null || userfollowing === void 0 ? void 0 : userfollowing.following;
                     let followers = userfollowed === null || userfollowed === void 0 ? void 0 : userfollowed.followers;
-                    if (action == 'add') {
-                        followers === null || followers === void 0 ? void 0 : followers.push(usernameFollowing);
-                        following === null || following === void 0 ? void 0 : following.push(usernameFollowed);
-                        await User_1.default.findOneAndUpdate({ username: usernameFollowing }, { following: following });
-                        await User_1.default.findOneAndUpdate({ username: usernameFollowed }, { followers: followers });
+                    console.log('following: ' + following);
+                    console.log('followers: ' + followers);
+                    if (action == 'follow') {
+                        followers === null || followers === void 0 ? void 0 : followers.push(follower);
+                        following === null || following === void 0 ? void 0 : following.push(followed);
+                        console.log('new following: ' + following);
+                        console.log('new followers: ' + followers);
+                        await User_1.default.findOneAndUpdate({ username: follower }, { following: following });
+                        await User_1.default.findOneAndUpdate({ username: followed }, { followers: followers });
                         return res.status(200).send({ message: 'Followers correctly updated' });
                     }
-                    else
-                        following === null || following === void 0 ? void 0 : following.splice(following === null || following === void 0 ? void 0 : following.findIndex(usernameFollowed), 1);
-                    followers === null || followers === void 0 ? void 0 : followers.splice(followers === null || followers === void 0 ? void 0 : followers.findIndex(usernameFollowing), 1);
-                    await User_1.default.findByIdAndUpdate({ username: usernameFollowing }, { following: following });
-                    await User_1.default.findByIdAndUpdate({ username: usernameFollowed }, { followers: followers });
-                    return res.status(200).send({ message: 'Followers correctly updated' });
+                    else if (action == 'unfollow') {
+                        const followerIndex = findUsername(follower, followers);
+                        const followingIndex = findUsername(followed, following);
+                        if (followerIndex != null && followingIndex != null) {
+                            followers === null || followers === void 0 ? void 0 : followers.splice(followerIndex, 1);
+                            following === null || following === void 0 ? void 0 : following.splice(followingIndex, 1);
+                        }
+                        console.log('new following: ' + following);
+                        console.log('new followers: ' + followers);
+                        await User_1.default.findOneAndUpdate({ username: follower }, { following: following });
+                        await User_1.default.findOneAndUpdate({ username: followed }, { followers: followers });
+                        return res.status(200).send({ message: 'Followers correctly updated' });
+                    }
                 }
                 catch {
                     return res.status(201).send({ message: "Followers couldn't be updated" });
@@ -419,3 +431,10 @@ async function getUserImage(req, res) {
     }
 }
 exports.getUserImage = getUserImage;
+function findUsername(username, list) {
+    for (var count = 0; count < (list === null || list === void 0 ? void 0 : list.length); count++) {
+        if (list[count] == username) {
+            return count;
+        }
+    }
+}

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/controllers/social_controller.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
@@ -88,6 +89,24 @@ class Profile extends State<ProfileScreen> {
                                               Colors.grey[800])),
                                   onPressed: () async {
                                     //Funcion para quitar follow
+                                    http.Response response =
+                                        await SocialController().unfollow(
+                                            this.myUsername,
+                                            currentUser.username);
+                                    if (response.statusCode == 200) {
+                                      setState(() {
+                                        currentUser.followers
+                                            .remove(this.myUsername);
+                                      });
+                                      createToast(
+                                          "You have unfollowed " +
+                                              currentUser.username,
+                                          Colors.green);
+                                    } else {
+                                      createToast(
+                                          jsonDecode(response.body)['message'],
+                                          Colors.green);
+                                    }
                                   })
                               : TextButton(
                                   child: Text("Follow",
@@ -100,6 +119,24 @@ class Profile extends State<ProfileScreen> {
                                               Colors.red[800])),
                                   onPressed: () async {
                                     //Funcion para añadir follow
+                                    http.Response response =
+                                        await SocialController().follow(
+                                            this.myUsername,
+                                            currentUser.username);
+                                    if (response.statusCode == 200) {
+                                      setState(() {
+                                        currentUser.followers
+                                            .remove(this.myUsername);
+                                      });
+                                      createToast(
+                                          "You are now following " +
+                                              currentUser.username,
+                                          Colors.green);
+                                    } else {
+                                      createToast(
+                                          jsonDecode(response.body)['message'],
+                                          Colors.green);
+                                    }
                                   })
                         ],
                 ),
