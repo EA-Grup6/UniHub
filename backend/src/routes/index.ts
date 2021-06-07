@@ -39,7 +39,7 @@ router.route('/Offer/getAllOffers').get(getAllOffers);
 
 router.route('/Offer/updateOffer').post(updateOffer);
 
-router.route('/Offer/getOfferSubject/:subject').get(getOfferSubject)
+router.route('/Offer/getOfferSubject').post(getOfferSubject)
 
 //Feed Crud
 router.route('/Feed/newFeed').post(createFeed);

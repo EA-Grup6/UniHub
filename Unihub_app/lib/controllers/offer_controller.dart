@@ -51,4 +51,17 @@ class OfferController {
     print("Response: " + response.body);
     return response.body;
   }
+
+  Future<dynamic> getOfferSubject(OfferApp offer) async {
+
+
+    var json = offer.toJSON();
+    print('Envio esta oferta: ' + json.toString());
+    final http.Response response =
+        await _helper.post('/Offer/getOfferSubject', json);
+    print("Estoy en response: " + response.body);
+    return response;
+  }
+
+
 }

@@ -95,7 +95,6 @@ export async function getOffer (req: any, res: Response){
 
 export async function getOfferSubject (req: any, res: Response){
     const Btoken = req.headers['authorization'];
-    let subject= req.params.subject;
 
     if(typeof Btoken !== undefined){
         req.token = Btoken;
@@ -103,13 +102,16 @@ export async function getOfferSubject (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                
+                let {university, subject, type} = req.body;
                 try{
-                        const offers = await Offer.find({subject: subject})
-                        if (offers!=null){
-                            return res.status(200).header('Content Type - application/json').send(offers);
-                        }else
-                            return res.status(204).send({message: "There aren't offers for this subject my dear"});
+                        if (university!=null && subject!=null && type!=null){
+                            const offers = await Offer.find({subject: subject, type: type, university: university})
+                            if (offers!=null){
+                                return res.status(200).header('Content Type - application/json').send(offers);
+                            }else
+                                return res.status(204).send({message: "There aren't offers for this subject my dear"});
+                        }
+
 
 
                 } catch {
