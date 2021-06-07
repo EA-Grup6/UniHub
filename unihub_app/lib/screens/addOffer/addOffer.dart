@@ -52,7 +52,7 @@ class AddOffer extends State<AddOfferScreen> {
   List listTipo = [
     "Class",
     "Assignment",
-    "Training for an exam",
+    "Exam",
   ];
   String valueUniversity;
   List listUniversity = [
