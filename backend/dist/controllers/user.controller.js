@@ -9,7 +9,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const University_1 = __importDefault(require("../models/University"));
 const Faculty_1 = __importDefault(require("../models/Faculty"));
 const Degree_1 = __importDefault(require("../models/Degree"));
-const feedPublication_1 = __importDefault(require("../models/feedPublication"));
 const offer_1 = __importDefault(require("../models/offer"));
 let mongoose = require('mongoose');
 async function createUser(req, res) {
@@ -114,7 +113,8 @@ async function deleteAll(req, res) {
             else {
                 try {
                     await User_1.default.findOneAndRemove({ username: req.params.username });
-                    await feedPublication_1.default.find({ feedPublication: req.params.username });
+                    // await feedPublication.deleteFeedbyUser({username: req.params.username});
+                    //await feedPublication.find({feedPublication: req.params.username});
                     await offer_1.default.find({ offer: req.params.username });
                     return res.status(200).send({ message: "Data erased correctly" });
                 }

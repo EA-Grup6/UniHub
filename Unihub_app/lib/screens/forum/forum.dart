@@ -39,10 +39,15 @@ class Forum extends State<ForumScreen> {
                   title: Text("Academic offering"),
                   actions: <Widget>[
                     IconButton(
+                        icon: Icon(Icons.filter_list),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/Filter');
+                        }),
+                    IconButton(
                         icon: Icon(Icons.search),
                         onPressed: () {
                           showSearch(context: context, delegate: DataSearch());
-                        })
+                        }),
                   ],
                 ),
                 body: SafeArea(
