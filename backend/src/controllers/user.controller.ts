@@ -364,12 +364,12 @@ export async function updateFollowers (req: any, res: Response){
                         if(followerIndex != null && followingIndex != null){
                             followers?.splice(followerIndex, 1);
                             following?.splice(followingIndex, 1);
+                            console.log('new following: ' + following);
+                            console.log('new followers: ' + followers);
+                            await User.findOneAndUpdate({username: follower}, {following: following})
+                            await User.findOneAndUpdate({username: followed}, {followers: followers})
+                            return res.status(200).send({message: 'Followers correctly updated'});
                         }
-                        console.log('new following: ' + following);
-                        console.log('new followers: ' + followers);
-                        await User.findOneAndUpdate({username: follower}, {following: following})
-                        await User.findOneAndUpdate({username: followed}, {followers: followers})
-                        return res.status(200).send({message: 'Followers correctly updated'});
                     }
                 } catch {
                     return res.status(201).send({message: "Followers couldn't be updated"});
