@@ -92,6 +92,37 @@ export async function getOffer (req: any, res: Response){
     }
 }
 
+
+export async function getOfferSubject (req: any, res: Response){
+    const Btoken = req.headers['authorization'];
+    let subject= req.params.subject;
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                
+                try{
+                        const offers = await Offer.find({subject: subject})
+                        if (offers!=null){
+                            return res.status(200).header('Content Type - application/json').send(offers);
+                        }else
+                            return res.status(204).send({message: "There aren't offers for this subject my dear"});
+
+
+                } catch {
+                    return res.status(500).send({message: "Internal server error"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+}
+
+
 //Por asignaturas que busco? por following?
 export async function getOffers (req: any, res: Response){
     const Btoken = req.headers['authorization'];

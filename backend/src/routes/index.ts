@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
 updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage, deleteAll} from '../controllers/user.controller'
-import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers} from '../controllers/offer.controller'
+import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers, getOfferSubject} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
 
@@ -38,6 +38,8 @@ router.route('/Offer/getOffer/:username').get(getOffer);
 router.route('/Offer/getAllOffers').get(getAllOffers);
 
 router.route('/Offer/updateOffer').post(updateOffer);
+
+router.route('/Offer/getOfferSubject/:subject').get(getOfferSubject)
 
 //Feed Crud
 router.route('/Feed/newFeed').post(createFeed);
