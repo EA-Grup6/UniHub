@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/screens/profile/Profile.dart';
 
 class FeedPost extends StatefulWidget {
   const FeedPost(this._id, this._username, this._content, this.publicationDate,
@@ -37,7 +38,11 @@ class FeedPostSection extends State<FeedPost> {
                             splashRadius: 25,
                             icon: Icon(null),
                             onPressed: () {
-                              //Te tiene que llevar al perfil del usuario
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProfileScreen(widget._username)));
                             })),
                     contentPadding: EdgeInsets.all(0),
                     title: Padding(

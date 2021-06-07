@@ -11,6 +11,8 @@ class UserApp {
   final List<dynamic> subjectsRequested;
   final String phone;
   String profilePhoto;
+  final List<dynamic> followers;
+  final List<dynamic> following;
 
   UserApp(
       this.username,
@@ -24,24 +26,27 @@ class UserApp {
       this.subjectsDone,
       this.subjectsRequested,
       this.phone,
-      this.profilePhoto);
+      this.profilePhoto,
+      this.followers,
+      this.following);
 
   factory UserApp.fromMap(Map<String, dynamic> json) {
     print(json['username']);
     return UserApp(
-      json['username'],
-      json['password'],
-      json['fullname'],
-      json['description'],
-      json['university'],
-      json['school'],
-      json['degree'],
-      json['role'],
-      json['subjectsDone'],
-      json['subjectsRequested'],
-      json['phone'],
-      json['profilePhoto'],
-    );
+        json['username'],
+        json['password'],
+        json['fullname'],
+        json['description'],
+        json['university'],
+        json['school'],
+        json['degree'],
+        json['role'],
+        json['subjectsDone'],
+        json['subjectsRequested'],
+        json['phone'],
+        json['profilePhoto'],
+        json['followers'],
+        json['following']);
   }
 
   Map<String, dynamic> toJSON() {
@@ -58,6 +63,8 @@ class UserApp {
       'subjectsRequested': this.subjectsRequested,
       'phone': this.phone,
       'profilePhoto': this.profilePhoto,
+      'followers': this.followers,
+      'following': this.following
     };
     return newJSON;
   }

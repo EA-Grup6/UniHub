@@ -12,16 +12,15 @@ import 'package:unihub_app/widgets/textSection.dart';
 UserApp currentUser;
 String imageUser;
 Image usrImg;
-bool myProfile;
 
 class ProfileScreen extends StatefulWidget {
-  /*const ProfileScreen(this.myProfile, this.username);
-  final bool myProfile;
-  final String username;*/
+  const ProfileScreen(this.username);
+  final String username;
   Profile createState() => Profile();
 }
 
 class Profile extends State<ProfileScreen> {
+  String myUsername;
   String username;
 
   @override
@@ -30,10 +29,11 @@ class Profile extends State<ProfileScreen> {
   }
 
   Future<UserApp> getDataFromUser() async {
-    //if (this.widget.myProfile) {
-    if (true) {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      username = preferences.getString('username');
+    username = this.widget.username;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    myUsername = preferences.getString('username');
+    if (username == null) {
+      username = myUsername;
     }
     currentUser = UserApp.fromMap(
         jsonDecode(await EditProfileController().getProfile(username)));
@@ -48,29 +48,60 @@ class Profile extends State<ProfileScreen> {
           if (snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Your profile"),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.brush_rounded),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfileScreen(),
-                                  settings:
-                                      RouteSettings(arguments: currentUser)));
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.settings),
-                        onPressed: () {
-                          //Nos lleva a settings
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.logout),
-                        onPressed: () async {
-                          logOut(context);
-                        })
-                  ],
+                  title: this.username == this.myUsername
+                      ? Text("Your profile")
+                      : Text(currentUser.fullname + "'s profile"),
+                  actions: this.username == this.myUsername
+                      ? <Widget>[
+                          IconButton(
+                              icon: Icon(Icons.brush_rounded),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfileScreen(),
+                                        settings: RouteSettings(
+                                            arguments: currentUser)));
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.settings),
+                              onPressed: () {
+                                //Nos lleva a settings
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.logout),
+                              onPressed: () async {
+                                logOut(context);
+                              })
+                        ]
+                      : <Widget>[
+                          currentUser.followers.contains(this.myUsername)
+                              ? TextButton(
+                                  child: Text("Unfollow",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.grey[800])),
+                                  onPressed: () async {
+                                    //Funcion para quitar follow
+                                  })
+                              : TextButton(
+                                  child: Text("Follow",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.red[800])),
+                                  onPressed: () async {
+                                    //Funcion para añadir follow
+                                  })
+                        ],
                 ),
                 body: SafeArea(
                     child: Container(
@@ -139,42 +170,42 @@ class Profile extends State<ProfileScreen> {
                                           .toString()),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
-
+                              this.username == myUsername
+                                  ? TextButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.red),
+                                      ),
+                                      child: Text(
+                                        'Delete your account',
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                      onPressed: () async {
+                                        showAlertDialog(context);
+                                      },
+                                    )
+                                  : Container(),
+                              /*
                               TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.red),
-                            ),
-                            child: Text(
-                              'Delete your account',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              showAlertDialog(context);
-                            },
-                          ),
-                            TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.red),
-                            ),
-                            child: Text(
-                              'Erase Your Data GDPR',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                            onPressed: () async {
-                              showAlertDialog2(context);
-                            },
-                          )
-
-
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                                child: Text(
+                                  'Erase Your Data GDPR',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  showAlertDialog2(context);
+                                },
+                              )*/
                             ],
                           ),
-                          
-                                                  ]))));
-
+                        ]))));
           } else {
             return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -289,7 +320,8 @@ showAlertDialog2(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Are you sure you want to delete your account and all your content related to it?"),
+    title: Text(
+        "Are you sure you want to delete your account and all your content related to it?"),
     content: TextFormField(
       controller: passwordController,
       validator: (val) => val.isEmpty ? 'Enter your name' : null,
@@ -310,4 +342,4 @@ showAlertDialog2(BuildContext context) {
   );
 }
 
-
+void setFollow() {}

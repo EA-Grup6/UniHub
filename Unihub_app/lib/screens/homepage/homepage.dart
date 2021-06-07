@@ -14,7 +14,7 @@ class Homepage extends State<HomepageScreen> {
     FeedScreen(),
     //  Chat(),
     SearchScreen(),
-    ProfileScreen()
+    ProfileScreen(null)
   ];
   //
   final PageStorageBucket bucket = PageStorageBucket();
@@ -25,7 +25,7 @@ class Homepage extends State<HomepageScreen> {
     if (ModalRoute.of(context).settings.arguments != null) {
       setState(() {
         currentTab = 3;
-        currentScreen = ProfileScreen();
+        currentScreen = ProfileScreen(null);
       });
     } else {}
     return Scaffold(
@@ -98,7 +98,7 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      currentScreen = ProfileScreen();
+                      currentScreen = ProfileScreen(null);
                       currentTab = 3;
                     });
                   },
