@@ -207,6 +207,10 @@ class Profile extends State<ProfileScreen> {
                                           .toString()),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
+                              TextSection("Followers",
+                                  currentUser.followers.length.toString()),
+                              TextSection("Following",
+                                  currentUser.following.length.toString()),
                               this.username == myUsername
                                   ? TextButton(
                                       style: ButtonStyle(

@@ -7,7 +7,8 @@ export async function startConnection(){
 //mongo
     const db = await mongoose.connect('mongodb://127.0.0.1:27017/UniHub',{ 
         useNewUrlParser: true,
-        useFindAndModify: false
+        useFindAndModify: false,
+        useUnifiedTopology: true
     })
 
     console.log('Connection to Database stablished')

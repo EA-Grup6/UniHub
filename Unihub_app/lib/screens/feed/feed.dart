@@ -142,7 +142,6 @@ class Feed extends State<FeedScreen> {
           if (response.statusCode == 200) {
             createToast('Post correctly uploaded', Colors.green);
             setState(() {
-              print(jsonDecode(response.body));
               pubsList.insert(
                   0, FeedPublication.fromMap(jsonDecode(response.body)));
             });

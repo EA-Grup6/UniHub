@@ -386,12 +386,12 @@ async function updateFollowers(req, res) {
                         if (followerIndex != null && followingIndex != null) {
                             followers === null || followers === void 0 ? void 0 : followers.splice(followerIndex, 1);
                             following === null || following === void 0 ? void 0 : following.splice(followingIndex, 1);
+                            console.log('new following: ' + following);
+                            console.log('new followers: ' + followers);
+                            await User_1.default.findOneAndUpdate({ username: follower }, { following: following });
+                            await User_1.default.findOneAndUpdate({ username: followed }, { followers: followers });
+                            return res.status(200).send({ message: 'Followers correctly updated' });
                         }
-                        console.log('new following: ' + following);
-                        console.log('new followers: ' + followers);
-                        await User_1.default.findOneAndUpdate({ username: follower }, { following: following });
-                        await User_1.default.findOneAndUpdate({ username: followed }, { followers: followers });
-                        return res.status(200).send({ message: 'Followers correctly updated' });
                     }
                 }
                 catch {
