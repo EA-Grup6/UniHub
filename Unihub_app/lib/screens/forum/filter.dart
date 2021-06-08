@@ -9,6 +9,7 @@ import 'package:unihub_app/models/faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/models/offer.dart';
 import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
@@ -48,10 +49,16 @@ createToast(String message, Color color) {
 class Filter extends State<FilterScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  getUsername() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get('username');
+Future<List<OfferApp>> getOfferSubject(OfferApp offer ) async {
+    http.Response response = await OfferController().getOffers();
+    List<OfferApp> preListOffers = [];
+    for (var offer in jsonDecode(response.body)) {
+      preListOffers.add(OfferApp.fromMap(offer));
+      print(OfferApp.fromMap(offer));
+    }
+    return preListOffers;
   }
+
 
   @override
   void initState() {
