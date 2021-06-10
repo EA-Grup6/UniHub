@@ -58,7 +58,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
             tabs: myTabs,
             controller: _tabController,
             indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), // Creates border
+              borderRadius: BorderRadius.circular(50),
               color: Colors.white,
             ),
             labelColor: Colors.blue,
@@ -71,6 +71,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
               width: MediaQuery.of(context).size.width / 2,
               height: 35,
               child: TextField(
+                style: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search ' + currentTab,
@@ -106,7 +107,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     );
   }
 }
-
+/*
 class DataSearch extends SearchDelegate<String> {
   final subjects = [
     "EA",
@@ -206,3 +207,4 @@ class DataSearch extends SearchDelegate<String> {
     );
   }
 }
+*/
