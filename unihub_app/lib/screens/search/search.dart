@@ -18,9 +18,6 @@ final List<Tab> myTabs = <Tab>[
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
   String currentTab = 'Feed Publications';
   TextEditingController _searchController;
-  List<String> finalSelectedFeedPubsFields = [];
-  List<String> finalSelectedOffersFields = [];
-  List<String> finalSelectedProfilesFields = [];
 
   void initState() {
     super.initState();
@@ -51,6 +48,25 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
   }
 
   String keyword = '';
+  List<String> finalSelectedFeedPubsFields = [];
+  List<String> availableFeedPubFields = ['Content', 'Username'];
+
+  List<String> finalSelectedOffersFields = [];
+  List<String> availableOffersFields = [
+    'University',
+    'Subject',
+    'Type of Offer',
+  ];
+
+  List<String> finalSelectedProfilesFields = [];
+  List<String> availableProfilesFields = [
+    "Full name",
+    "Degree",
+    "University",
+    "Subjects done",
+    "Role",
+    "Subjects asking for help",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +114,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
               onPressed: () {
                 //Alert para seleccionar si queremos buscar por usuario/contenido/universidad/facultad/asignaturas...
                 //El contenido del alert debe variar si estamos en feed publications, offers o profiles (no tiene sentido buscar por campos que no existen!)
-                showFiltersDialog(this.context);
+                showFiltersDialog(this.context, finalSelectedFeedPubsFields,
+                    finalSelectedOffersFields, finalSelectedProfilesFields);
               },
             )
           ]),
@@ -112,60 +129,33 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     );
   }
 
-  showFiltersDialog(BuildContext context) {
-    List<String> selectedFeedPubsFields = [];
-    Map<String, bool> isFeedPubFilterSelected = {
-      'Content': false,
-      'Username': false
-    };
-    List<String> availableFeedPubFields = ['Content', 'Username'];
-
-    List<String> selectedOffersFields = [];
-    Map<String, bool> isOffersFilterSelected = {
-      'University': false,
-      'Subject': false,
-      'Type of Offer': false,
-    };
-    List<String> availableOffersFields = [
-      'University',
-      'Subject',
-      'Type of Offer',
-    ];
-
-    List<String> selectedProfilesFields = [];
-    Map<String, bool> isProfilesFilterSelected = {
-      "Full name": false,
-      "Degree": false,
-      "University": false,
-      "Subjects done": false,
-      "Role": false,
-      "Subjects asking for help": false,
-    };
-    List<String> availableProfilesFields = [
-      "Full name",
-      "Degree",
-      "University",
-      "Subjects done",
-      "Role",
-      "Subjects asking for help",
-    ];
-
+  showFiltersDialog(BuildContext context, List<String> feedPubsFilters,
+      List<String> offersFilters, List<String> profilesFilters) {
     // set up the buttons
+    List<String> selectedFeedPubsFields = feedPubsFilters;
+    List<String> selectedOffersFields = offersFilters;
+    List<String> selectedProfilesFields = profilesFilters;
     Widget acceptFilters = TextButton(
         child: Text("Filter by selected fields"),
         onPressed: () {
           if (_tabController.index == 0) {
-            finalSelectedFeedPubsFields = selectedFeedPubsFields;
+            setState(() {
+              finalSelectedFeedPubsFields = selectedFeedPubsFields;
+            });
           } else if (_tabController.index == 1) {
-            finalSelectedOffersFields = selectedOffersFields;
+            setState(() {
+              finalSelectedOffersFields = selectedOffersFields;
+            });
           } else if (_tabController.index == 2) {
-            finalSelectedProfilesFields = selectedProfilesFields;
+            setState(() {
+              finalSelectedProfilesFields = selectedProfilesFields;
+            });
           }
           Navigator.pop(context);
         });
 
     Widget dismissFilters = TextButton(
-      child: Text("Discard selected fields"),
+      child: Text("Dismiss selected fields"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -177,65 +167,82 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         insetPadding: EdgeInsets.all(10),
         title: Text("Filter options"),
         content: _tabController.index == 0
-            ? Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.width / 2.5,
-                child: ListView.builder(
-                  itemCount: availableFeedPubFields.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return new CheckboxListTile(
-                        title: Text(availableFeedPubFields[index]),
-                        value: selectedFeedPubsFields
-                            .contains(availableFeedPubFields[index]),
-                        onChanged: (bool value) {
-                          setState(() {
-                            value
-                                ? selectedFeedPubsFields
-                                    .add(availableFeedPubFields[index])
-                                : selectedFeedPubsFields
-                                    .remove(availableFeedPubFields[index]);
-                          });
-                        });
-                  },
-                ),
-              )
-            : _tabController.index == 1
-                ? Container(
+            ? StatefulBuilder(
+                builder: (context, setState) {
+                  return Container(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 2.5,
                     child: ListView.builder(
-                      itemCount: availableOffersFields.length,
+                      itemCount: availableFeedPubFields.length,
                       itemBuilder: (BuildContext context, index) {
                         return new CheckboxListTile(
-                            title: Text(availableOffersFields[index]),
+                            title: Text(availableFeedPubFields[index]),
                             value: selectedFeedPubsFields
-                                .contains(availableOffersFields[index]),
+                                .contains(availableFeedPubFields[index]),
                             onChanged: (bool value) {
                               setState(() {
                                 value
-                                    ? selectedOffersFields
-                                        .add(availableOffersFields[index])
-                                    : selectedOffersFields
-                                        .remove(availableOffersFields[index]);
+                                    ? selectedFeedPubsFields
+                                        .add(availableFeedPubFields[index])
+                                    : selectedFeedPubsFields
+                                        .remove(availableFeedPubFields[index]);
                               });
                             });
                       },
                     ),
-                  )
-                : _tabController.index == 2
-                    ? Column(mainAxisSize: MainAxisSize.min, children: [
-                        for (MapEntry entry in isProfilesFilterSelected.entries)
-                          new CheckboxListTile(
-                              title: Text(entry.key),
-                              value: isProfilesFilterSelected[entry.key],
+                  );
+                },
+              )
+            : _tabController.index == 1
+                ? StatefulBuilder(builder: (context, setState) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height / 3,
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      child: ListView.builder(
+                        itemCount: availableOffersFields.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return new CheckboxListTile(
+                              title: Text(availableOffersFields[index]),
+                              value: selectedOffersFields
+                                  .contains(availableOffersFields[index]),
                               onChanged: (bool value) {
                                 setState(() {
-                                  isProfilesFilterSelected.update(
-                                      entry.key, (value) => !value);
-                                  value = !value;
+                                  value
+                                      ? selectedOffersFields
+                                          .add(availableOffersFields[index])
+                                      : selectedOffersFields
+                                          .remove(availableOffersFields[index]);
                                 });
-                              })
-                      ])
+                              });
+                        },
+                      ),
+                    );
+                  })
+                : _tabController.index == 2
+                    ? StatefulBuilder(builder: (context, setState) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height / 3,
+                          width: MediaQuery.of(context).size.width / 2.5,
+                          child: ListView.builder(
+                            itemCount: availableProfilesFields.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return new CheckboxListTile(
+                                  title: Text(availableProfilesFields[index]),
+                                  value: selectedProfilesFields
+                                      .contains(availableProfilesFields[index]),
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      value
+                                          ? selectedOffersFields.add(
+                                              availableProfilesFields[index])
+                                          : selectedOffersFields.remove(
+                                              availableProfilesFields[index]);
+                                    });
+                                  });
+                            },
+                          ),
+                        );
+                      })
                     : Container(),
         actions: [dismissFilters, acceptFilters]);
 

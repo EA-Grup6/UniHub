@@ -6,12 +6,16 @@ import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
 
-class SearchFeedPubsScreen extends StatelessWidget {
+class SearchFeedPubsScreen extends StatefulWidget {
+  const SearchFeedPubsScreen(this.fields, this.keyword);
   final String keyword;
   final List<String> fields;
-  String username;
+  @override
+  SearchFeedPubs createState() => SearchFeedPubs();
+}
 
-  SearchFeedPubsScreen(this.fields, this.keyword);
+class SearchFeedPubs extends State<SearchFeedPubsScreen> {
+  String username;
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,7 +23,6 @@ class SearchFeedPubsScreen extends StatelessWidget {
   }
 
   Future<List<FeedPublication>> initializeListAndUser() async {
-    List<String> fields = ['content', 'username'];
     List<FeedPublication> pubsList = [];
     List<FeedPublication> filteredPubList = [];
     getUsername();
@@ -27,22 +30,21 @@ class SearchFeedPubsScreen extends StatelessWidget {
     for (var feedPub in jsonDecode(response.body)) {
       pubsList.add(FeedPublication.fromMap(feedPub));
     }
-    //EL ALGORITMO DE BUSQUEDA ES SOLO ESTO
     pubsList.forEach((FeedPublication feed) {
-      fields.forEach((String field) {
-        List<String> contentToSearch = feed.toJSON()[field].split(' ');
-        if (contentToSearch.contains(keyword)) {
+      this.widget.fields.forEach((String field) {
+        List<String> contentToSearch =
+            feed.toJSON()[field.toLowerCase()].toString().split(' ');
+        if (contentToSearch.contains(this.widget.keyword)) {
           filteredPubList.add(feed);
         }
       });
     });
     return filteredPubList;
-    //DEBERÍA HACERLO BACKEND PERO NP
   }
 
   @override
   Widget build(BuildContext context) {
-    if (keyword != null) {
+    if (this.widget.keyword != null) {
       return FutureBuilder<List<FeedPublication>>(
           future: initializeListAndUser(),
           builder: (context, snapshot) {
@@ -71,6 +73,7 @@ class SearchFeedPubsScreen extends StatelessWidget {
                             )))),
               );
             } else {
+              initializeListAndUser();
               return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
