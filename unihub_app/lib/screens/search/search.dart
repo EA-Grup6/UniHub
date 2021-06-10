@@ -4,23 +4,7 @@ import 'package:unihub_app/screens/search/searchOffers.dart';
 import 'package:unihub_app/screens/search/searchProfiles.dart';
 
 class SearchScreen extends StatefulWidget {
-  Map<String, bool> isFeedPubFilterSelected = {
-    'Content': false,
-    'Username': false
-  };
-  Map<String, bool> isOffersFilterSelected = {
-    'University': false,
-    'Subject': false,
-    'Type of Offer': false,
-  };
-  Map<String, bool> isProfilesFilterSelected = {
-    "Full name": false,
-    "Degree": false,
-    "University": false,
-    "Subjects done": false,
-    "Role": false,
-    "Subjects asking for help": false,
-  };
+  @override
   Search createState() => Search();
 }
 
@@ -34,6 +18,9 @@ final List<Tab> myTabs = <Tab>[
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
   String currentTab = 'Feed Publications';
   TextEditingController _searchController;
+  List<String> finalSelectedFeedPubsFields = [];
+  List<String> finalSelectedOffersFields = [];
+  List<String> finalSelectedProfilesFields = [];
 
   void initState() {
     super.initState();
@@ -64,29 +51,6 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
   }
 
   String keyword = '';
-
-  List<String> selectedFeedPubsFields = [];
-  Map<String, bool> isFeedPubFilterSelected = {
-    'Content': false,
-    'Username': false
-  };
-
-  List<String> selectedOffersFields = [];
-  Map<String, bool> isOffersFilterSelected = {
-    'University': false,
-    'Subject': false,
-    'Type of Offer': false,
-  };
-
-  List<String> selectedProfilesFields = [];
-  Map<String, bool> isProfilesFilterSelected = {
-    "Full name": false,
-    "Degree": false,
-    "University": false,
-    "Subjects done": false,
-    "Role": false,
-    "Subjects asking for help": false,
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -140,43 +104,68 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
           ]),
         ),
         body: TabBarView(controller: _tabController, children: [
-          SearchFeedPubsScreen(selectedFeedPubsFields, keyword),
-          SearchOffersScreen(selectedOffersFields, keyword),
-          SearchProfilesScreen(selectedProfilesFields, keyword)
+          SearchFeedPubsScreen(finalSelectedFeedPubsFields, keyword),
+          SearchOffersScreen(finalSelectedOffersFields, keyword),
+          SearchProfilesScreen(finalSelectedProfilesFields, keyword)
         ]),
       ),
     );
   }
 
   showFiltersDialog(BuildContext context) {
+    List<String> selectedFeedPubsFields = [];
+    Map<String, bool> isFeedPubFilterSelected = {
+      'Content': false,
+      'Username': false
+    };
+    List<String> availableFeedPubFields = ['Content', 'Username'];
+
+    List<String> selectedOffersFields = [];
+    Map<String, bool> isOffersFilterSelected = {
+      'University': false,
+      'Subject': false,
+      'Type of Offer': false,
+    };
+    List<String> availableOffersFields = [
+      'University',
+      'Subject',
+      'Type of Offer',
+    ];
+
+    List<String> selectedProfilesFields = [];
+    Map<String, bool> isProfilesFilterSelected = {
+      "Full name": false,
+      "Degree": false,
+      "University": false,
+      "Subjects done": false,
+      "Role": false,
+      "Subjects asking for help": false,
+    };
+    List<String> availableProfilesFields = [
+      "Full name",
+      "Degree",
+      "University",
+      "Subjects done",
+      "Role",
+      "Subjects asking for help",
+    ];
+
     // set up the buttons
     Widget acceptFilters = TextButton(
         child: Text("Filter by selected fields"),
         onPressed: () {
           if (_tabController.index == 0) {
-            for (MapEntry entry in isFeedPubFilterSelected.entries) {
-              if (entry.value) {
-                selectedFeedPubsFields.add(entry.key);
-              }
-            }
+            finalSelectedFeedPubsFields = selectedFeedPubsFields;
           } else if (_tabController.index == 1) {
-            for (MapEntry entry in isOffersFilterSelected.entries) {
-              if (entry.value) {
-                selectedOffersFields.add(entry.key);
-              }
-            }
+            finalSelectedOffersFields = selectedOffersFields;
           } else if (_tabController.index == 2) {
-            for (MapEntry entry in isProfilesFilterSelected.entries) {
-              if (entry.value) {
-                selectedProfilesFields.add(entry.key);
-              }
-            }
+            finalSelectedProfilesFields = selectedProfilesFields;
           }
           Navigator.pop(context);
         });
 
     Widget dismissFilters = TextButton(
-      child: Text("Dismiss selected fields"),
+      child: Text("Discard selected fields"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -189,58 +178,64 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         title: Text("Filter options"),
         content: _tabController.index == 0
             ? Container(
-                height: MediaQuery.of(context).size.height / 4.5,
-                child: Column(children: [
-                  for (MapEntry entry
-                      in this.widget.isFeedPubFilterSelected.entries)
-                    CheckboxListTile(
-                        title: Text(entry.key),
-                        value: this.widget.isFeedPubFilterSelected[entry.key],
-                        onChanged: (bool newValue) {
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: ListView.builder(
+                  itemCount: availableFeedPubFields.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return new CheckboxListTile(
+                        title: Text(availableFeedPubFields[index]),
+                        value: selectedFeedPubsFields
+                            .contains(availableFeedPubFields[index]),
+                        onChanged: (bool value) {
                           setState(() {
-                            this
-                                .widget
-                                .isFeedPubFilterSelected
-                                .update(entry.key, (newValue) => !newValue);
+                            value
+                                ? selectedFeedPubsFields
+                                    .add(availableFeedPubFields[index])
+                                : selectedFeedPubsFields
+                                    .remove(availableFeedPubFields[index]);
                           });
-                        })
-                ]))
+                        });
+                  },
+                ),
+              )
             : _tabController.index == 1
                 ? Container(
-                    height: MediaQuery.of(context).size.height / 4.5,
-                    child: Column(children: [
-                      for (MapEntry entry
-                          in this.widget.isOffersFilterSelected.entries)
-                        CheckboxListTile(
-                            title: Text(entry.key),
-                            value: isOffersFilterSelected[entry.key],
+                    height: MediaQuery.of(context).size.height / 3,
+                    width: MediaQuery.of(context).size.width / 2.5,
+                    child: ListView.builder(
+                      itemCount: availableOffersFields.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return new CheckboxListTile(
+                            title: Text(availableOffersFields[index]),
+                            value: selectedFeedPubsFields
+                                .contains(availableOffersFields[index]),
                             onChanged: (bool value) {
                               setState(() {
-                                this
-                                    .widget
-                                    .isOffersFilterSelected
-                                    .update(entry.key, (value) => !value);
+                                value
+                                    ? selectedOffersFields
+                                        .add(availableOffersFields[index])
+                                    : selectedOffersFields
+                                        .remove(availableOffersFields[index]);
                               });
-                            })
-                    ]))
+                            });
+                      },
+                    ),
+                  )
                 : _tabController.index == 2
-                    ? Container(
-                        height: MediaQuery.of(context).size.height / 4.5,
-                        child: Column(children: [
-                          for (MapEntry entry
-                              in this.widget.isProfilesFilterSelected.entries)
-                            CheckboxListTile(
-                                title: Text(entry.key),
-                                value: isProfilesFilterSelected[entry.key],
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    this
-                                        .widget
-                                        .isProfilesFilterSelected
-                                        .update(entry.key, (value) => !value);
-                                  });
-                                })
-                        ]))
+                    ? Column(mainAxisSize: MainAxisSize.min, children: [
+                        for (MapEntry entry in isProfilesFilterSelected.entries)
+                          new CheckboxListTile(
+                              title: Text(entry.key),
+                              value: isProfilesFilterSelected[entry.key],
+                              onChanged: (bool value) {
+                                setState(() {
+                                  isProfilesFilterSelected.update(
+                                      entry.key, (value) => !value);
+                                  value = !value;
+                                });
+                              })
+                      ])
                     : Container(),
         actions: [dismissFilters, acceptFilters]);
 
