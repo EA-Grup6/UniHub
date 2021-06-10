@@ -18,16 +18,23 @@ class SearchFeedPubsScreen extends StatelessWidget {
   }
 
   Future<List<FeedPublication>> initializeListAndUser() async {
-    getUsername();
-
-    http.Response response = await FeedController().getFeedPubs();
+    String field = 'content';
     List<FeedPublication> pubsList = [];
+    List<FeedPublication> filteredPubList = [];
+    getUsername();
+    http.Response response = await FeedController().getFeedPubs();
     for (var feedPub in jsonDecode(response.body)) {
       pubsList.add(FeedPublication.fromMap(feedPub));
     }
-    List<FeedPublication> filteredPubList =
-        pubsList.where((FeedPublication) => pubsList.contains(keyword));
+    //EL ALGORITMO DE BUSQUEDA ES SOLO ESTO
+    pubsList.forEach((FeedPublication feed) {
+      List<String> contentToSearch = feed.toJSON()[field].split(' ');
+      if (contentToSearch.contains(keyword)) {
+        filteredPubList.add(feed);
+      }
+    });
     return filteredPubList;
+    //DEBERÍA HACERLO BACKEND PERO NP
   }
 
   @override

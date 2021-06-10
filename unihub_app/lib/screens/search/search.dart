@@ -17,7 +17,6 @@ final List<Tab> myTabs = <Tab>[
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
   String currentTab = 'Feed Publications';
   TextEditingController _searchController;
-  String _searchText = '';
 
   void initState() {
     super.initState();
@@ -36,7 +35,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     _searchController = TextEditingController();
     _searchController.addListener(() {
       setState(() {
-        _searchText = _searchController.text;
+        keyword = _searchController.text;
       });
     });
   }
@@ -47,7 +46,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  String keyword;
+  String keyword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -69,24 +68,13 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('Search'),
             Container(
-              width: 150,
+              width: MediaQuery.of(context).size.width / 4,
               height: 40,
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search ' + currentTab,
                   hintStyle: TextStyle(color: Colors.grey[300], fontSize: 14.0),
-                  suffixIcon: _searchText.isNotEmpty
-                      ? IconButton(
-                          icon: Icon(Icons.search, color: Colors.white),
-                          splashColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {
-                            keyword = _searchController.text;
-                          },
-                        )
-                      : null,
                   filled: true,
                   fillColor: Colors.white30,
                   enabledBorder: OutlineInputBorder(
