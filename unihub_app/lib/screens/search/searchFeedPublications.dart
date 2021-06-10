@@ -8,9 +8,10 @@ import 'package:unihub_app/widgets/feedPostSection.dart';
 
 class SearchFeedPubsScreen extends StatelessWidget {
   final String keyword;
+  final List<String> fields;
   String username;
 
-  SearchFeedPubsScreen(this.keyword);
+  SearchFeedPubsScreen(this.fields, this.keyword);
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

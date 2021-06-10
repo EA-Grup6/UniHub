@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SearchOffersScreen extends StatelessWidget {
   final String keyword;
+  final List<String> fields;
 
-  SearchOffersScreen(this.keyword);
+  SearchOffersScreen(this.fields, this.keyword);
 
   @override
   Widget build(BuildContext context) {
