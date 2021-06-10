@@ -44,7 +44,7 @@ class SearchOffers extends State<SearchOffersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.widget.keyword != null) {
+    if (this.widget.keyword != ' ') {
       return FutureBuilder<List<OfferApp>>(
           future: initializeListAndUser(),
           builder: (context, snapshot) {
@@ -83,7 +83,12 @@ class SearchOffers extends State<SearchOffersScreen> {
             }
           });
     } else {
-      return Scaffold();
+      return Scaffold(
+          body: Center(
+              child: Text(
+        'Search Offers Screen',
+        style: TextStyle(fontSize: 21),
+      )));
     }
   }
 }

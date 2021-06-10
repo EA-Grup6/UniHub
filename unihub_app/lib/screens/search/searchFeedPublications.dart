@@ -47,7 +47,7 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.widget.keyword != null) {
+    if (this.widget.keyword != ' ') {
       return FutureBuilder<List<FeedPublication>>(
           future: initializeListAndUser(),
           builder: (context, snapshot) {
@@ -88,7 +88,12 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
             }
           });
     } else {
-      return Scaffold();
+      return Scaffold(
+          body: Center(
+              child: Text(
+        'Search Publications Screen',
+        style: TextStyle(fontSize: 21),
+      )));
     }
   }
 }
