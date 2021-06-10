@@ -56,6 +56,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     'University',
     'Subject',
     'Type of Offer',
+    'Description',
+    'Username',
   ];
 
   List<String> finalSelectedProfilesFields = [];

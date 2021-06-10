@@ -32,8 +32,11 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
     }
     pubsList.forEach((FeedPublication feed) {
       this.widget.fields.forEach((String field) {
-        List<String> contentToSearch =
-            feed.toJSON()[field.toLowerCase()].toString().split(' ');
+        List<String> contentToSearch = feed
+            .toJSON()[field.toLowerCase()]
+            .toString()
+            .toLowerCase()
+            .split(' ');
         if (contentToSearch.contains(this.widget.keyword)) {
           filteredPubList.add(feed);
         }
