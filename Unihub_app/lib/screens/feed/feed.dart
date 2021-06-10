@@ -158,16 +158,26 @@ class Feed extends State<FeedScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        content: TextFormField(
-          controller: contentController,
-          keyboardType: TextInputType.multiline,
-          minLines: 4,
-          maxLines: null,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: 'New post',
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
+        backgroundColor: Colors.white,
+        insetPadding: EdgeInsets.all(10),
+        title: Text("New Post"),
+        content: Stack(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width / 2,
+                child: TextFormField(
+                  controller: contentController,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 4,
+                  maxLines: null,
+                  maxLength: 240,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(bottom: 3),
+                    labelText: "What's happening?",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                )),
+          ],
         ),
         actions: [dismissButton, submitButton]);
 

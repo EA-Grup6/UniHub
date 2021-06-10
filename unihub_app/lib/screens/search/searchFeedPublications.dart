@@ -18,7 +18,7 @@ class SearchFeedPubsScreen extends StatelessWidget {
   }
 
   Future<List<FeedPublication>> initializeListAndUser() async {
-    String field = 'content';
+    List<String> fields = ['content', 'username'];
     List<FeedPublication> pubsList = [];
     List<FeedPublication> filteredPubList = [];
     getUsername();
@@ -28,10 +28,12 @@ class SearchFeedPubsScreen extends StatelessWidget {
     }
     //EL ALGORITMO DE BUSQUEDA ES SOLO ESTO
     pubsList.forEach((FeedPublication feed) {
-      List<String> contentToSearch = feed.toJSON()[field].split(' ');
-      if (contentToSearch.contains(keyword)) {
-        filteredPubList.add(feed);
-      }
+      fields.forEach((String field) {
+        List<String> contentToSearch = feed.toJSON()[field].split(' ');
+        if (contentToSearch.contains(keyword)) {
+          filteredPubList.add(feed);
+        }
+      });
     });
     return filteredPubList;
     //DEBERÍA HACERLO BACKEND PERO NP

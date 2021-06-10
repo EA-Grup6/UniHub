@@ -68,8 +68,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('Search'),
             Container(
-              width: MediaQuery.of(context).size.width / 4,
-              height: 40,
+              width: MediaQuery.of(context).size.width / 2,
+              height: 35,
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
@@ -83,14 +83,17 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    borderSide: BorderSide(color: Colors.grey[500], width: 2),
+                    borderSide: BorderSide(color: Colors.grey[500], width: 1),
                   ),
                 ),
               ),
             ),
             IconButton(
               icon: Icon(Icons.filter_alt_outlined),
-              onPressed: () {},
+              onPressed: () {
+                //Alert para seleccionar si queremos buscar por usuario/contenido/universidad/facultad/asignaturas...
+                //El contenido del alert debe variar si estamos en feed publications, offers o profiles (no tiene sentido buscar por campos que no existen!)
+              },
             )
           ]),
         ),
