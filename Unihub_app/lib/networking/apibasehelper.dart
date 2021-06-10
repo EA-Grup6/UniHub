@@ -94,21 +94,4 @@ class ApiBaseHelper {
       return null;
     }
   }
-
-  dynamic _returnResponse(http.Response response) {
-    print(response.statusCode);
-    switch (response.statusCode) {
-      case 200:
-        print('200 Received');
-        return response.statusCode;
-      case 201:
-        print('201 Received');
-        return response.statusCode;
-      //throw BadRequestException(json.decode(response.body.toString()));
-      case 500:
-      default:
-        throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
-    }
-  }
 }

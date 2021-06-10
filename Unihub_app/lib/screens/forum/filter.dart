@@ -10,9 +10,6 @@ import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/models/offer.dart';
-import 'package:unihub_app/screens/homepage/homepage.dart';
-import 'package:unihub_app/screens/login/login.dart';
-import 'package:chips_choice/chips_choice.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
 
 String finalUsername;
@@ -49,7 +46,7 @@ createToast(String message, Color color) {
 class Filter extends State<FilterScreen> {
   final _formKey = GlobalKey<FormState>();
 
-Future<List<OfferApp>> getOfferSubject(OfferApp offer ) async {
+  Future<List<OfferApp>> getOfferSubject(OfferApp offer) async {
     http.Response response = await OfferController().getOffers();
     List<OfferApp> preListOffers = [];
     for (var offer in jsonDecode(response.body)) {
@@ -58,7 +55,6 @@ Future<List<OfferApp>> getOfferSubject(OfferApp offer ) async {
     }
     return preListOffers;
   }
-
 
   @override
   void initState() {
@@ -266,7 +262,7 @@ Future<List<OfferApp>> getOfferSubject(OfferApp offer ) async {
         : universitySelected = 'Not Selected';
   }
 
-  Future<List<String>> getUniversities() async {
+  Future getUniversities() async {
     universitiesList = [];
     universitiesNamesList = [];
     schoolsNamesList = [];

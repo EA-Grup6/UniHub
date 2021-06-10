@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:unihub_app/models/message.dart';
-
-import './chatPage.dart';
 import '../../models/user.dart';
 import '../../controllers/chat_controller.dart';
 

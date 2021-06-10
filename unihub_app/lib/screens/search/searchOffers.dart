@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
-import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/models/offer.dart';
-import 'package:unihub_app/widgets/feedPostSection.dart';
 import 'package:unihub_app/widgets/offerSection.dart';
 
 class SearchOffersScreen extends StatefulWidget {

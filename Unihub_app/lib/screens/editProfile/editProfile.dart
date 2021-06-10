@@ -639,7 +639,7 @@ class EditProfile extends State<EditProfileScreen> {
     subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
   }
 
-  Future<List<String>> getUniversities() async {
+  Future getUniversities() async {
     universitiesList = [];
     universitiesNamesList = [];
     schoolsNamesList = [];
