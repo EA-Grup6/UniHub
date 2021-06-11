@@ -14,4 +14,3 @@ export async function startConnection(){
     console.log('Connection to Database stablished')
 }
 mongoose.set('debug', true);
- 
