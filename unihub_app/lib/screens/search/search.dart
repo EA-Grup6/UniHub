@@ -55,19 +55,16 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
   List<String> availableOffersFields = [
     'University',
     'Subject',
-    'Type of Offer',
+    'Type',
     'Description',
     'Username',
   ];
 
   List<String> finalSelectedProfilesFields = [];
   List<String> availableProfilesFields = [
-    "Full name",
+    "Fullname",
     "Degree",
     "University",
-    "Subjects done",
-    "Role",
-    "Subjects asking for help",
   ];
 
   @override
@@ -123,9 +120,11 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
           ]),
         ),
         body: TabBarView(controller: _tabController, children: [
-          SearchFeedPubsScreen(finalSelectedFeedPubsFields, keyword),
-          SearchOffersScreen(finalSelectedOffersFields, keyword),
-          SearchProfilesScreen(finalSelectedProfilesFields, keyword)
+          SearchFeedPubsScreen(
+              finalSelectedFeedPubsFields, keyword.toLowerCase()),
+          SearchOffersScreen(finalSelectedOffersFields, keyword.toLowerCase()),
+          SearchProfilesScreen(
+              finalSelectedProfilesFields, keyword.toLowerCase())
         ]),
       ),
     );
@@ -235,9 +234,9 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                                   onChanged: (bool value) {
                                     setState(() {
                                       value
-                                          ? selectedOffersFields.add(
+                                          ? selectedProfilesFields.add(
                                               availableProfilesFields[index])
-                                          : selectedOffersFields.remove(
+                                          : selectedProfilesFields.remove(
                                               availableProfilesFields[index]);
                                     });
                                   });

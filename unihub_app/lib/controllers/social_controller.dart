@@ -1,4 +1,5 @@
 import '../networking/apibasehelper.dart';
+import 'package:http/http.dart' as http;
 
 ApiBaseHelper _helper = ApiBaseHelper();
 
@@ -16,6 +17,11 @@ class SocialController {
     var body = {'follower': usernameUnfollower, 'followed': usernameUnfollowed};
     print(body);
     final response = await _helper.post('/User/updateFollowers/unfollow', body);
+    return response;
+  }
+
+  Future<dynamic> getProfiles() async {
+    final http.Response response = await _helper.get('/User/getUsers');
     return response;
   }
 }
