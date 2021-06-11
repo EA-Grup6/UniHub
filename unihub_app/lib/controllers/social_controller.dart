@@ -9,6 +9,10 @@ class SocialController {
     var body = {'follower': usernameFollower, 'followed': usernameFollowed};
     print(body);
     final response = await _helper.post('/User/updateFollowers/follow', body);
+    print('Code: ' +
+        response.statusCode.toString() +
+        'Body: ' +
+        response.body.toString());
     return response;
   }
 

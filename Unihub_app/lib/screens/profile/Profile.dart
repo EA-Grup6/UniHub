@@ -195,16 +195,13 @@ class Profile extends State<ProfileScreen> {
                                   "Subjects already done",
                                   currentUser.subjectsDone.length == 0
                                       ? 'None'
-                                      : currentUser.subjectsDone
-                                          .toSet()
-                                          .toString()),
+                                      : currentUser.subjectsDone.join(', ')),
                               TextSection(
                                   "Subjects asking for",
                                   currentUser.subjectsRequested.length == 0
                                       ? 'None'
                                       : currentUser.subjectsRequested
-                                          .toSet()
-                                          .toString()),
+                                          .join(', ')),
                               TextSection("E-mail", currentUser.username),
                               TextSection("Phone", currentUser.phone),
                               TextSection("Followers",

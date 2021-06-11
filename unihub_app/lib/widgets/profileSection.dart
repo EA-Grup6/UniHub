@@ -76,7 +76,7 @@ class ProfileSection extends State<Profile> {
                                       Text("Done Subjects: ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
-                                      Text(widget._doneSubjects.join(',')),
+                                      Text(widget._doneSubjects.join(', ')),
                                     ]),
                               ]),
                           Column(
