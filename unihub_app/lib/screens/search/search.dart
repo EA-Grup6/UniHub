@@ -171,7 +171,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
             ? StatefulBuilder(
                 builder: (context, setState) {
                   return Container(
-                    height: MediaQuery.of(context).size.height / 3,
+                    height: MediaQuery.of(context).size.height / 5,
                     width: MediaQuery.of(context).size.width / 2.5,
                     child: ListView.builder(
                       itemCount: availableFeedPubFields.length,
