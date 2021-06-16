@@ -60,6 +60,7 @@ class Forum extends State<ForumScreen> {
                               children: [
                                 for (OfferApp offer in snapshot.data.reversed)
                                   new OfferSection(
+                                    offer.id,
                                     offer.username,
                                     offer.university,
                                     offer.subject,

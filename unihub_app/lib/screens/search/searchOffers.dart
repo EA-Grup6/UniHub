@@ -56,6 +56,7 @@ class SearchOffers extends State<SearchOffersScreen> {
                               children: [
                                 for (OfferApp offer in snapshot.data.reversed)
                                   new OfferSection(
+                                      offer.id,
                                       offer.title,
                                       offer.university,
                                       offer.subject,

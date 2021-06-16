@@ -35,12 +35,10 @@ dependencies:
   chips_choice: ^2.0.1
   jiffy: ^4.1.0
   cloudinary_sdk: ^3.0.0+6
-  provider: ^5.0.0
-  #firebase_storage: ^8.1.0
-  #firebase_core: ^1.2.0
   google_maps_flutter: ^2.0.6
   scoped_model: ^1.0.1
   flutter_socket_io: ^0.6.0
+  jitsi_meet: ^4.0.0
 
 dev_dependencies:
   flutter_test:

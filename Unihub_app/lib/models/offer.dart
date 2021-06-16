@@ -1,4 +1,5 @@
 class OfferApp {
+  final String id;
   final String username;
   final String title;
   final String university;
@@ -10,11 +11,22 @@ class OfferApp {
   final int buys;
   final List<dynamic> likes;
 
-  OfferApp(this.title, this.username, this.university, this.subject, this.type,
-      this.description, this.price, this.comments, this.buys, this.likes);
+  OfferApp(
+      this.id,
+      this.title,
+      this.username,
+      this.university,
+      this.subject,
+      this.type,
+      this.description,
+      this.price,
+      this.comments,
+      this.buys,
+      this.likes);
 
   factory OfferApp.fromMap(Map<String, dynamic> json) {
     return OfferApp(
+      json['_id'],
       json['username'],
       json['title'],
       json['university'],
@@ -30,6 +42,7 @@ class OfferApp {
 
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> newJSON = {
+      'id': this.id,
       'username': this.username,
       'title': this.title,
       'university': this.university,

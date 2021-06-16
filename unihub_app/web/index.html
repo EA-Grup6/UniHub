@@ -33,22 +33,6 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
-  <script>
-    var firebaseConfig = {
-  apiKey: "AIzaSyA0tAZH-ih2tZIHsVQBEitRnVzMMhK6TgA",
-  authDomain: "unihub-76deb.firebaseapp.com",
-  projectId: "unihub-76deb",
-  storageBucket: "unihub-76deb.appspot.com",
-  messagingSenderId: "894277061517",
-  appId: "1:894277061517:web:d7f6f0d066ad60d8a48bc4"
-};
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {
@@ -56,6 +40,7 @@
       });
     }
   </script>
+  <script src="https://meet.jit.si/external_api.js" type="application/javascript"></script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

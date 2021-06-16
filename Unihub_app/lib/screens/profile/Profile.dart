@@ -8,6 +8,7 @@ import 'package:unihub_app/controllers/social_controller.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/gmaps/gmaps.dart';
+import 'package:unihub_app/screens/jitsi/jitsiScreen.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
@@ -44,7 +45,7 @@ class Profile extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<UserApp>(
         future: getDataFromUser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -73,9 +74,8 @@ class Profile extends State<ProfileScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            GMap(),
-                                          ));
+                                      builder: (context) => GMap(),
+                                    ));
                               }),
                           IconButton(
                               icon: Icon(Icons.logout),

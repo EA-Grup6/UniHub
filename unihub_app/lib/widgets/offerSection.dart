@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/screens/jitsi/jitsiScreen.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 
 class OfferSection extends StatelessWidget {
+  final String _id;
   final String _username;
   final String _university;
   final String _subject;
@@ -10,8 +13,8 @@ class OfferSection extends StatelessWidget {
   final String _price;
   //final int buys;
 
-  OfferSection(this._title, this._university, this._subject, this._username,
-      this._content, this._likes, this._price);
+  OfferSection(this._id, this._title, this._university, this._subject,
+      this._username, this._content, this._likes, this._price);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,24 @@ class OfferSection extends StatelessWidget {
               ),
             ],
           ),
-          onTap: () {}, //Ver perfil del usuario
+          onTap: () {
+            _joinMeeting();
+          }, //Ver perfil del usuario
         ));
+  }
+
+  _joinMeeting() async {
+    try {
+      var options = JitsiMeetingOptions(room: this._id)
+        ..subject = this._subject
+        ..audioOnly = false
+        ..audioMuted = true
+        ..videoMuted = true
+        ..webOptions = {"enableWelcomePage": false};
+
+      await JitsiMeet.joinMeeting(options);
+    } catch (error) {
+      debugPrint("error: $error");
+    }
   }
 }
