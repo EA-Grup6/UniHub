@@ -38,7 +38,7 @@ dependencies:
   provider: ^5.0.0
   #firebase_storage: ^8.1.0
   #firebase_core: ^1.2.0
-  google_maps_flutter: ^2.0.5
+  google_maps_flutter: ^2.0.6
   scoped_model: ^1.0.1
   flutter_socket_io: ^0.6.0
 

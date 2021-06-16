@@ -7,6 +7,7 @@ import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/social_controller.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
+import 'package:unihub_app/screens/gmaps/gmaps.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
@@ -69,6 +70,12 @@ class Profile extends State<ProfileScreen> {
                               icon: Icon(Icons.settings),
                               onPressed: () {
                                 //Nos lleva a settings
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            GMap(),
+                                          ));
                               }),
                           IconButton(
                               icon: Icon(Icons.logout),
