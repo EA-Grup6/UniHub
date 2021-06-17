@@ -1,13 +1,14 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
-import FeedPublication from '../models/feedPublication'
 import Comments from '../models/comments'
 
 import jwt from 'jsonwebtoken'
+import feedPublication from '../models/feedPublication'
 
 
 export async function createComment (req: any, res: Response){
     const Btoken = req.headers['authorization'];
+    const idFeed = req.params.feedId
 
     if(typeof Btoken !== undefined){
         req.token = Btoken;
@@ -16,18 +17,24 @@ export async function createComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 
-                let {feedId, username, publicationDate, content} = req.body;
+                let {username, content, publicationDate} = req.body;
                 let newComment = new Comments;
-                newComment.feedId = feedId;
                 newComment.content= content;
                 newComment.publicationDate= publicationDate;
                 newComment.username=username;
 
                 newComment.likes= [];
                 try{
+                    let commentMod = await newComment.save();
+                    let feedModify = await feedPublication.findOne({_id: idFeed});
+                    let comments = feedModify?.comments;
+                    comments?.push(newComment._id);
+                    try{
+                        await User.findOneAndUpdate({_id: idFeed}, {comments: comments});
+                        return res.status(200).send(newComment);
+                    } catch {
 
-                    let result = await newComment.save();
-                    return res.status(200).send({message: "Comment Publicado correctamente"});
+                    }
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
                 }
@@ -65,7 +72,7 @@ export async function deleteComment (req: any, res: Response){
 
 export async function getComments (req: any, res: Response){
     const Btoken = req.headers['authorization'];
-    let feedId = req.body;
+    let feedId = req.params.feedId;
 
     if(typeof Btoken !== undefined){
         req.token = Btoken;

@@ -67,22 +67,19 @@ router.route('/Data/getSubjects/:degree').get(getSubjects);
 //Explore Feed
 
 //Comments
-router.route('/Post/newComment').post(createComment);
+router.route('/Comment/newComment/:feedId').post(createComment);
 
-router.route('/Post/deleteComment/:id').delete(deleteComment);
+router.route('/Comment/deleteComment/:id').delete(deleteComment);
 
-router.route('/Post/getComments').get(getComments);
+router.route('/Comment/getComments/:id').get(getComments);
 
-router.route('/Post/updateComment').post(updateComment);
-
+router.route('/Comment/updateLikes/:action').post(updateLikesComment);
 
 //Likes, Buys & following
 
 router.route('/Feed/updateLikes/:action').post(updateLikesFeed);
 
 router.route('/User/Offers/updateLikes').post(updateLikesOffer);
-
-router.route('/User/Comments/updateLikes').post(updateLikesComment);
 
 router.route('/Offer/updateBuys').post(updateBuys);
 

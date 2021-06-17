@@ -3,9 +3,9 @@ import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:unihub_app/models/user.dart';
 
 class JitsiScreen extends StatefulWidget {
-  String room;
-  String subject;
-  UserApp user;
+  final String room;
+  final String subject;
+  final UserApp user;
   JitsiScreen(this.room, this.subject, this.user);
   JitsiState createState() => JitsiState();
 }

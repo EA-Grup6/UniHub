@@ -1,7 +1,6 @@
 import {Schema,model,Document} from 'mongoose';
 
 const schema = new Schema({
-    feedId: String,
     username: String,
     publicationDate: Date,
     content: String,
@@ -9,7 +8,6 @@ const schema = new Schema({
 }, {collection: 'Comments'});
 
 interface Comment extends Document {
-    feedId: String,
     username: string;
     publicationDate: Date;
     content: string;
