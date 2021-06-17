@@ -1,6 +1,6 @@
 import {Request, Response} from 'express'
 import User from '../models/User'
-import Comments from '../models/comments'
+import CommentPublication from '../models/comments'
 
 import jwt from 'jsonwebtoken'
 import feedPublication from '../models/feedPublication'
@@ -17,8 +17,9 @@ export async function createComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 
-                let {username, content, publicationDate} = req.body;
-                let newComment = new Comments;
+                let {feedId, username, content, publicationDate} = req.body;
+                let newComment = new CommentPublication;
+                newComment.feedId = feedId;
                 newComment.content= content;
                 newComment.publicationDate= publicationDate;
                 newComment.username=username;
@@ -30,8 +31,8 @@ export async function createComment (req: any, res: Response){
                     let comments = feedModify?.comments;
                     comments?.push(newComment._id);
                     try{
-                        await User.findOneAndUpdate({_id: idFeed}, {comments: comments});
-                        return res.status(200).send(newComment);
+                        await feedPublication.findOneAndUpdate({_id: idFeed}, {comments: comments});
+                        return res.status(200).header('Content Type - application/json').send(newComment);
                     } catch {
 
                     }
@@ -56,7 +57,7 @@ export async function deleteComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try{
-                    await Comments.findOneAndRemove({_id: req.params.id});
+                    await CommentPublication.findOneAndRemove({_id: req.params.id});
                     return res.status(200).send({message: "Comment correctly deleted"});
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
@@ -82,15 +83,16 @@ export async function getComments (req: any, res: Response){
             } else {
 
                 try{
-                    var comments = await Comments.find({feedId: feedId})
+                    var comments = await CommentPublication.find({feedId: feedId})
                     
 
                     if (comments.length !=0){
                         return res.status(200).header('Content Type - application/json').send(comments);
 
-                    }else
-                        return res.status(404).send({message: "Your friends haven't posted yet"});
-                } catch {
+                    }else{
+                        comments = [];
+                        return res.status(404).header('Content Type - application/json').send(comments);
+                }} catch {
                     return res.status(500).send({message: "Internal server error"});
                 }
             }
@@ -115,7 +117,7 @@ export async function updateComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    await Comments.findByIdAndUpdate({_id: _id}, updateData)
+                    await CommentPublication.findByIdAndUpdate({_id: _id}, updateData)
                     return res.status(200).send({message: 'Comment correctly updated'});
                 } catch {
                     return res.status(201).send({message: "Comment couldn't be updated"});
@@ -129,9 +131,9 @@ export async function updateComment (req: any, res: Response){
 }
 
 export async function updateLikesComment (req: any, res: Response){
-    let{usernameLiking, _id} = req.body;
+    let{username, _id} = req.body;
     const Btoken = req.headers['authorization'];
-    const action = req.headers['action'];
+    const action = req.params.action;
 
 
     if(typeof Btoken !== undefined){
@@ -141,17 +143,19 @@ export async function updateLikesComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    const comment = await Comments.findById({_id: _id});
+                    const comment = await CommentPublication.findById({_id: _id});
                     let liking = comment?.likes
+                    console.log('quiero añadir el like de ' + username)
                     if (action=='add'){
-                        liking?.push(usernameLiking)
-                        await Comments.findByIdAndUpdate({_id: _id}, {likes: liking})
-                        return res.status(200).send({message: 'CommentLikes correctly updated'});
-                    }else
-                        liking?.splice(liking?.findIndex(usernameLiking),1);
-                        await Comments.findByIdAndUpdate({_id: _id}, {likes: liking})
-                        return res.status(200).send({message: 'CommentLikes correctly updated'});
-
+                        liking?.push(username)
+                        console.log(liking)
+                        await CommentPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'FeedLikes correctly updated'});
+                    }else{
+                        liking?.splice(liking?.findIndex(findUsername),1);
+                        await CommentPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
+                        return res.status(200).send({message: 'FeedLikes correctly updated'});
+                    }
                 } catch {
                     return res.status(201).send({message: "CommentLikes couldn't be updated"});
                 }
@@ -163,3 +167,10 @@ export async function updateLikesComment (req: any, res: Response){
 
 }
 
+function findUsername(username: String, liking:any){
+    for(var count=0;count<liking?.length;count++){
+        if(liking[count] == username){
+            return count;
+        }
+    }
+}

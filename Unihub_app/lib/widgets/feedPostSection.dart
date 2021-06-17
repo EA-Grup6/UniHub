@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/feedPublication.dart';
+import 'package:unihub_app/screens/comments/comments.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
 class FeedPost extends StatefulWidget {
@@ -119,7 +120,10 @@ class FeedPostSection extends State<FeedPost> {
                             highlightColor: Colors.transparent,
                             alignment: Alignment.center,
                             onPressed: () {
-                              //Te tiene que llevar a los comentarios (nueva vista)
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => CommentsScreen(
+                                      this.widget.feed,
+                                      this.widget._myUsername)));
                             }),
                         Expanded(
                           child:

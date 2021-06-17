@@ -71,7 +71,7 @@ router.route('/Comment/newComment/:feedId').post(createComment);
 
 router.route('/Comment/deleteComment/:id').delete(deleteComment);
 
-router.route('/Comment/getComments/:id').get(getComments);
+router.route('/Comment/getComments/:feedId').get(getComments);
 
 router.route('/Comment/updateLikes/:action').post(updateLikesComment);
 

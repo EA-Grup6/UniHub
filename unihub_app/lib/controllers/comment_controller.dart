@@ -6,7 +6,12 @@ ApiBaseHelper _helper = ApiBaseHelper();
 class CommentController {
   Future<dynamic> addComment(
       String username, String content, String date, String feedId) async {
-    var body = {'username': username, 'content': content, 'date': date};
+    var body = {
+      'feedId': feedId,
+      'username': username,
+      'content': content,
+      'publicationDate': date
+    };
     print(body);
     final http.Response response =
         await _helper.post('/Comment/newComment/$feedId', body);
@@ -17,6 +22,7 @@ class CommentController {
   Future<dynamic> getComments(String feedId) async {
     final http.Response response =
         await _helper.get('/Comment/getComments/$feedId');
+    print(response.body);
     return response;
   }
 

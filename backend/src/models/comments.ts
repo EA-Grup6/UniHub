@@ -1,17 +1,19 @@
 import {Schema,model,Document} from 'mongoose';
 
 const schema = new Schema({
+    feedId: String,
     username: String,
     publicationDate: Date,
     content: String,
     likes: Array,
-}, {collection: 'Comments'});
+}, {collection: 'comments'});
 
-interface Comment extends Document {
+interface IComment extends Document {
+    feedId: string;
     username: string;
     publicationDate: Date;
     content: string;
     likes: Array<string>;
 }
 
-export default model<Comment>('CommentPublication',schema);
+export default model<IComment>('CommentPublication',schema);
