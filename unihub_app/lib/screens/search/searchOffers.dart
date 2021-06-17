@@ -55,15 +55,7 @@ class SearchOffers extends State<SearchOffersScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 for (OfferApp offer in snapshot.data.reversed)
-                                  new OfferSection(
-                                      offer.id,
-                                      offer.title,
-                                      offer.university,
-                                      offer.subject,
-                                      offer.username,
-                                      offer.description,
-                                      offer.likes,
-                                      offer.price.toString()),
+                                  new OfferSection(offer),
                               ],
                             )))),
               );

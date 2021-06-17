@@ -53,6 +53,7 @@ class AddOffer extends State<AddOfferScreen> {
     "Class",
     "Assignment",
     "Exam",
+    "Online Class",
   ];
   String valueUniversity;
   List listUniversity = [

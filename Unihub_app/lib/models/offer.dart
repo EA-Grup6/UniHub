@@ -13,8 +13,8 @@ class OfferApp {
 
   OfferApp(
       this.id,
-      this.title,
       this.username,
+      this.title,
       this.university,
       this.subject,
       this.type,
@@ -42,6 +42,7 @@ class OfferApp {
 
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> newJSON = {
+      'id': this.id,
       'username': this.username,
       'title': this.title,
       'university': this.university,

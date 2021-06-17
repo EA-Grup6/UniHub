@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
 class FeedPost extends StatefulWidget {
-  const FeedPost(this._id, this._username, this._content, this.publicationDate,
-      this._likes, this._comments, this._myUsername);
+  const FeedPost(this.feed, this._myUsername);
 
   FeedPostSection createState() => FeedPostSection();
-  final String _id;
-  final String _username;
-  final String _content;
-  final DateTime publicationDate;
-  final List<dynamic> _likes;
-  final List<dynamic> _comments;
+  final FeedPublication feed;
   final String _myUsername;
 }
 
@@ -42,7 +37,7 @@ class FeedPostSection extends State<FeedPost> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ProfileScreen(widget._username)));
+                                          ProfileScreen(widget.feed.username)));
                             })),
                     contentPadding: EdgeInsets.all(0),
                     title: Padding(
@@ -50,13 +45,13 @@ class FeedPostSection extends State<FeedPost> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('#' + widget._username,
+                            Text('#' + widget.feed.username,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16.0,
                                 )),
                             Text(
-                                Jiffy(widget.publicationDate)
+                                Jiffy(widget.feed.publicationDate)
                                     .fromNow()
                                     .toString(),
                                 style: TextStyle(
@@ -65,7 +60,7 @@ class FeedPostSection extends State<FeedPost> {
                                     color: Colors.grey[600])),
                           ],
                         )),
-                    subtitle: Text(this.widget._content),
+                    subtitle: Text(this.widget.feed.content),
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -73,7 +68,8 @@ class FeedPostSection extends State<FeedPost> {
                         IconButton(
                             icon: this
                                     .widget
-                                    ._likes
+                                    .feed
+                                    .likes
                                     .contains(this.widget._myUsername)
                                 ? Icon(Icons.favorite_rounded,
                                     color: Colors.red)
@@ -85,33 +81,36 @@ class FeedPostSection extends State<FeedPost> {
                             onPressed: () async {
                               if (!this
                                   .widget
-                                  ._likes
+                                  .feed
+                                  .likes
                                   .contains(this.widget._myUsername)) {
                                 await FeedController().setLikes(
                                     this.widget._myUsername,
                                     'add',
-                                    this.widget._id);
+                                    this.widget.feed.id);
                                 setState(() {
                                   this
                                       .widget
-                                      ._likes
+                                      .feed
+                                      .likes
                                       .add(this.widget._myUsername);
                                 });
                               } else {
                                 await FeedController().setLikes(
                                     this.widget._myUsername,
                                     'remove',
-                                    this.widget._id);
+                                    this.widget.feed.id);
                                 setState(() {
                                   this
                                       .widget
-                                      ._likes
+                                      .feed
+                                      .likes
                                       .remove(this.widget._myUsername);
                                 });
                               }
                             }),
                         Expanded(
-                          child: Text(this.widget._likes.length.toString()),
+                          child: Text(this.widget.feed.likes.length.toString()),
                         ),
                         IconButton(
                             icon: Icon(Icons.messenger_outline_rounded),
@@ -123,7 +122,8 @@ class FeedPostSection extends State<FeedPost> {
                               //Te tiene que llevar a los comentarios (nueva vista)
                             }),
                         Expanded(
-                          child: Text(this.widget._comments.length.toString()),
+                          child:
+                              Text(this.widget.feed.comments.length.toString()),
                         ),
                         IconButton(
                             icon: Icon(Icons.share_outlined),
@@ -148,7 +148,9 @@ class FeedPostSection extends State<FeedPost> {
       child: Text("Yes"),
       onPressed: () async {
         //delete post
-        await FeedController().deleteFeedPost(this.widget._id).whenComplete(() {
+        await FeedController()
+            .deleteFeedPost(this.widget.feed.id)
+            .whenComplete(() {
           Navigator.pop(context);
         });
       },
@@ -176,7 +178,7 @@ class FeedPostSection extends State<FeedPost> {
 
   getUserImage() async {
     String urlImage =
-        await FeedController().getUserImage(this.widget._username);
+        await FeedController().getUserImage(this.widget.feed.username);
     return urlImage;
   }
 }

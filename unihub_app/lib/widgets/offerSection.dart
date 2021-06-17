@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/models/offer.dart';
 import 'package:unihub_app/screens/jitsi/jitsiScreen.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class OfferSection extends StatelessWidget {
-  final String _id;
-  final String _username;
-  final String _university;
-  final String _subject;
-  final String _title;
-  final String _content;
-  final List<dynamic> _likes;
-  final String _price;
+  final OfferApp offer;
   //final int buys;
 
-  OfferSection(this._id, this._title, this._university, this._subject,
-      this._username, this._content, this._likes, this._price);
+  OfferSection(this.offer);
 
   @override
   Widget build(BuildContext context) {
@@ -29,44 +22,47 @@ class OfferSection extends StatelessWidget {
             radius: 25,
           ),
           contentPadding: EdgeInsets.all(0),
-          title: Text(_title),
+          title: Text(this.offer.title),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_university + ' - ' + _username),
-              Text(_content),
+              Text(this.offer.university + ' - ' + this.offer.username),
+              Text(this.offer.description),
               Row(
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.whatshot_rounded,
-                        color: this._likes.length > 50
-                            ? (this._likes.length > 100
+                        color: this.offer.likes.length > 50
+                            ? (this.offer.likes.length > 100
                                 ? Colors.red
                                 : Colors.orange)
                             : Colors.green),
                     onPressed: () {},
                   ),
                   Expanded(
-                    child: Text(_likes.length.toString()),
+                    child: Text(this.offer.likes.length.toString()),
                   ),
                   Icon(Icons.euro, color: Colors.green),
                   Expanded(
-                    child: Text(_price),
+                    child: Text(this.offer.price.toString()),
                   )
                 ],
               ),
             ],
           ),
+          trailing: this.offer.type == "Online Class"
+              ? Icon(Icons.videocam_outlined)
+              : Icon(Icons.videocam_off_outlined),
           onTap: () {
-            _joinMeeting();
+            this.offer.type == "Online Class" ? _joinMeeting() : null;
           }, //Ver perfil del usuario
         ));
   }
 
   _joinMeeting() async {
     try {
-      var options = JitsiMeetingOptions(room: this._id)
-        ..subject = this._subject
+      var options = JitsiMeetingOptions(room: this.offer.id)
+        ..subject = this.offer.title
         ..audioOnly = false
         ..audioMuted = true
         ..videoMuted = true

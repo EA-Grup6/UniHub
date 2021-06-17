@@ -23,7 +23,6 @@ class Forum extends State<ForumScreen> {
     List<OfferApp> preListOffers = [];
     for (var offer in jsonDecode(response.body)) {
       preListOffers.add(OfferApp.fromMap(offer));
-      print(OfferApp.fromMap(offer));
     }
     return preListOffers;
   }
@@ -59,16 +58,7 @@ class Forum extends State<ForumScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 for (OfferApp offer in snapshot.data.reversed)
-                                  new OfferSection(
-                                    offer.id,
-                                    offer.username,
-                                    offer.university,
-                                    offer.subject,
-                                    offer.title,
-                                    offer.description,
-                                    offer.likes,
-                                    offer.price.toString(),
-                                  ),
+                                  new OfferSection(offer),
                               ],
                             )))),
                 floatingActionButton: FloatingActionButton(

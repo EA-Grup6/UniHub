@@ -64,12 +64,7 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
                                 for (FeedPublication publication
                                     in snapshot.data.reversed)
                                   new FeedPost(
-                                    publication.id,
-                                    publication.username,
-                                    publication.content,
-                                    publication.publicationDate,
-                                    publication.likes,
-                                    publication.comments,
+                                    publication,
                                     this.username,
                                   ),
                               ],
