@@ -18,7 +18,7 @@ class CommentsScreen extends StatefulWidget {
 class CommentState extends State<CommentsScreen> {
   List<Comment> commentsList;
 
-  final TextEditingController contentController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
 
   Future<List<Comment>> getAllComments(feedId) async {
     http.Response response =
@@ -37,158 +37,177 @@ class CommentState extends State<CommentsScreen> {
     return FutureBuilder<List<Comment>>(
         future: getAllComments(this.widget.feedPublication.id),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.data.length != 0) {
             return Scaffold(
-                appBar: AppBar(
-                  title: Text("Feed"),
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.blue,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
+              appBar: AppBar(
+                title: Text("Feed"),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              body: SafeArea(
+                  child: ListView.builder(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        if (snapshot.data.reversed.elementAt(index).username ==
+                            this.widget.username) {
+                          this.commentsList =
+                              new List<Comment>.from(snapshot.data.reversed);
+                          return new Column(children: [
+                            FeedPost(this.widget.feedPublication,
+                                this.widget.username),
+                            snapshot.hasData
+                                ? Dismissible(
+                                    key: ObjectKey(
+                                        this.commentsList.elementAt(index)),
+                                    child: new CommentWidget(
+                                        this.commentsList.elementAt(index),
+                                        this.widget.username),
+                                    confirmDismiss: (direction) {
+                                      if (this
+                                              .commentsList
+                                              .elementAt(index)
+                                              .username ==
+                                          this.widget.username) {
+                                        return showDeletePostAlertDialog(
+                                            context, index);
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    onDismissed: (direction) {})
+                                : Container()
+                          ]);
+                        } else {
+                          return new Column(children: [
+                            FeedPost(this.widget.feedPublication,
+                                this.widget.username),
+                            snapshot.hasData
+                                ? CommentWidget(
+                                    snapshot.data.reversed.elementAt(index),
+                                    this.widget.username)
+                                : Container()
+                          ]);
+                        }
+                      })),
+              bottomSheet: TextField(
+                style: TextStyle(color: Colors.grey[800], fontSize: 14.0),
+                controller: contentController,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.send_rounded,
+                        color: this.contentController.text == ''
+                            ? Colors.grey
+                            : Colors.blue[400]),
+                    onPressed: () async {
+                      if (contentController.text != '') {
+                        http.Response response = await CommentController()
+                            .addComment(
+                                this.widget.username,
+                                contentController.text,
+                                DateTime.now().toString(),
+                                this.widget.feedPublication.id);
+                        if (response.statusCode == 200) {
+                          createToast(
+                              'Comment correctly uploaded', Colors.green);
+                          setState(() {
+                            commentsList.insert(
+                                0, Comment.fromMap(jsonDecode(response.body)));
+                            contentController = new TextEditingController();
+                          });
+                        }
+                      } else {
+                        createToast("Please write a comment", Colors.yellow);
+                      }
                     },
                   ),
+                  hintText: 'New comment',
+                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14.0),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.grey[400], width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.grey[500], width: 1),
+                  ),
                 ),
-                body: SafeArea(
-                    child: ListView.builder(
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          if (snapshot.data.reversed
-                                  .elementAt(index)
-                                  .username ==
-                              this.widget.username) {
-                            this.commentsList =
-                                new List<Comment>.from(snapshot.data.reversed);
-                            return new Column(children: [
-                              FeedPost(this.widget.feedPublication,
-                                  this.widget.username),
-                              Dismissible(
-                                  key: ObjectKey(
-                                      this.commentsList.elementAt(index)),
-                                  child: new CommentWidget(
-                                      this.commentsList.elementAt(index),
-                                      this.widget.username),
-                                  confirmDismiss: (direction) {
-                                    if (this
-                                            .commentsList
-                                            .elementAt(index)
-                                            .username ==
-                                        this.widget.username) {
-                                      return showDeletePostAlertDialog(
-                                          context, index);
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  onDismissed: (direction) {})
-                            ]);
-                          } else {
-                            return new Column(children: [
-                              FeedPost(this.widget.feedPublication,
-                                  this.widget.username),
-                              CommentWidget(
-                                  snapshot.data.reversed.elementAt(index),
-                                  this.widget.username)
-                            ]);
-                          }
-                        })),
-                floatingActionButton: FloatingActionButton(
-                  heroTag: "btnAddFeed",
-                  child: Icon(Icons.add),
-                  onPressed: () {
-                    showNewPostAlertDialog(context);
-                  },
-                ));
+              ),
+            );
           } else {
+            this.commentsList = new List<Comment>.from(snapshot.data.reversed);
             return Scaffold(
-                appBar: AppBar(
-                  title: Text("Feed"),
-                ),
-                body: Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
+              appBar: AppBar(
+                title: Text("Feed"),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
                   ),
-                ),
-                /*child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Text('No posts available')],
-              )),*/
-                floatingActionButton: FloatingActionButton(
-                  heroTag: "btnAddFeed",
-                  child: Icon(Icons.add),
                   onPressed: () {
-                    showNewPostAlertDialog(context);
+                    Navigator.of(context).pop();
                   },
-                ));
-          }
-        });
-  }
-
-  showNewPostAlertDialog(BuildContext context) {
-    contentController.text = '';
-    // set up the buttons
-    Widget submitButton = TextButton(
-        child: Text("Create new post"),
-        onPressed: () async {
-          //Submit post
-          http.Response response = await CommentController().addComment(
-              this.widget.username,
-              contentController.text,
-              DateTime.now().toString(),
-              this.widget.feedPublication.id);
-          if (response.statusCode == 200) {
-            createToast('Comment correctly uploaded', Colors.green);
-            setState(() {
-              commentsList.insert(
-                  0, Comment.fromMap(jsonDecode(response.body)));
-            });
-            Navigator.pop(context);
-          }
-        });
-
-    Widget dismissButton = TextButton(
-      child: Text("Discard post"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-        backgroundColor: Colors.white,
-        insetPadding: EdgeInsets.all(10),
-        title: Text("New Post"),
-        content: Stack(
-          children: [
-            Container(
-                width: MediaQuery.of(context).size.width / 2,
-                child: TextFormField(
-                  controller: contentController,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 4,
-                  maxLines: null,
-                  maxLength: 240,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "What's happening?",
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+              ),
+              body: SafeArea(
+                  child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child:
+                    FeedPost(this.widget.feedPublication, this.widget.username),
+              )),
+              bottomSheet: TextField(
+                style: TextStyle(color: Colors.grey[800], fontSize: 14.0),
+                controller: contentController,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.send_rounded,
+                        color: this.contentController.text == ''
+                            ? Colors.grey
+                            : Colors.blue[400]),
+                    onPressed: () async {
+                      if (contentController.text != '') {
+                        http.Response response = await CommentController()
+                            .addComment(
+                                this.widget.username,
+                                contentController.text,
+                                DateTime.now().toString(),
+                                this.widget.feedPublication.id);
+                        if (response.statusCode == 200) {
+                          createToast(
+                              'Comment correctly uploaded', Colors.green);
+                          setState(() {
+                            commentsList.insert(
+                                0, Comment.fromMap(jsonDecode(response.body)));
+                            contentController = new TextEditingController();
+                          });
+                        }
+                      } else {
+                        createToast("Please write a comment", Colors.yellow);
+                      }
+                    },
                   ),
-                )),
-          ],
-        ),
-        actions: [dismissButton, submitButton]);
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+                  hintText: 'New comment',
+                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14.0),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.grey[400], width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.grey[500], width: 1),
+                  ),
+                ),
+              ),
+            );
+          }
+        });
   }
 
   showDeletePostAlertDialog(BuildContext context, int index) {

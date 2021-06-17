@@ -57,7 +57,12 @@ export async function deleteComment (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try{
+                    let commentToRemove = await CommentPublication.findOne({_id: req.params.id});
                     await CommentPublication.findOneAndRemove({_id: req.params.id});
+                    let feedPub = await feedPublication.findOne({_id: commentToRemove?.feedId})
+                    let commentList = feedPub?.comments;
+                    commentList?.splice(commentList?.findIndex(findUsername),1);
+                    await feedPublication.findOneAndUpdate({_id: feedPub?.id}, {comments: commentList})
                     return res.status(200).send({message: "Comment correctly deleted"});
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
@@ -170,6 +175,14 @@ export async function updateLikesComment (req: any, res: Response){
 function findUsername(username: String, liking:any){
     for(var count=0;count<liking?.length;count++){
         if(liking[count] == username){
+            return count;
+        }
+    }
+}
+
+function findComment(commentId: String, commentList:any){
+    for(var count=0;count<commentList?.length;count++){
+        if(commentList[count] == commentId){
             return count;
         }
     }

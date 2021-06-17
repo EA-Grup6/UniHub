@@ -119,40 +119,6 @@ class CommentSection extends State<CommentWidget> {
         });
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget submitButton = TextButton(
-      child: Text("Yes"),
-      onPressed: () async {
-        //delete post
-        await FeedController()
-            .deleteFeedPost(this.widget.comment.id)
-            .whenComplete(() {
-          Navigator.pop(context);
-        });
-      },
-    );
-    Widget dismissButton = TextButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-        content: Text('Are you sure that you want to delete this post?'),
-        actions: [dismissButton, submitButton]);
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   getUserImage() async {
     String urlImage =
         await FeedController().getUserImage(this.widget.comment.username);

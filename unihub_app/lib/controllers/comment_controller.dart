@@ -27,7 +27,8 @@ class CommentController {
   }
 
   Future<dynamic> deleteComment(String id) async {
-    final http.Response response = await _helper.delete('/Feed/deleteFeed/$id');
+    final http.Response response =
+        await _helper.delete('/Comment/deleteComment/$id');
     print('Response: ' + response.body);
     return response;
   }
