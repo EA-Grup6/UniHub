@@ -25,7 +25,7 @@ class _GMapState extends State<GMap> {
   }
 
   void _setMarkerIcon() async{
-    _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), "flutter_01.png");
+    _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/images/unihubLogo.png');
     // Añadir el icono que queramos!!!
   }
 
@@ -48,6 +48,7 @@ class _GMapState extends State<GMap> {
 
   void _onMapCreated(GoogleMapController controller){
     _mapController = controller;
+
 
     setState(() {
       _markers.add(Marker(
