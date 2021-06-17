@@ -45,11 +45,15 @@ class Splash extends State<SplashScreen> {
   Future getValidationData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var username = preferences.getString('username');
-    var token = preferences.getString('jwt');
-    if (token != null) {
-      setState(() {
-        finalUsername = username;
-      });
+    try {
+      var token = preferences.getString('jwt');
+      if (token != null) {
+        setState(() {
+          finalUsername = username;
+        });
+      }
+    } catch (exception) {
+      return null;
     }
   }
 
