@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unihub_app/screens/forum/filter.dart';
+
 import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
 import 'screens/splash/splash.dart';
@@ -19,7 +19,6 @@ class App extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
         '/addOffer': (BuildContext context) => AddOfferScreen(),
-        '/Filter': (BuildContext context) => FilterScreen(),
       },
     );
   }

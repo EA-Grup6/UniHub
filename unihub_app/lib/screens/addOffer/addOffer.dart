@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
+import 'package:unihub_app/screens/gmaps/gmaps.dart';
 
 class AddOfferScreen extends StatefulWidget {
   AddOffer createState() => AddOffer();
@@ -227,6 +228,25 @@ class AddOffer extends State<AddOfferScreen> {
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
+                                  ),
+                                  TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.greenAccent),
+                                    ),
+                                    child: Text(
+                                      'Select Location',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
+                                    onPressed: () async {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => GMap(),
+                                          ));
+                                    },
                                   ),
                                   TextButton(
                                     style: ButtonStyle(

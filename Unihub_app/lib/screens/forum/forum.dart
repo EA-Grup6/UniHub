@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:unihub_app/screens/gmaps/gmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
 import 'package:unihub_app/models/offer.dart';
@@ -36,18 +36,6 @@ class Forum extends State<ForumScreen> {
             return Scaffold(
                 appBar: AppBar(
                   title: Text("Academic offering"),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.filter_list),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/Filter');
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          showSearch(context: context, delegate: DataSearch());
-                        }),
-                  ],
                 ),
                 body: SafeArea(
                     child: SingleChildScrollView(

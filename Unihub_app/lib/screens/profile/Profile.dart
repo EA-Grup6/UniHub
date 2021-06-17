@@ -71,11 +71,7 @@ class Profile extends State<ProfileScreen> {
                               icon: Icon(Icons.settings),
                               onPressed: () {
                                 //Nos lleva a settings
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => GMap(),
-                                    ));
+                                
                               }),
                           IconButton(
                               icon: Icon(Icons.logout),
