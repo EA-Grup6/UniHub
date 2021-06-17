@@ -34,7 +34,6 @@ export async function createUser (req: any, res: Response){
         if(registeredUser != null){
             return res.status(201).send({message: "User already exists"});
         } else {
-            console.log(newUser);
             let result = await newUser.save();
             return res.status(200).send(result);
         }
@@ -47,8 +46,6 @@ export async function loginUser (req: Request, res: Response){
 
     let {username, password, tag} = req.body;
     const user = {username: username,password: password,tag: tag};
-    console.log("Username: " + user.username);
-    console.log("Password: " + user.password);
     const registeringUser = new User(user);
     var registeredUser = await User.findOne({username:registeringUser.username})
     try{
@@ -136,7 +133,6 @@ export async function updateUser (req: any, res: Response){
         subjectsRequested: subjectsRequested,
         phone: phone,
         profilePhoto: profilePhoto};
-    console.log(updateData);
 
     if(typeof Btoken !== undefined){
         req.token = Btoken;
@@ -163,7 +159,6 @@ export async function getUsers (req: any, res: Response){
     const Btoken = req.headers['authorization'];
 
     const users = await User.find();
-    console.log(users);
 
     if(typeof Btoken !== undefined){
         req.token = Btoken;
@@ -303,9 +298,7 @@ export async function getDegrees(req: any, res: Response){
 
 export async function getSubjects(req: any, res: Response){
     let degreeParam = req.params.degree;
-    console.log(degreeParam);
     let degree = await Degree.findOne({name: degreeParam});
-    console.log(degree?.toJSON.toString);
     const Btoken = req.headers['authorization'];
     if(typeof Btoken !== undefined){
         req.token = Btoken;
@@ -343,18 +336,13 @@ export async function updateFollowers (req: any, res: Response){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
                 try {
-                    console.log('The user ' + follower + ' is trying to follow ' + followed);
                     const userfollowing = await User.findOne({username: follower});
                     const userfollowed = await User.findOne({username: followed});
                     let following = userfollowing?.following;
                     let followers = userfollowed?.followers;
-                    console.log('following: ' + following);
-                    console.log('followers: ' + followers);
                     if (action=='follow'){
                         followers?.push(follower);
                         following?.push(followed);
-                        console.log('new following: ' + following);
-                        console.log('new followers: ' + followers);
                         await User.findOneAndUpdate({username: follower}, {following: following})
                         await User.findOneAndUpdate({username: followed}, {followers: followers})
                         return res.status(200).send({message: 'Followers correctly updated'});
@@ -364,8 +352,6 @@ export async function updateFollowers (req: any, res: Response){
                         if(followerIndex != null && followingIndex != null){
                             followers?.splice(followerIndex, 1);
                             following?.splice(followingIndex, 1);
-                            console.log('new following: ' + following);
-                            console.log('new followers: ' + followers);
                             await User.findOneAndUpdate({username: follower}, {following: following})
                             await User.findOneAndUpdate({username: followed}, {followers: followers})
                             return res.status(200).send({message: 'Followers correctly updated'});

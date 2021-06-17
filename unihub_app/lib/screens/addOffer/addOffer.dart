@@ -120,7 +120,7 @@ class AddOffer extends State<AddOfferScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Choose the university:"),
+                                          Text("University:"),
                                           DropdownButton(
                                             value: valueUniversity,
                                             onChanged: (newValue) {
@@ -136,7 +136,7 @@ class AddOffer extends State<AddOfferScreen> {
                                               );
                                             }).toList(),
                                           ),
-                                          Text("Choose the college:"),
+                                          Text("College:"),
                                           DropdownButton(
                                             value: valueCollege,
                                             onChanged: (newValue) {

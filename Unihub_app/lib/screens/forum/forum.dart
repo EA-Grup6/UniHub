@@ -59,19 +59,12 @@ class Forum extends State<ForumScreen> {
           } else {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Academic offering"),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          showSearch(context: context, delegate: DataSearch());
-                        })
-                  ],
+                  title: Text("Feed"),
                 ),
-                body: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Text('No offers found')],
+                body: Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
                 floatingActionButton: FloatingActionButton(
                   heroTag: "btnAddOffer",

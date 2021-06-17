@@ -63,7 +63,7 @@ class CommentSection extends State<CommentWidget> {
                         )),
                     subtitle: Text(this.widget.comment.content),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: <
+                  Row(mainAxisAlignment: MainAxisAlignment.end, children: <
                       Widget>[
                     IconButton(
                         icon: this

@@ -12,7 +12,6 @@ class CommentController {
       'content': content,
       'publicationDate': date
     };
-    print(body);
     final http.Response response =
         await _helper.post('/Comment/newComment/$feedId', body);
     print("Estoy en response " + response.body);
@@ -22,7 +21,7 @@ class CommentController {
   Future<dynamic> getComments(String feedId) async {
     final http.Response response =
         await _helper.get('/Comment/getComments/$feedId');
-    print(response.body);
+    print('Response: ' + response.body);
     return response;
   }
 

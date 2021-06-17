@@ -98,11 +98,6 @@ class Feed extends State<FeedScreen> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-              /*child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Text('No posts available')],
-              )),*/
               floatingActionButton: FloatingActionButton(
                 heroTag: "btnAddFeed",
                 child: Icon(Icons.add),

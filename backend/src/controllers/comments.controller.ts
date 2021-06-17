@@ -95,8 +95,7 @@ export async function getComments (req: any, res: Response){
                         return res.status(200).header('Content Type - application/json').send(comments);
 
                     }else{
-                        comments = [];
-                        return res.status(404).header('Content Type - application/json').send(comments);
+                        return res.status(204).send({message: "There aren't any feeds my dear"});
                 }} catch {
                     return res.status(500).send({message: "Internal server error"});
                 }
@@ -150,10 +149,8 @@ export async function updateLikesComment (req: any, res: Response){
                 try {
                     const comment = await CommentPublication.findById({_id: _id});
                     let liking = comment?.likes
-                    console.log('quiero añadir el like de ' + username)
                     if (action=='add'){
                         liking?.push(username)
-                        console.log(liking)
                         await CommentPublication.findByIdAndUpdate({_id: _id}, {likes: liking})
                         return res.status(200).send({message: 'FeedLikes correctly updated'});
                     }else{

@@ -16,7 +16,7 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class CommentState extends State<CommentsScreen> {
-  List<Comment> commentsList;
+  List<Comment> commentsList = [];
 
   TextEditingController contentController = TextEditingController();
 
@@ -37,7 +37,8 @@ class CommentState extends State<CommentsScreen> {
     return FutureBuilder<List<Comment>>(
         future: getAllComments(this.widget.feedPublication.id),
         builder: (context, snapshot) {
-          if (snapshot.data.length != 0) {
+          if (snapshot.hasData) {
+            this.commentsList = new List<Comment>.from(snapshot.data.reversed);
             return Scaffold(
               appBar: AppBar(
                 title: Text("Feed"),
@@ -52,6 +53,30 @@ class CommentState extends State<CommentsScreen> {
                 ),
               ),
               body: SafeArea(
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Column(
+                        children: [
+                          FeedPost(this.widget.feedPublication,
+                              this.widget.username),
+                          for (Comment newComment in snapshot.data.reversed)
+                            new Dismissible(
+                                key: ObjectKey(newComment),
+                                child: CommentWidget(
+                                    newComment, this.widget.username),
+                                confirmDismiss: (direction) {
+                                  if (newComment.username ==
+                                      this.widget.username) {
+                                    return showDeletePostAlertDialog(
+                                        context, newComment);
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onDismissed: (direction) {}),
+                        ],
+                      )
+                      /*
                   child: ListView.builder(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       itemCount: snapshot.data.length,
@@ -96,7 +121,8 @@ class CommentState extends State<CommentsScreen> {
                                 : Container()
                           ]);
                         }
-                      })),
+                      })*/
+                      )),
               bottomSheet: TextField(
                 style: TextStyle(color: Colors.grey[800], fontSize: 14.0),
                 controller: contentController,
@@ -142,7 +168,6 @@ class CommentState extends State<CommentsScreen> {
               ),
             );
           } else {
-            this.commentsList = new List<Comment>.from(snapshot.data.reversed);
             return Scaffold(
               appBar: AppBar(
                 title: Text("Feed"),
@@ -210,17 +235,15 @@ class CommentState extends State<CommentsScreen> {
         });
   }
 
-  showDeletePostAlertDialog(BuildContext context, int index) {
+  showDeletePostAlertDialog(BuildContext context, Comment comment) {
     // set up the buttons
     Widget submitButton = TextButton(
       child: Text("Yes"),
       onPressed: () async {
         //delete post
-        await CommentController()
-            .deleteComment(this.commentsList.elementAt(index).id)
-            .whenComplete(() {
+        await CommentController().deleteComment(comment.id).whenComplete(() {
           setState(() {
-            this.commentsList.removeAt(index);
+            this.commentsList.remove(comment);
           });
           Navigator.pop(context);
         });
