@@ -60,20 +60,23 @@ class CommentState extends State<CommentsScreen> {
                           FeedPost(this.widget.feedPublication,
                               this.widget.username),
                           for (Comment newComment in snapshot.data.reversed)
-                            new Dismissible(
-                                key: ObjectKey(newComment),
-                                child: CommentWidget(
-                                    newComment, this.widget.username),
-                                confirmDismiss: (direction) {
-                                  if (newComment.username ==
-                                      this.widget.username) {
-                                    return showDeletePostAlertDialog(
-                                        context, newComment);
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                onDismissed: (direction) {}),
+                            new Padding(
+                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Dismissible(
+                                  key: ObjectKey(newComment),
+                                  child: CommentWidget(
+                                      newComment, this.widget.username),
+                                  confirmDismiss: (direction) {
+                                    if (newComment.username ==
+                                        this.widget.username) {
+                                      return showDeletePostAlertDialog(
+                                          context, newComment);
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onDismissed: (direction) {}),
+                            )
                         ],
                       )
                       /*
