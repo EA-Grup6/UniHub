@@ -31,10 +31,8 @@ class SearchProfiles extends State<SearchProfilesScreen> {
             .toString()
             .toLowerCase()
             .split(' ');
-        print(contentToSearch.toSet());
         if (contentToSearch.contains(this.widget.keyword)) {
           filteredProfilesList.add(user);
-          print(user.toJSON().toString());
         }
       });
     });

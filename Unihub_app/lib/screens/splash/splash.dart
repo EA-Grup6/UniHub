@@ -39,7 +39,6 @@ class Splash extends State<SplashScreen> {
                         '/homepage', (Route<dynamic> route) => false),
                     if (languageCode != null)
                       {
-                        print(languageCode),
                         await AppLocalizations.instance
                             .load(Locale(languageCode, ''))
                       },

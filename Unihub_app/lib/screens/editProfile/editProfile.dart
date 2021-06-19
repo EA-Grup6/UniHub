@@ -530,7 +530,6 @@ class EditProfile extends State<EditProfileScreen> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        print(_nameController.text);
                                         UserApp updatedUser = new UserApp(
                                           currentUser.username,
                                           _passwordController.text,
@@ -618,7 +617,6 @@ class EditProfile extends State<EditProfileScreen> {
       }
     } on Exception catch (e) {
       print(e);
-      //print(e.request);
       createToast(
           AppLocalizations.instance.text("editProfile_imageErrorUploading"),
           Colors.red);
@@ -655,7 +653,6 @@ class EditProfile extends State<EditProfileScreen> {
       }
     } on Exception catch (e) {
       print(e);
-      //print(e.request);
       createToast(
           AppLocalizations.instance.text("editProfile_imageErrorUploading"),
           Colors.red);
@@ -694,7 +691,6 @@ class EditProfile extends State<EditProfileScreen> {
       universitiesList.add(University.fromMap(university));
       universitiesNamesList.add(University.fromMap(university).name);
     }
-    print(universitiesNamesList);
     universitiesNamesList.add('Not Selected');
     if (universitySelected != 'Not Selected' || universitySelected != null) {
       getSchools(universitySelected);
@@ -717,7 +713,6 @@ class EditProfile extends State<EditProfileScreen> {
         schoolsNamesList = new List<String>.from(university.schools);
       }
     }
-    print(schoolsNamesList);
     schoolsNamesList.add('Not Selected');
     return schoolsNamesList;
   }
@@ -730,7 +725,6 @@ class EditProfile extends State<EditProfileScreen> {
         await EditProfileController().getSchool(schoolParam);
     Faculty school = Faculty.fromMap(jsonDecode(response.body));
     degreesNamesList = new List<String>.from(school.degrees);
-    print(degreesNamesList);
     degreesNamesList.add('Not Selected');
     return degreesNamesList;
   }
@@ -741,7 +735,6 @@ class EditProfile extends State<EditProfileScreen> {
         await EditProfileController().getDegree(degreeParam);
     Degree degree = Degree.fromMap(jsonDecode(response.body));
     subjectsList = new List<String>.from(degree.subjects);
-    print(subjectsList);
     return subjectsList;
   }
 }

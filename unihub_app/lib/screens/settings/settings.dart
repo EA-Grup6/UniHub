@@ -107,7 +107,6 @@ class Settings extends State<SettingsScreen> {
   setLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lang', language);
-    print(prefs.getString('lang'));
     AppLocalizations.instance.load(Locale(languageCode, ''));
   }
 }

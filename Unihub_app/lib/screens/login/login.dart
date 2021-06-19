@@ -120,15 +120,12 @@ class Login extends State<LoginScreen> {
                                         onPressed: () async {
                                           if (_formKey.currentState
                                               .validate()) {
-                                            print(_nameController.text);
-                                            print(_passwordController.text);
                                             final int response =
                                                 await LoginController()
                                                     .loginUser(
                                                         _nameController.text,
                                                         _passwordController
                                                             .text);
-                                            print(response);
                                             if (response == 200) {
                                               final SharedPreferences prefs =
                                                   await SharedPreferences

@@ -280,8 +280,6 @@ class AddOffer extends State<AddOfferScreen> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        print('Desc: ' +
-                                            _descriptionController.text);
                                         final int response =
                                             await OfferController().createOffer(
                                           await getUsername(),
@@ -292,7 +290,6 @@ class AddOffer extends State<AddOfferScreen> {
                                           _descriptionController.text,
                                           _priceController.text,
                                         );
-                                        print(response);
                                         if (response == 200) {
                                           createToast("Offer Created Correctly",
                                               Colors.green);
