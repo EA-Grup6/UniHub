@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 
 String finalUsername;
+String languageCode;
 
 class SplashScreen extends StatefulWidget {
   Splash createState() => Splash();
@@ -26,7 +27,7 @@ class Splash extends State<SplashScreen> {
     getValidationData().whenComplete(() async {
       Timer(
           Duration(seconds: 2),
-          () => {
+          () async => {
                 if (finalUsername == null)
                   {
                     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -36,6 +37,12 @@ class Splash extends State<SplashScreen> {
                   {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/homepage', (Route<dynamic> route) => false),
+                    if (languageCode != null)
+                      {
+                        print(languageCode),
+                        await AppLocalizations.instance
+                            .load(Locale(languageCode, ''))
+                      },
                     createToast(
                         AppLocalizations.instance.text("login_welcomeBack") +
                             finalUsername,
@@ -54,6 +61,7 @@ class Splash extends State<SplashScreen> {
       if (token != null) {
         setState(() {
           finalUsername = username;
+          languageCode = preferences.getString('lang');
         });
       }
     } catch (exception) {

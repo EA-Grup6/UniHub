@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/app.dart' as myApp;
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -11,24 +14,31 @@ class Settings extends State<SettingsScreen> {
   bool isPrivate;
   bool isThemeDark;
   String language;
-  List<String> availableLanguages = ['System', 'Spanish', 'Catalan', 'English'];
+  List<String> availableLanguages = [
+    AppLocalizations.instance.text("language_system"),
+    AppLocalizations.instance.text("language_spanish"),
+    AppLocalizations.instance.text("language_catalan"),
+    AppLocalizations.instance.text("language_english")
+  ];
   Map<String, String> mapLanguages = {
-    'Spanish': 'es',
-    'Catalan': 'ca',
-    'English': 'en'
+    AppLocalizations.instance.text("language_spanish"): 'es',
+    AppLocalizations.instance.text("language_catalan"): 'ca',
+    AppLocalizations.instance.text("language_english"): 'en'
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Settings')),
+        appBar: AppBar(
+            title:
+                Text(AppLocalizations.instance.text("settings_titleScreen"))),
         body: SafeArea(
             child: Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Text('Private account'),
+                Text(AppLocalizations.instance.text("settings_privateAccount")),
                 Switch(
                   value: isPrivate,
                   onChanged: (value) {
@@ -44,7 +54,7 @@ class Settings extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('Dark theme'),
+                  Text(AppLocalizations.instance.text("settings_darkTheme")),
                   Switch(
                     value: isThemeDark,
                     onChanged: (value) {
@@ -61,11 +71,14 @@ class Settings extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('Language'),
+                  Text(AppLocalizations.instance.text("settings_language")),
                   DropdownButton<String>(
                     isExpanded: false,
                     value: language,
-                    hint: Text('Language'),
+                    hint: Text("Selecciona un " +
+                        AppLocalizations.instance
+                            .text("settings_language")
+                            .toLowerCase()),
                     items: availableLanguages.map((String e) {
                       return DropdownMenuItem<String>(
                         value: e,
@@ -76,7 +89,8 @@ class Settings extends State<SettingsScreen> {
                       setState(() {
                         Locale myLocale = Localizations.localeOf(context);
                         language = e;
-                        if (language == 'System') {
+                        if (language ==
+                            AppLocalizations.instance.text("language_system")) {
                           languageCode = myLocale.languageCode.toString();
                         } else {
                           languageCode = mapLanguages[language].toString();
@@ -88,76 +102,12 @@ class Settings extends State<SettingsScreen> {
                 ],
               )
             ]))));
-    /*
-            child: Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Private account'),
-                  Switch(
-                    value: isPrivate,
-                    onChanged: (value) {
-                      setState(() {
-                        isPrivate = value;
-                        print(isPrivate);
-                      });
-                    },
-                    activeTrackColor: Colors.lightBlueAccent,
-                    activeColor: Colors.blue,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Dark theme'),
-                  Switch(
-                    value: isThemeDark,
-                    onChanged: (value) {
-                      setState(() {
-                        isThemeDark = value;
-                        print(isThemeDark);
-                      });
-                    },
-                    activeTrackColor: Colors.lightBlueAccent,
-                    activeColor: Colors.blue,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Language'),
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: language,
-                    hint: Text('Degree'),
-                    items: availableLanguages.map((String e) {
-                      return DropdownMenuItem<String>(
-                        value: e,
-                        child: Text(e),
-                      );
-                    }).toList(),
-                    onChanged: (String e) async {
-                      setState(() {
-                        language = e;
-                        setLanguage(language);
-                      });
-                    },
-                  ),
-                ],
-              )
-            ],
-          ),
-        )));*/
   }
 
   setLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lang', language);
     print(prefs.getString('lang'));
+    AppLocalizations.instance.load(Locale(languageCode, ''));
   }
 }

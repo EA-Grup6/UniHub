@@ -30,8 +30,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         } else if (_tabController.index == 1) {
           this.currentTab = AppLocalizations.instance.text("search_offers");
         } else if (_tabController.index == 2) {
-          this.currentTab = AppLocalizations.instance
-              .text("register_accountCreatedSameEmail");
+          this.currentTab = AppLocalizations.instance.text("search_profiles");
         }
       });
     });
@@ -92,7 +91,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: AppLocalizations.instance.text("search_hintText") +
-                      currentTab,
+                      " " +
+                      currentTab.toLowerCase(),
                   hintStyle: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                   filled: true,
                   fillColor: Colors.white30,

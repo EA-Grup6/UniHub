@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'i18N/appTranslations.dart';
 import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
