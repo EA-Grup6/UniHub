@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/screens/addOffer/addOffer.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
@@ -114,13 +115,15 @@ class Feed extends State<FeedScreen> {
     contentController.text = '';
     // set up the buttons
     Widget submitButton = TextButton(
-        child: Text("Create new post"),
+        child: Text(AppLocalizations.instance.text("feed_createNewPost")),
         onPressed: () async {
           //Submit post
           http.Response response = await FeedController().createFeedPub(
               this.username, contentController.text, DateTime.now().toString());
           if (response.statusCode == 200) {
-            createToast('Post correctly uploaded', Colors.green);
+            createToast(
+                AppLocalizations.instance.text("feed_correctlyCreatedNewPost"),
+                Colors.green);
             setState(() {
               pubsList.insert(
                   0, FeedPublication.fromMap(jsonDecode(response.body)));
@@ -130,7 +133,7 @@ class Feed extends State<FeedScreen> {
         });
 
     Widget dismissButton = TextButton(
-      child: Text("Discard post"),
+      child: Text(AppLocalizations.instance.text("feed_dismissNewPost")),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -140,7 +143,7 @@ class Feed extends State<FeedScreen> {
     AlertDialog alert = AlertDialog(
         backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(10),
-        title: Text("New Post"),
+        title: Text(AppLocalizations.instance.text("feed_titleNewPost")),
         content: Stack(
           children: [
             Container(
@@ -153,7 +156,8 @@ class Feed extends State<FeedScreen> {
                   maxLength: 240,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(bottom: 3),
-                    labelText: "What's happening?",
+                    labelText:
+                        AppLocalizations.instance.text("feed_subtitleNewPost"),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                 )),
@@ -173,7 +177,7 @@ class Feed extends State<FeedScreen> {
   showDeletePostAlertDialog(BuildContext context, int index) {
     // set up the buttons
     Widget submitButton = TextButton(
-      child: Text("Yes"),
+      child: Text(AppLocalizations.instance.text("yes")),
       onPressed: () async {
         //delete post
         await FeedController()
@@ -187,7 +191,7 @@ class Feed extends State<FeedScreen> {
       },
     );
     Widget dismissButton = TextButton(
-      child: Text("No"),
+      child: Text(AppLocalizations.instance.text("no")),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -195,7 +199,8 @@ class Feed extends State<FeedScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        content: Text('Are you sure that you want to delete this post?'),
+        content:
+            Text(AppLocalizations.instance.text("feed_deletePostConfirmation")),
         actions: [dismissButton, submitButton]);
 
     // show the dialog

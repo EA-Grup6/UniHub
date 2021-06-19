@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
@@ -174,7 +175,9 @@ class EditProfile extends State<EditProfileScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        'Use camera',
+                                                                        AppLocalizations
+                                                                            .instance
+                                                                            .text("pickOrigin_camera"),
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 18,
@@ -208,7 +211,9 @@ class EditProfile extends State<EditProfileScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        'Choose from gallery',
+                                                                        AppLocalizations
+                                                                            .instance
+                                                                            .text("pickOrigin_gallery"),
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 18,
@@ -243,7 +248,8 @@ class EditProfile extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
-                                      labelText: "Full Name",
+                                      labelText: AppLocalizations.instance
+                                          .text("profile_fullname"),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -255,7 +261,8 @@ class EditProfile extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
-                                      labelText: "Description",
+                                      labelText: AppLocalizations.instance
+                                          .text("profile_description"),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -268,7 +275,8 @@ class EditProfile extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
-                                      labelText: "Phone",
+                                      labelText: AppLocalizations.instance
+                                          .text("profile_phone"),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -277,7 +285,8 @@ class EditProfile extends State<EditProfileScreen> {
                                 child: new DropdownButton<String>(
                                   isExpanded: true,
                                   value: universitySelected,
-                                  hint: Text('University'),
+                                  hint: Text(AppLocalizations.instance
+                                      .text("university")),
                                   items: universitiesNamesList.map((String e) {
                                     return DropdownMenuItem<String>(
                                       value: e,
@@ -300,7 +309,8 @@ class EditProfile extends State<EditProfileScreen> {
                                         child: new DropdownButton<String>(
                                           isExpanded: true,
                                           value: schoolSelected,
-                                          hint: Text('School'),
+                                          hint: Text(AppLocalizations.instance
+                                              .text("college")),
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
@@ -326,7 +336,8 @@ class EditProfile extends State<EditProfileScreen> {
                                         child: new DropdownButton<String>(
                                           isExpanded: true,
                                           value: degreeSelected,
-                                          hint: Text('Degree'),
+                                          hint: Text(AppLocalizations.instance
+                                              .text("degree")),
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
@@ -352,11 +363,15 @@ class EditProfile extends State<EditProfileScreen> {
                                         child: Column(children: [
                                       Text(subjectsDoneSelected == null ||
                                               subjectsDoneSelected.length == 0
-                                          ? 'Subjects already done: No subjects selected'
-                                          : 'Subjects already done: ' +
-                                              subjectsDoneSelected
-                                                  .toString()
-                                                  .toString()),
+                                          ? AppLocalizations.instance.text(
+                                                  "profile_subjectsDone") +
+                                              ": " +
+                                              AppLocalizations.instance.text(
+                                                  "profile_noSubjectsSelected")
+                                          : AppLocalizations.instance.text(
+                                                  "profile_subjectsDone") +
+                                              ": " +
+                                              subjectsDoneSelected.join(', ')),
                                       ChipsChoice<String>.multiple(
                                           wrapped: false,
                                           value: subjectsDoneSelected,
@@ -381,11 +396,16 @@ class EditProfile extends State<EditProfileScreen> {
                                         child: Column(children: [
                                       Text(subjectsAskingSelected == null ||
                                               subjectsAskingSelected.length == 0
-                                          ? 'Subjects already done: No subjects selected'
-                                          : 'Subjects already done: ' +
+                                          ? AppLocalizations.instance.text(
+                                                  "profile_subjectsAsking") +
+                                              ": " +
+                                              AppLocalizations.instance.text(
+                                                  "profile_noSubjectsSelected")
+                                          : AppLocalizations.instance.text(
+                                                  "profile_subjectsAsking") +
+                                              ": " +
                                               subjectsAskingSelected
-                                                  .toString()
-                                                  .toString()),
+                                                  .join(', ')),
                                       ChipsChoice<String>.multiple(
                                           wrapped: false,
                                           value: subjectsAskingSelected,
@@ -410,7 +430,8 @@ class EditProfile extends State<EditProfileScreen> {
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
-                                      labelText: "Role",
+                                      labelText: AppLocalizations.instance
+                                          .text("profile_role"),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -422,7 +443,8 @@ class EditProfile extends State<EditProfileScreen> {
                                   controller: _passwordController,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(bottom: 3),
-                                    labelText: 'Password',
+                                    labelText: AppLocalizations.instance
+                                        .text("password"),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     suffix: InkWell(
@@ -443,16 +465,19 @@ class EditProfile extends State<EditProfileScreen> {
                                   controller: _password2Controller,
                                   validator: (String value) {
                                     if (value.isEmpty) {
-                                      return 'Missing confirmation of the password';
+                                      return AppLocalizations.instance.text(
+                                          "editProfile_missingConfirmation");
                                     }
                                     if (_passwordController.text != (value)) {
-                                      return 'Passwords are not equal. Please enter the same password';
+                                      return AppLocalizations.instance.text(
+                                          "editProfile_passwordsNotEqual");
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(bottom: 3),
-                                    labelText: 'Repeat Password',
+                                    labelText: AppLocalizations.instance
+                                        .text("register_repeatPassword"),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     suffix: InkWell(
@@ -481,7 +506,7 @@ class EditProfile extends State<EditProfileScreen> {
                                               Colors.red),
                                     ),
                                     child: Text(
-                                      'Cancel',
+                                      AppLocalizations.instance.text("cancel"),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -499,7 +524,7 @@ class EditProfile extends State<EditProfileScreen> {
                                               Colors.blue),
                                     ),
                                     child: Text(
-                                      'Save',
+                                      AppLocalizations.instance.text("save"),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -526,7 +551,9 @@ class EditProfile extends State<EditProfileScreen> {
                                             await EditProfileController()
                                                 .updateProfile(updatedUser);
                                         if (response.statusCode == 200) {
-                                          createToast("User correctly updated",
+                                          createToast(
+                                              AppLocalizations.instance.text(
+                                                  "editProfile_userCorrectlyUpdated"),
                                               Colors.green);
                                           Navigator.pop(
                                               context,
@@ -569,7 +596,10 @@ class EditProfile extends State<EditProfileScreen> {
             folder: 'profilePhotos',
             fileName: currentUser.username);
         if (response.isSuccessful) {
-          createToast('Image correctly uploaded', Colors.green);
+          createToast(
+              AppLocalizations.instance
+                  .text("editProfile_imageCorrectlyUploaded"),
+              Colors.green);
           currentUser.profilePhoto = response.secureUrl;
         }
       } else {
@@ -579,14 +609,19 @@ class EditProfile extends State<EditProfileScreen> {
             folder: 'profilePhotos',
             fileName: currentUser.username);
         if (response.isSuccessful) {
-          createToast('Image correctly uploaded', Colors.green);
+          createToast(
+              AppLocalizations.instance
+                  .text("editProfile_imageCorrectlyUploaded"),
+              Colors.green);
           currentUser.profilePhoto = response.secureUrl;
         }
       }
     } on Exception catch (e) {
       print(e);
       //print(e.request);
-      createToast('Error while uploading the image', Colors.red);
+      createToast(
+          AppLocalizations.instance.text("editProfile_imageErrorUploading"),
+          Colors.red);
     }
   }
 
@@ -599,7 +634,10 @@ class EditProfile extends State<EditProfileScreen> {
             resourceType: CloudinaryResourceType.image,
             folder: 'profilePhotos');
         if (response.isSuccessful) {
-          createToast('Image correctly uploaded', Colors.green);
+          createToast(
+              AppLocalizations.instance
+                  .text("editProfile_imageCorrectlyUploaded"),
+              Colors.green);
           currentUser.profilePhoto = response.secureUrl;
         }
       } else {
@@ -608,14 +646,19 @@ class EditProfile extends State<EditProfileScreen> {
             resourceType: CloudinaryResourceType.image,
             folder: 'profilePhotos');
         if (response.isSuccessful) {
-          createToast('Image correctly uploaded', Colors.green);
+          createToast(
+              AppLocalizations.instance
+                  .text("editProfile_imageCorrectlyUploaded"),
+              Colors.green);
           currentUser.profilePhoto = response.secureUrl;
         }
       }
     } on Exception catch (e) {
       print(e);
       //print(e.request);
-      createToast('Error while uploading the image', Colors.red);
+      createToast(
+          AppLocalizations.instance.text("editProfile_imageErrorUploading"),
+          Colors.red);
     }
   }
 
@@ -633,7 +676,7 @@ class EditProfile extends State<EditProfileScreen> {
     _phoneController.text = currentUser.phone;
     currentUser.university == null
         ? universitySelected = currentUser.university
-        : universitySelected = 'Not Selected';
+        : universitySelected = AppLocalizations.instance.text("notSelected");
     subjectsAskingSelected =
         new List<String>.from(currentUser.subjectsRequested);
     subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);

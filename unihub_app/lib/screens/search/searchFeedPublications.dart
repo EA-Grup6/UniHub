@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/widgets/feedPostSection.dart';
 
@@ -72,21 +73,19 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
               );
             } else {
               initializeListAndUser();
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  ]);
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
           });
     } else {
       return Scaffold(
           body: Center(
               child: Text(
-        'Search Publications Screen',
+        AppLocalizations.instance.text("search") +
+            AppLocalizations.instance.text("search_feedPubs"),
         style: TextStyle(fontSize: 21),
       )));
     }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/screens/comments/comments.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
@@ -146,43 +148,14 @@ class FeedPostSection extends State<FeedPost> {
         });
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget submitButton = TextButton(
-      child: Text("Yes"),
-      onPressed: () async {
-        //delete post
-        await FeedController()
-            .deleteFeedPost(this.widget.feed.id)
-            .whenComplete(() {
-          Navigator.pop(context);
-        });
-      },
-    );
-    Widget dismissButton = TextButton(
-      child: Text("No"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-        content: Text('Are you sure that you want to delete this post?'),
-        actions: [dismissButton, submitButton]);
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   getUserImage() async {
     String urlImage =
         await FeedController().getUserImage(this.widget.feed.username);
+    try {
+      await Jiffy.locale(window.locale.languageCode);
+    } catch (exception) {
+      await Jiffy.locale('en');
+    }
     return urlImage;
   }
 }

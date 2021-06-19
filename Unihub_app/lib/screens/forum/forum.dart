@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/gmaps/gmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
@@ -35,7 +36,7 @@ class Forum extends State<ForumScreen> {
           if (snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Academic offering"),
+                  title: Text(AppLocalizations.instance.text("offer_title")),
                 ),
                 body: SafeArea(
                     child: SingleChildScrollView(
@@ -59,7 +60,7 @@ class Forum extends State<ForumScreen> {
           } else {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Feed"),
+                  title: Text(AppLocalizations.instance.text("offer_title")),
                 ),
                 body: Container(
                   child: Center(
@@ -75,98 +76,5 @@ class Forum extends State<ForumScreen> {
                 ));
           }
         });
-  }
-}
-
-class DataSearch extends SearchDelegate<String> {
-  final subjects = [
-    "EA",
-    "MF",
-    "AERO",
-    "MV",
-    "ITA",
-    "MGTA",
-    "DSA",
-    "XLAM",
-    "ALGEBRA",
-    "AMPLI1",
-    "AMPLI2",
-    "PDS",
-    "INFO2",
-    "SX",
-    "TIQ",
-    "CSD",
-  ];
-
-  final recentSubjects = [
-    "INFO2",
-    "SX",
-    "TIQ",
-    "CSD",
-  ];
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = "";
-          })
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
-        ),
-        onPressed: () {
-          close(context, null);
-        });
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // show some results based on the selection
-    return Container(
-        height: 100.0,
-        width: 100.0,
-        child: Card(
-          color: Colors.red,
-          child: Center(
-            child: Text(query),
-          ),
-        ));
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final subjectsList = query.isEmpty
-        ? recentSubjects
-        : subjects.where((p) => p.startsWith(query)).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.subject),
-        title: RichText(
-          text: TextSpan(
-              text: subjectsList[index].substring(0, query.length),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                    text: subjectsList[index].substring(query.length),
-                    style: TextStyle(color: Colors.grey))
-              ]),
-        ),
-      ),
-      itemCount: subjectsList.length,
-    );
   }
 }

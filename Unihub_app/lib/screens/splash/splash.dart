@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 
 String finalUsername;
 
@@ -35,7 +36,10 @@ class Splash extends State<SplashScreen> {
                   {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/homepage', (Route<dynamic> route) => false),
-                    createToast('Welcome back, ' + finalUsername, Colors.green),
+                    createToast(
+                        AppLocalizations.instance.text("login_welcomeBack") +
+                            finalUsername,
+                        Colors.green),
                   }
               });
     });

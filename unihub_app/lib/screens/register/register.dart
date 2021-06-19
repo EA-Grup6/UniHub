@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/register_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/login/login.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -37,12 +38,14 @@ class Register extends State<RegisterScreen> {
                               child: TextFormField(
                                 validator: (String value) {
                                   if (value.isEmpty) {
-                                    return 'Enter an email';
+                                    return AppLocalizations.instance
+                                        .text("login_noEmail");
                                   }
                                   if (!RegExp(
                                           "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                       .hasMatch(value)) {
-                                    return 'Please enter a valid Email';
+                                    return AppLocalizations.instance
+                                        .text("login_notValidEmail");
                                   }
                                   return null;
                                 },
@@ -58,12 +61,15 @@ class Register extends State<RegisterScreen> {
                               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextFormField(
                                 obscureText: _isHidden,
-                                validator: (val) =>
-                                    val.isEmpty ? 'Missing password' : null,
+                                validator: (val) => val.isEmpty
+                                    ? AppLocalizations.instance
+                                        .text("login_noPassword")
+                                    : null,
                                 controller: _passwordController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Password',
+                                  labelText: AppLocalizations.instance
+                                      .text("password"),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -82,17 +88,20 @@ class Register extends State<RegisterScreen> {
                                 obscureText: _isHidden,
                                 validator: (String value) {
                                   if (value.isEmpty) {
-                                    return 'Missing password';
+                                    return AppLocalizations.instance
+                                        .text("login_noPassword");
                                   }
                                   if (_passwordController.text != (value)) {
-                                    return 'Passwords are not equal. Please enter same password';
+                                    return AppLocalizations.instance
+                                        .text("login_notSamePassword");
                                   }
                                   return null;
                                 },
                                 controller: _password2Controller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Repeat password',
+                                  labelText: AppLocalizations.instance
+                                      .text("register_repeatPassword"),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -112,7 +121,9 @@ class Register extends State<RegisterScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       TextButton(
-                                          child: Text('Sign up',
+                                          child: Text(
+                                              AppLocalizations.instance
+                                                  .text("login_signUp"),
                                               style: TextStyle(fontSize: 20)),
                                           style: ButtonStyle(
                                             minimumSize:
@@ -136,7 +147,8 @@ class Register extends State<RegisterScreen> {
                                                               .text);
                                               if (response.statusCode == 200) {
                                                 createToast(
-                                                    "Account correctly created",
+                                                    AppLocalizations.instance.text(
+                                                        "register_accountCreatedOK"),
                                                     Colors.green);
 
                                                 Navigator.of(context)
@@ -144,7 +156,8 @@ class Register extends State<RegisterScreen> {
                                               } else if (response.statusCode ==
                                                   201) {
                                                 createToast(
-                                                    "There exists an account with this email",
+                                                    AppLocalizations.instance.text(
+                                                        "register_accountCreatedSameEmail"),
                                                     Colors.green);
                                               } else {
                                                 createToast(

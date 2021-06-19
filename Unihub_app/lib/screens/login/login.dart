@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
@@ -49,19 +50,22 @@ class Login extends State<LoginScreen> {
                               child: TextFormField(
                                 validator: (String value) {
                                   if (value.isEmpty) {
-                                    return 'Enter an email';
+                                    return AppLocalizations.instance
+                                        .text('login_noEmail');
                                   }
                                   if (!RegExp(
                                           "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                       .hasMatch(value)) {
-                                    return 'Please enter a valid Email';
+                                    return AppLocalizations.instance
+                                        .text('login_notValidEmail');
                                   }
                                   return null;
                                 },
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Username',
+                                  labelText: AppLocalizations.instance
+                                      .text('username'),
                                   alignLabelWithHint: true,
                                 ),
                               ),
@@ -69,13 +73,16 @@ class Login extends State<LoginScreen> {
                             Container(
                               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: TextFormField(
-                                validator: (val) =>
-                                    val.isEmpty ? 'Missing password' : null,
+                                validator: (val) => val.isEmpty
+                                    ? AppLocalizations.instance
+                                        .text('login_noPassword')
+                                    : null,
                                 obscureText: _isHidden,
                                 controller: _passwordController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Password',
+                                  labelText: AppLocalizations.instance
+                                      .text('password'),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -95,7 +102,9 @@ class Login extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       TextButton(
-                                        child: Text('Sign in',
+                                        child: Text(
+                                            AppLocalizations.instance
+                                                .text('login_signIn'),
                                             style: TextStyle(fontSize: 20)),
                                         style: ButtonStyle(
                                           minimumSize:
@@ -126,7 +135,9 @@ class Login extends State<LoginScreen> {
                                                       .getInstance();
                                               prefs.setString('username',
                                                   _nameController.text);
-                                              createToast("Logged in correctly",
+                                              createToast(
+                                                  AppLocalizations.instance.text(
+                                                      'login_loggedCorrectly'),
                                                   Colors.green);
                                               Navigator.of(context)
                                                   .pushNamedAndRemoveUntil(
@@ -135,7 +146,9 @@ class Login extends State<LoginScreen> {
                                                           false);
                                             } else if (response == 201) {
                                               createToast(
-                                                  "Wrong password", Colors.red);
+                                                  AppLocalizations.instance
+                                                      .text('wrongPassword'),
+                                                  Colors.red);
                                             } else {
                                               createToast('Error', Colors.red);
                                             }
@@ -201,7 +214,8 @@ class Login extends State<LoginScreen> {
                                         MaterialStateProperty.all<Color>(
                                             Colors.grey),
                                   ),
-                                  child: Text('Forgot Password'),
+                                  child: Text(AppLocalizations.instance
+                                      .text('login_forgotPassword')),
                                 ),
                                 TextButton(
                                   style: ButtonStyle(
@@ -210,7 +224,8 @@ class Login extends State<LoginScreen> {
                                             Colors.blue),
                                   ),
                                   child: Text(
-                                    'Sign up',
+                                    AppLocalizations.instance
+                                        .text('login_signUp'),
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   onPressed: () {

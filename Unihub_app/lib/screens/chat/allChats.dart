@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 
 import './chatPage.dart';
 import '../../models/user.dart';
@@ -48,7 +49,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Chats'),
+        title: Text(AppLocalizations.instance.text("chat_allChats")),
       ),
       body: buildAllChatList(),
     );

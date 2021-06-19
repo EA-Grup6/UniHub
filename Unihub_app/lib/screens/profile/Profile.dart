@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/social_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
-import 'package:unihub_app/screens/gmaps/gmaps.dart';
-import 'package:unihub_app/screens/jitsi/jitsiScreen.dart';
 import 'package:unihub_app/screens/login/login.dart';
+import 'package:unihub_app/screens/settings/settings.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
 UserApp currentUser;
@@ -52,8 +52,9 @@ class Profile extends State<ProfileScreen> {
             return Scaffold(
                 appBar: AppBar(
                   title: this.username == this.myUsername
-                      ? Text("Your profile")
-                      : Text(currentUser.fullname + "'s profile"),
+                      ? Text(AppLocalizations.instance
+                          .text('profile_yourProfileTitle'))
+                      : Text(currentUser.fullname),
                   actions: this.username == this.myUsername
                       ? <Widget>[
                           IconButton(
@@ -71,7 +72,8 @@ class Profile extends State<ProfileScreen> {
                               icon: Icon(Icons.settings),
                               onPressed: () {
                                 //Nos lleva a settings
-                                
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => SettingsScreen()));
                               }),
                           IconButton(
                               icon: Icon(Icons.logout),
@@ -82,14 +84,15 @@ class Profile extends State<ProfileScreen> {
                       : <Widget>[
                           currentUser.followers.contains(this.myUsername)
                               ? TextButton(
-                                  child: Text("Unfollow",
+                                  child: Text(
+                                      AppLocalizations.instance
+                                          .text('profile_unfollow'),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black)),
                                   style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.grey[800])),
+                                      backgroundColor: MaterialStateProperty
+                                          .all<Color>(Colors.grey[800])),
                                   onPressed: () async {
                                     //Funcion para quitar follow
                                     http.Response response =
@@ -102,7 +105,8 @@ class Profile extends State<ProfileScreen> {
                                             .remove(this.myUsername);
                                       });
                                       createToast(
-                                          "You have unfollowed " +
+                                          AppLocalizations.instance.text(
+                                                  'profile_youUnfollowed') +
                                               currentUser.username,
                                           Colors.green);
                                     } else {
@@ -112,10 +116,11 @@ class Profile extends State<ProfileScreen> {
                                     }
                                   })
                               : TextButton(
-                                  child: Text("Follow",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black)),
+                                  child:
+                                      Text(AppLocalizations.instance.text('profile_follow'),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black)),
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
@@ -132,7 +137,8 @@ class Profile extends State<ProfileScreen> {
                                             .remove(this.myUsername);
                                       });
                                       createToast(
-                                          "You are now following " +
+                                          AppLocalizations.instance
+                                                  .text('profile_youFollowed') +
                                               currentUser.username,
                                           Colors.green);
                                     } else {
@@ -180,36 +186,58 @@ class Profile extends State<ProfileScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              TextSection("Full name", currentUser.fullname),
                               TextSection(
-                                  "Description", currentUser.description),
-                              TextSection("Role", currentUser.role),
+                                  AppLocalizations.instance
+                                      .text('profile_fullname'),
+                                  currentUser.fullname),
                               TextSection(
-                                  "University",
+                                  AppLocalizations.instance
+                                      .text('profile_description'),
+                                  currentUser.description),
+                              TextSection(
+                                  AppLocalizations.instance
+                                      .text('profile_role'),
+                                  currentUser.role),
+                              TextSection(
+                                  AppLocalizations.instance.text('university'),
                                   currentUser.university == null
-                                      ? 'Not Selected'
+                                      ? AppLocalizations.instance
+                                          .text('notSelected')
                                       : currentUser.university),
                               TextSection(
-                                  "Degree",
+                                  AppLocalizations.instance.text('degree'),
                                   currentUser.degree == null
-                                      ? 'Not Selected'
+                                      ? AppLocalizations.instance
+                                          .text('notSelected')
                                       : currentUser.degree),
                               TextSection(
-                                  "Subjects already done",
+                                  AppLocalizations.instance
+                                      .text('profile_subjectsDone'),
                                   currentUser.subjectsDone.length == 0
-                                      ? 'None'
+                                      ? AppLocalizations.instance.text('none')
                                       : currentUser.subjectsDone.join(', ')),
                               TextSection(
-                                  "Subjects asking for",
+                                  AppLocalizations.instance
+                                      .text('profile_subjectsAsking'),
                                   currentUser.subjectsRequested.length == 0
-                                      ? 'None'
+                                      ? AppLocalizations.instance.text('none')
                                       : currentUser.subjectsRequested
                                           .join(', ')),
-                              TextSection("E-mail", currentUser.username),
-                              TextSection("Phone", currentUser.phone),
-                              TextSection("Followers",
+                              TextSection(
+                                  AppLocalizations.instance
+                                      .text('profile_email'),
+                                  currentUser.username),
+                              TextSection(
+                                  AppLocalizations.instance
+                                      .text('profile_phone'),
+                                  currentUser.phone),
+                              TextSection(
+                                  AppLocalizations.instance
+                                      .text('profile_followers'),
                                   currentUser.followers.length.toString()),
-                              TextSection("Following",
+                              TextSection(
+                                  AppLocalizations.instance
+                                      .text('profile_following'),
                                   currentUser.following.length.toString()),
                               this.username == myUsername
                                   ? TextButton(
@@ -219,7 +247,8 @@ class Profile extends State<ProfileScreen> {
                                                 Colors.red),
                                       ),
                                       child: Text(
-                                        'Delete your account',
+                                        AppLocalizations.instance
+                                            .text('profile_deleteAccount'),
                                         style: TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
@@ -272,7 +301,7 @@ showAlertDialog(BuildContext context) {
   TextEditingController passwordController = new TextEditingController();
   // set up the buttons
   Widget confirmButton = TextButton(
-    child: Text("Confirm"),
+    child: Text(AppLocalizations.instance.text('confirm')),
     onPressed: () async {
       // Delete account checking if password is correct
       if (passwordController.text == currentUser.password) {
@@ -283,14 +312,17 @@ showAlertDialog(BuildContext context) {
         if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
-          createToast("Account correctly deleted", Colors.green);
+          createToast(AppLocalizations.instance.text('profile_deleteAccountOK'),
+              Colors.green);
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/login', (Route<dynamic> route) => false);
         } else {
-          createToast("Couldn't delete account", Colors.red);
+          createToast(AppLocalizations.instance.text('profile_deleteAccountNO'),
+              Colors.red);
         }
       } else {
-        createToast("Wrong password", Colors.red);
+        createToast(
+            AppLocalizations.instance.text('wrongPassword'), Colors.red);
       }
     },
   );
@@ -303,13 +335,14 @@ showAlertDialog(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Are you sure you want to delete your account?"),
+    title: Text(
+        AppLocalizations.instance.text('profile_deleteAccountConfirmation')),
     content: TextFormField(
       controller: passwordController,
-      validator: (val) => val.isEmpty ? 'Enter your name' : null,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 3),
-          labelText: "Please confirm with your password",
+          labelText: AppLocalizations.instance
+              .text("profile_deleteAccountConfirmPassword"),
           floatingLabelBehavior: FloatingLabelBehavior.always),
     ),
     actions: [cancelButton, confirmButton],
@@ -330,7 +363,7 @@ showAlertDialog2(BuildContext context) {
   TextEditingController passwordController = new TextEditingController();
   // set up the buttons
   Widget confirmButton = TextButton(
-    child: Text("Confirm"),
+    child: Text(AppLocalizations.instance.text('confirm')),
     onPressed: () async {
       // Delete account checking if password is correct
       if (passwordController.text == currentUser.password) {
@@ -341,14 +374,17 @@ showAlertDialog2(BuildContext context) {
         if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
-          createToast("Account correctly deleted", Colors.green);
+          createToast(AppLocalizations.instance.text('profile_deleteAccountOK'),
+              Colors.green);
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/login', (Route<dynamic> route) => false);
         } else {
-          createToast("Couldn't delete account", Colors.red);
+          createToast(AppLocalizations.instance.text('profile_deleteAccountNO'),
+              Colors.red);
         }
       } else {
-        createToast("Wrong password", Colors.red);
+        createToast(
+            AppLocalizations.instance.text('wrongPassword'), Colors.red);
       }
     },
   );
@@ -361,14 +397,14 @@ showAlertDialog2(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text(
-        "Are you sure you want to delete your account and all your content related to it?"),
+    title: Text(AppLocalizations.instance
+        .text('profile_deleteAccountConfirmationGDPR')),
     content: TextFormField(
       controller: passwordController,
-      validator: (val) => val.isEmpty ? 'Enter your name' : null,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 3),
-          labelText: "Please confirm with your password",
+          labelText: AppLocalizations.instance
+              .text("profile_deleteAccountConfirmPassword"),
           floatingLabelBehavior: FloatingLabelBehavior.always),
     ),
     actions: [cancelButton, confirmButton],

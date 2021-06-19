@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/search/searchFeedPublications.dart';
 import 'package:unihub_app/screens/search/searchOffers.dart';
 import 'package:unihub_app/screens/search/searchProfiles.dart';
@@ -10,13 +11,13 @@ class SearchScreen extends StatefulWidget {
 
 TabController _tabController;
 final List<Tab> myTabs = <Tab>[
-  Tab(text: 'Feed publications'),
-  Tab(text: 'Offers'),
-  Tab(text: 'Profiles'),
+  Tab(text: AppLocalizations.instance.text("search_feedPubs")),
+  Tab(text: AppLocalizations.instance.text("search_offers")),
+  Tab(text: AppLocalizations.instance.text("search_profiles")),
 ];
 
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
-  String currentTab = 'Feed Publications';
+  String currentTab = AppLocalizations.instance.text("search_feedPubs");
   TextEditingController _searchController;
 
   void initState() {
@@ -25,11 +26,12 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     _tabController.addListener(() {
       setState(() {
         if (_tabController.index == 0) {
-          this.currentTab = 'Feed Publication';
+          this.currentTab = AppLocalizations.instance.text("search_feedPubs");
         } else if (_tabController.index == 1) {
-          this.currentTab = 'Offers';
+          this.currentTab = AppLocalizations.instance.text("search_offers");
         } else if (_tabController.index == 2) {
-          this.currentTab = 'Profiles';
+          this.currentTab = AppLocalizations.instance
+              .text("register_accountCreatedSameEmail");
         }
       });
     });
@@ -57,15 +59,11 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     'Subject',
     'Type',
     'Description',
-    'Username',
+    'Username'
   ];
 
   List<String> finalSelectedProfilesFields = [];
-  List<String> availableProfilesFields = [
-    "Fullname",
-    "Degree",
-    "University",
-  ];
+  List<String> availableProfilesFields = ['Fullname', 'Degree', 'University'];
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +83,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('Search'),
+            Text(AppLocalizations.instance.text("search")),
             Container(
               width: MediaQuery.of(context).size.width / 2,
               height: 35,
@@ -93,7 +91,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                 style: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search ' + currentTab,
+                  hintText: AppLocalizations.instance.text("search_hintText") +
+                      currentTab,
                   hintStyle: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                   filled: true,
                   fillColor: Colors.white30,
@@ -137,7 +136,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     List<String> selectedOffersFields = offersFilters;
     List<String> selectedProfilesFields = profilesFilters;
     Widget acceptFilters = TextButton(
-        child: Text("Filter by selected fields"),
+        child: Text(AppLocalizations.instance.text("search_filterBy")),
         onPressed: () {
           if (_tabController.index == 0) {
             setState(() {
@@ -156,7 +155,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         });
 
     Widget dismissFilters = TextButton(
-      child: Text("Dismiss selected fields"),
+      child: Text(AppLocalizations.instance.text("search_dismiss")),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -166,7 +165,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     AlertDialog alert = AlertDialog(
         backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(10),
-        title: Text("Filter options"),
+        title: Text(AppLocalizations.instance.text("search_filterOptions")),
         content: _tabController.index == 0
             ? StatefulBuilder(
                 builder: (context, setState) {
@@ -177,7 +176,9 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                       itemCount: availableFeedPubFields.length,
                       itemBuilder: (BuildContext context, index) {
                         return new CheckboxListTile(
-                            title: Text(availableFeedPubFields[index]),
+                            title: Text(AppLocalizations.instance.text(
+                                "search_filter" +
+                                    availableFeedPubFields[index])),
                             value: selectedFeedPubsFields
                                 .contains(availableFeedPubFields[index]),
                             onChanged: (bool value) {
@@ -203,7 +204,9 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                         itemCount: availableOffersFields.length,
                         itemBuilder: (BuildContext context, index) {
                           return new CheckboxListTile(
-                              title: Text(availableOffersFields[index]),
+                              title: Text(AppLocalizations.instance.text(
+                                  "search_filter" +
+                                      availableOffersFields[index])),
                               value: selectedOffersFields
                                   .contains(availableOffersFields[index]),
                               onChanged: (bool value) {
@@ -228,7 +231,9 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                             itemCount: availableProfilesFields.length,
                             itemBuilder: (BuildContext context, index) {
                               return new CheckboxListTile(
-                                  title: Text(availableProfilesFields[index]),
+                                  title: Text(AppLocalizations.instance.text(
+                                      "search_filter" +
+                                          availableProfilesFields[index])),
                                   value: selectedProfilesFields
                                       .contains(availableProfilesFields[index]),
                                   onChanged: (bool value) {
@@ -256,105 +261,3 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     );
   }
 }
-
-/*
-class DataSearch extends SearchDelegate<String> {
-  final subjects = [
-    "EA",
-    "MF",
-    "AERO",
-    "MV",
-    "ITA",
-    "MGTA",
-    "DSA",
-    "XLAM",
-    "ALGEBRA",
-    "AMPLI1",
-    "AMPLI2",
-    "PDS",
-    "INFO2",
-    "SX",
-    "TIQ",
-    "CSD",
-  ];
-
-  final recentSubjects = [
-    "INFO2",
-    "SX",
-    "TIQ",
-    "CSD",
-  ];
-
-  final String searchingBy;
-
-  DataSearch(this.searchingBy);
-
-  @override
-  String get searchFieldLabel => 'Search ' + this.searchingBy;
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = "";
-          })
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
-        ),
-        onPressed: () {
-          close(context, null);
-        });
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // show some results based on the selection
-    return Container(
-        height: 100.0,
-        width: 100.0,
-        child: Card(
-          color: Colors.red,
-          child: Center(
-            child: Text(query),
-          ),
-        ));
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    final subjectsList = query.isEmpty
-        ? recentSubjects
-        : subjects.where((p) => p.startsWith(query)).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.subject),
-        title: RichText(
-          text: TextSpan(
-              text: subjectsList[index].substring(0, query.length),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                    text: subjectsList[index].substring(query.length),
-                    style: TextStyle(color: Colors.grey))
-              ]),
-        ),
-      ),
-      itemCount: subjectsList.length,
-    );
-  }
-}
-*/

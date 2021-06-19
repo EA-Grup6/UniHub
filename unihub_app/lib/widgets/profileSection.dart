@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
 class Profile extends StatefulWidget {
@@ -65,7 +66,9 @@ class ProfileSection extends State<Profile> {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("University: ",
+                                      Text(
+                                          AppLocalizations.instance
+                                              .text("university"),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                       Text(widget._university),
@@ -73,7 +76,10 @@ class ProfileSection extends State<Profile> {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Done Subjects: ",
+                                      Text(
+                                          AppLocalizations.instance.text(
+                                                  "profile_subjectsDone") +
+                                              ": ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                       Text(widget._doneSubjects.join(', ')),
@@ -85,7 +91,9 @@ class ProfileSection extends State<Profile> {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Degree: ",
+                                      Text(
+                                          AppLocalizations.instance
+                                              .text("degree"),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                       Text(widget._degree),
@@ -93,7 +101,10 @@ class ProfileSection extends State<Profile> {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Requested subjects: ",
+                                      Text(
+                                          AppLocalizations.instance.text(
+                                                  "profile_subjectsDone") +
+                                              ": ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                       Text(widget._askingSubjects.join(', ')),

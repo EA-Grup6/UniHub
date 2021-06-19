@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/models/offer.dart';
-import 'package:unihub_app/screens/jitsi/jitsiScreen.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class OfferSection extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/comment_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/comment.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/widgets/commentSection.dart';
@@ -41,7 +42,8 @@ class CommentState extends State<CommentsScreen> {
             this.commentsList = new List<Comment>.from(snapshot.data.reversed);
             return Scaffold(
               appBar: AppBar(
-                title: Text("Feed"),
+                title:
+                    Text(AppLocalizations.instance.text("comments_feedDetail")),
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
@@ -78,54 +80,7 @@ class CommentState extends State<CommentsScreen> {
                                   onDismissed: (direction) {}),
                             )
                         ],
-                      )
-                      /*
-                  child: ListView.builder(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        if (snapshot.data.reversed.elementAt(index).username ==
-                            this.widget.username) {
-                          this.commentsList =
-                              new List<Comment>.from(snapshot.data.reversed);
-                          return new Column(children: [
-                            FeedPost(this.widget.feedPublication,
-                                this.widget.username),
-                            snapshot.hasData
-                                ? Dismissible(
-                                    key: ObjectKey(
-                                        this.commentsList.elementAt(index)),
-                                    child: new CommentWidget(
-                                        this.commentsList.elementAt(index),
-                                        this.widget.username),
-                                    confirmDismiss: (direction) {
-                                      if (this
-                                              .commentsList
-                                              .elementAt(index)
-                                              .username ==
-                                          this.widget.username) {
-                                        return showDeletePostAlertDialog(
-                                            context, index);
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onDismissed: (direction) {})
-                                : Container()
-                          ]);
-                        } else {
-                          return new Column(children: [
-                            FeedPost(this.widget.feedPublication,
-                                this.widget.username),
-                            snapshot.hasData
-                                ? CommentWidget(
-                                    snapshot.data.reversed.elementAt(index),
-                                    this.widget.username)
-                                : Container()
-                          ]);
-                        }
-                      })*/
-                      )),
+                      ))),
               bottomSheet: TextField(
                 style: TextStyle(color: Colors.grey[800], fontSize: 14.0),
                 controller: contentController,
@@ -145,7 +100,9 @@ class CommentState extends State<CommentsScreen> {
                                 this.widget.feedPublication.id);
                         if (response.statusCode == 200) {
                           createToast(
-                              'Comment correctly uploaded', Colors.green);
+                              AppLocalizations.instance
+                                  .text("comments_commentCreatedOK"),
+                              Colors.green);
                           setState(() {
                             commentsList.insert(
                                 0, Comment.fromMap(jsonDecode(response.body)));
@@ -153,11 +110,15 @@ class CommentState extends State<CommentsScreen> {
                           });
                         }
                       } else {
-                        createToast("Please write a comment", Colors.yellow);
+                        createToast(
+                            AppLocalizations.instance
+                                .text("comments_commentError"),
+                            Colors.yellow);
                       }
                     },
                   ),
-                  hintText: 'New comment',
+                  hintText:
+                      AppLocalizations.instance.text("comments_newComment"),
                   hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14.0),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
@@ -173,7 +134,8 @@ class CommentState extends State<CommentsScreen> {
           } else {
             return Scaffold(
               appBar: AppBar(
-                title: Text("Feed"),
+                title:
+                    Text(AppLocalizations.instance.text("comments_feedDetail")),
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
@@ -209,7 +171,9 @@ class CommentState extends State<CommentsScreen> {
                                 this.widget.feedPublication.id);
                         if (response.statusCode == 200) {
                           createToast(
-                              'Comment correctly uploaded', Colors.green);
+                              AppLocalizations.instance
+                                  .text("comments_commentCreatedOK"),
+                              Colors.green);
                           setState(() {
                             commentsList.insert(
                                 0, Comment.fromMap(jsonDecode(response.body)));
@@ -217,11 +181,15 @@ class CommentState extends State<CommentsScreen> {
                           });
                         }
                       } else {
-                        createToast("Please write a comment", Colors.yellow);
+                        createToast(
+                            AppLocalizations.instance
+                                .text("comments_commentError"),
+                            Colors.yellow);
                       }
                     },
                   ),
-                  hintText: 'New comment',
+                  hintText:
+                      AppLocalizations.instance.text("comments_newComment"),
                   hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14.0),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
@@ -241,7 +209,7 @@ class CommentState extends State<CommentsScreen> {
   showDeletePostAlertDialog(BuildContext context, Comment comment) {
     // set up the buttons
     Widget submitButton = TextButton(
-      child: Text("Yes"),
+      child: Text(AppLocalizations.instance.text("yes")),
       onPressed: () async {
         //delete post
         await CommentController().deleteComment(comment.id).whenComplete(() {
@@ -253,7 +221,7 @@ class CommentState extends State<CommentsScreen> {
       },
     );
     Widget dismissButton = TextButton(
-      child: Text("No"),
+      child: Text(AppLocalizations.instance.text("no")),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -261,7 +229,8 @@ class CommentState extends State<CommentsScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        content: Text('Are you sure that you want to delete this post?'),
+        content:
+            Text(AppLocalizations.instance.text("comments_deleteConfirmation")),
         actions: [dismissButton, submitButton]);
 
     // show the dialog

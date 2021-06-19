@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/social_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/widgets/profileSection.dart';
 
@@ -70,21 +71,19 @@ class SearchProfiles extends State<SearchProfilesScreen> {
               );
             } else {
               initializeListAndUser();
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  ]);
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
           });
     } else {
       return Scaffold(
           body: Center(
               child: Text(
-        'Search Offers Screen',
+        AppLocalizations.instance.text("search") +
+            AppLocalizations.instance.text("search_profiles"),
         style: TextStyle(fontSize: 21),
       )));
     }

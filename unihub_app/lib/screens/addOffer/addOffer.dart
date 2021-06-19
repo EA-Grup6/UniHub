@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/gmaps/gmaps.dart';
 
 class AddOfferScreen extends StatefulWidget {
@@ -68,7 +69,7 @@ class AddOffer extends State<AddOfferScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Add Offer",
+            AppLocalizations.instance.text("addOffer_titleScreen"),
             style: TextStyle(color: Colors.blue),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -108,7 +109,8 @@ class AddOffer extends State<AddOfferScreen> {
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
-                                          labelText: "Title of the offer",
+                                          labelText: AppLocalizations.instance
+                                              .text("addOffer_title"),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -120,7 +122,9 @@ class AddOffer extends State<AddOfferScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("University:"),
+                                          Text(AppLocalizations.instance
+                                                  .text("university") +
+                                              ":"),
                                           DropdownButton(
                                             value: valueUniversity,
                                             onChanged: (newValue) {
@@ -136,7 +140,9 @@ class AddOffer extends State<AddOfferScreen> {
                                               );
                                             }).toList(),
                                           ),
-                                          Text("College:"),
+                                          Text(AppLocalizations.instance
+                                                  .text("college") +
+                                              ":"),
                                           DropdownButton(
                                             value: valueCollege,
                                             onChanged: (newValue) {
@@ -161,7 +167,8 @@ class AddOffer extends State<AddOfferScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Choose the subject:"),
+                                          Text(AppLocalizations.instance
+                                              .text("addOffer_chooseSubject")),
                                           DropdownButton(
                                             value: valueAsign,
                                             onChanged: (newValue) {
@@ -185,7 +192,8 @@ class AddOffer extends State<AddOfferScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Type:"),
+                                          Text(AppLocalizations.instance
+                                              .text("search_filterType")),
                                           DropdownButton(
                                             value: valueTipo,
                                             onChanged: (newValue) {
@@ -195,9 +203,16 @@ class AddOffer extends State<AddOfferScreen> {
                                             },
                                             items: listTipo.map((valueItem) {
                                               return DropdownMenuItem(
-                                                value: valueItem,
-                                                child: Text(valueItem),
-                                              );
+                                                  value: valueItem,
+                                                  child: Text(
+                                                    AppLocalizations.instance
+                                                        .text("addOffer_" +
+                                                            valueItem
+                                                                .toString()
+                                                                .split(" ")
+                                                                .join()
+                                                                .toLowerCase()),
+                                                  ));
                                             }).toList(),
                                           ),
                                         ],
@@ -210,7 +225,8 @@ class AddOffer extends State<AddOfferScreen> {
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
-                                          labelText: "Description",
+                                          labelText: AppLocalizations.instance
+                                              .text("search_filterDescription"),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -224,7 +240,8 @@ class AddOffer extends State<AddOfferScreen> {
                                       decoration: InputDecoration(
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
-                                          labelText: "Price (€/h)",
+                                          labelText: AppLocalizations.instance
+                                              .text("addOffer_price"),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -236,7 +253,8 @@ class AddOffer extends State<AddOfferScreen> {
                                               Colors.greenAccent),
                                     ),
                                     child: Text(
-                                      'Select Location',
+                                      AppLocalizations.instance
+                                          .text("addOffer_selectLocation"),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -255,7 +273,8 @@ class AddOffer extends State<AddOfferScreen> {
                                               Colors.blue),
                                     ),
                                     child: Text(
-                                      'Add Offer to the feed',
+                                      AppLocalizations.instance
+                                          .text("addOffer_accept"),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
