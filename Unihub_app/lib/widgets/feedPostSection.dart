@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:jiffy/jiffy.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
@@ -152,7 +153,9 @@ class FeedPostSection extends State<FeedPost> {
     String urlImage =
         await FeedController().getUserImage(this.widget.feed.username);
     try {
-      await Jiffy.locale(window.locale.languageCode);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String language = prefs.getString('lang');
+      await Jiffy.locale(language);
     } catch (exception) {
       await Jiffy.locale('en');
     }

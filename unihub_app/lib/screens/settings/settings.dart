@@ -14,17 +14,19 @@ class Settings extends State<SettingsScreen> {
   bool isPrivate;
   bool isThemeDark;
   String language;
-  List<String> availableLanguages = [
-    AppLocalizations.instance.text("language_system"),
-    AppLocalizations.instance.text("language_spanish"),
-    AppLocalizations.instance.text("language_catalan"),
-    AppLocalizations.instance.text("language_english")
-  ];
+
+  List<String> availableLanguages = ['system', 'spanish', 'catalan', 'english'];
   Map<String, String> mapLanguages = {
-    AppLocalizations.instance.text("language_spanish"): 'es',
-    AppLocalizations.instance.text("language_catalan"): 'ca',
-    AppLocalizations.instance.text("language_english"): 'en'
+    'spanish': 'es',
+    'catalan': 'ca',
+    'english': 'en'
   };
+
+  @override
+  void initState() {
+    getLanguage();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,22 +77,25 @@ class Settings extends State<SettingsScreen> {
                   DropdownButton<String>(
                     isExpanded: false,
                     value: language,
-                    hint: Text("Selecciona un " +
-                        AppLocalizations.instance
-                            .text("settings_language")
-                            .toLowerCase()),
+                    hint: Text(
+                        AppLocalizations.instance.text("settings_select") +
+                            " " +
+                            AppLocalizations.instance
+                                .text("settings_language")
+                                .toLowerCase()),
                     items: availableLanguages.map((String e) {
                       return DropdownMenuItem<String>(
                         value: e,
-                        child: Text(e),
+                        child: Text(
+                            AppLocalizations.instance.text("language_" + e)),
                       );
                     }).toList(),
                     onChanged: (String e) async {
                       setState(() {
                         Locale myLocale = Localizations.localeOf(context);
                         language = e;
-                        if (language ==
-                            AppLocalizations.instance.text("language_system")) {
+                        print(language);
+                        if (language == "system") {
                           languageCode = myLocale.languageCode.toString();
                         } else {
                           languageCode = mapLanguages[language].toString();
@@ -107,6 +112,17 @@ class Settings extends State<SettingsScreen> {
   setLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('lang', language);
-    AppLocalizations.instance.load(Locale(languageCode, ''));
+    await AppLocalizations.instance.load(Locale(languageCode, ''));
+  }
+
+  getLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    this.languageCode = prefs.getString('lang');
+    mapLanguages.forEach((key, value) {
+      if (value == this.languageCode) {
+        this.language = key;
+      }
+    });
+    print(this.language);
   }
 }
