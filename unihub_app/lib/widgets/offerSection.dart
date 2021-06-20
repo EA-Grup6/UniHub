@@ -60,7 +60,9 @@ class OfferSection extends StatelessWidget {
               : IconButton(
                   icon: Icon(Icons.map_outlined),
                   onPressed: () {
-                    GMap(offer.lat, offer.long);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            GMap(this.offer.lat, this.offer.long)));
                   },
                 ),
           onTap: () {}, //Ver perfil del usuario

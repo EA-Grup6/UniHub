@@ -53,7 +53,13 @@ class Forum extends State<ForumScreen> {
                   heroTag: "btnAddOffer",
                   child: Icon(Icons.add),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/addOffer');
+                    Navigator.of(context).pushNamed('/addOffer')
+                      ..then((result) {
+                        setState(() {
+                          print(result);
+                          snapshot.data.add(result);
+                        });
+                      });
                   },
                 ));
           } else {
@@ -70,7 +76,13 @@ class Forum extends State<ForumScreen> {
                   heroTag: "btnAddOffer",
                   child: Icon(Icons.add),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/addOffer');
+                    Navigator.of(context).pushNamed('/addOffer')
+                      ..then((result) {
+                        setState(() {
+                          print(result);
+                          snapshot.data.add(result);
+                        });
+                      });
                   },
                 ));
           }

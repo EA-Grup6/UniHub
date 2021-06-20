@@ -1,7 +1,5 @@
 import 'package:unihub_app/models/offer.dart';
-
 import '../networking/apibasehelper.dart';
-import 'package:http/http.dart' as http;
 
 ApiBaseHelper _helper = ApiBaseHelper();
 
@@ -24,12 +22,12 @@ class OfferController {
       'type': type,
       'description': description,
       'price': price,
-      'latitud': latitud,
-      'longitud': longitud
+      'lat': latitud,
+      'long': longitud
     };
     final response = await _helper.post('/Offer/newOffer', body);
     print("Estoy en response " + response.body);
-    return response.statusCode;
+    return response;
   }
 
   Future<dynamic> updateOffer(OfferApp offer) async {

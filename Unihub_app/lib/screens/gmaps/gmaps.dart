@@ -24,19 +24,36 @@ class _GMapState extends State<GMap> {
 
   @override
   void initState() {
-    super.initState();
     _setMarkerIcon();
+    super.initState();
     // _setPolygons();
   }
 
   void _setMarkerIcon() async {
-    _markerIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/images/unihubLogo.png');
     // Añadir el icono que queramos!!!
+    if (this.widget.lat != null || this.widget.long != null) {
+      print(this.widget.lat);
+      setState(() {
+        myMarker = [];
+        myMarker.add(
+          Marker(
+              markerId: MarkerId("0"),
+              position: LatLng(double.parse(this.widget.lat),
+                  double.parse(this.widget.long)),
+              draggable: true,
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueAzure),
+              onDragEnd: (dragEndPosition) {
+                print(dragEndPosition);
+              }),
+        );
+      });
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
+
 /*
     setState(() {
       _markers.add(Marker(
@@ -55,17 +72,24 @@ class _GMapState extends State<GMap> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-              Text(AppLocalizations.instance.text("location")),
-              IconButton(
-                  icon: Icon(Icons.save),
-                  onPressed: () {
-                    print(coordenadas[1]);
-                    Navigator.of(context).pop(coordenadas);
-                  }),
-            ])),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          actions: [
+            this.coordenadas.length == 0
+                ? IconButton(
+                    icon: Icon(Icons.save),
+                    onPressed: () {
+                      coordenadas.add(this.widget.lat);
+                      coordenadas.add(this.widget.long);
+                      Navigator.of(context).pop(coordenadas);
+                    })
+                : Container(),
+          ],
+          title: Text(AppLocalizations.instance.text("location")),
+        ),
         body: Stack(
           children: <Widget>[
             GoogleMap(
@@ -91,25 +115,24 @@ class _GMapState extends State<GMap> {
   }
 
   _handleTap(LatLng tappedPoint) {
-    print(tappedPoint);
-    setState(() {
-      myMarker = [];
-      myMarker.add(
-        Marker(
-            markerId: MarkerId(tappedPoint.toString()),
-            position: tappedPoint,
-            draggable: true,
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueGreen),
-            onDragEnd: (dragEndPosition) {
-              print(dragEndPosition);
-            }),
-      );
-      this.widget.lat = tappedPoint.latitude.toString();
-      this.widget.long = tappedPoint.longitude.toString();
-      coordenadas.add(this.widget.lat);
-      coordenadas.add(this.widget.long);
-      return coordenadas;
-    });
+    if (this.coordenadas.length == 0) {
+      print(tappedPoint);
+      setState(() {
+        myMarker = [];
+        myMarker.add(
+          Marker(
+              markerId: MarkerId(tappedPoint.toString()),
+              position: tappedPoint,
+              draggable: true,
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueGreen),
+              onDragEnd: (dragEndPosition) {
+                print(dragEndPosition);
+              }),
+        );
+        this.widget.lat = tappedPoint.latitude.toString();
+        this.widget.long = tappedPoint.longitude.toString();
+      });
+    } else {}
   }
 }

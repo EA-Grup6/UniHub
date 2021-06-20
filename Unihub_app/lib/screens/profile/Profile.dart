@@ -61,12 +61,17 @@ class Profile extends State<ProfileScreen> {
                               icon: Icon(Icons.brush_rounded),
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditProfileScreen(),
-                                        settings: RouteSettings(
-                                            arguments: currentUser)));
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditProfileScreen(),
+                                            settings: RouteSettings(
+                                                arguments: currentUser)))
+                                    .then((result) {
+                                  setState(() {
+                                    currentUser = result;
+                                  });
+                                });
                               }),
                           IconButton(
                               icon: Icon(Icons.settings),

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/models/offer.dart';
+import 'package:http/http.dart' as http;
 import 'package:unihub_app/screens/gmaps/gmaps.dart';
 
 class AddOfferScreen extends StatefulWidget {
@@ -25,7 +29,7 @@ class AddOffer extends State<AddOfferScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  List<String> coordenadas = [];
+  List<String> coordenadas = [null, null];
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -289,7 +293,7 @@ class AddOffer extends State<AddOfferScreen> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        final int response =
+                                        http.Response response =
                                             await OfferController().createOffer(
                                                 await getUsername(),
                                                 _titleController.text,
@@ -300,12 +304,14 @@ class AddOffer extends State<AddOfferScreen> {
                                                 _priceController.text,
                                                 coordenadas[0],
                                                 coordenadas[1]);
-                                        if (response == 200) {
+                                        if (response.statusCode == 200) {
                                           createToast(
                                               AppLocalizations.instance
                                                   .text("addOffer_createdOK"),
                                               Colors.green);
-                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop(
+                                              OfferApp.fromMap(
+                                                  jsonDecode(response.body)));
                                         } else {
                                           createToast(
                                               AppLocalizations.instance

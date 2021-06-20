@@ -26,10 +26,10 @@ export async function createOffer (req: any, res: Response){
                 newOffer.lat = lat;
                 newOffer.long = long;
                 newOffer.likes = [];
-                console.log(newOffer.toJSON.toString());
+                console.log(newOffer.toJSON.toString);
                 try{
                     let result = await newOffer.save();
-                    return res.status(200).send({message: "Offer Publicado correctamente"});
+                    return res.status(200).header('Content Type - application/json').send(result);
                 } catch {
                     return res.status(500).send({message: "Internal server error"});
                 }
