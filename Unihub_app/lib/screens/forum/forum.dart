@@ -83,8 +83,7 @@ class Forum extends State<ForumScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/addOffer').then((result) {
                       setState(() {
-                        print(result);
-                        snapshot.data.add(result);
+                        if (result != null) snapshot.data.add(result);
                       });
                     });
                   },

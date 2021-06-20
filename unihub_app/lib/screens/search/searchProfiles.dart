@@ -41,7 +41,7 @@ class SearchProfiles extends State<SearchProfilesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.widget.keyword != ' ') {
+    if (this.widget.keyword != '') {
       return FutureBuilder<List<UserApp>>(
           future: initializeListAndUser(),
           builder: (context, snapshot) {
@@ -81,7 +81,8 @@ class SearchProfiles extends State<SearchProfilesScreen> {
           body: Center(
               child: Text(
         AppLocalizations.instance.text("search") +
-            AppLocalizations.instance.text("search_profiles"),
+            " " +
+            AppLocalizations.instance.text("search_profiles").toLowerCase(),
         style: TextStyle(fontSize: 21),
       )));
     }

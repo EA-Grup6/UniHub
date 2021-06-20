@@ -74,7 +74,8 @@ class SearchOffers extends State<SearchOffersScreen> {
           body: Center(
               child: Text(
         AppLocalizations.instance.text("search") +
-            AppLocalizations.instance.text("search_offers"),
+            " " +
+            AppLocalizations.instance.text("search_offers").toLowerCase(),
         style: TextStyle(fontSize: 21),
       )));
     }

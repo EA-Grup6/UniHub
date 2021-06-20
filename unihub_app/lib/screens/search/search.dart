@@ -18,7 +18,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     Tab(text: AppLocalizations.instance.text("search_profiles")),
   ];
   String currentTab = AppLocalizations.instance.text("search_feedPubs");
-  TextEditingController _searchController;
+  final TextEditingController _searchController = new TextEditingController();
 
   void initState() {
     super.initState();
@@ -34,7 +34,6 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         }
       });
     });
-    _searchController = TextEditingController();
     _searchController.addListener(() {
       setState(() {
         keyword = _searchController.text;

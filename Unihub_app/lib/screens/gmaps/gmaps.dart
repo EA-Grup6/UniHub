@@ -15,10 +15,8 @@ class GMap extends StatefulWidget {
 }
 
 class _GMapState extends State<GMap> {
-  Set<Marker> _markers = HashSet<Marker>();
   Set<Polygon> _polygons = HashSet<Polygon>();
   GoogleMapController _mapController;
-  BitmapDescriptor _markerIcon;
   List<Marker> myMarker = [];
   List<String> coordenadas = [];
 
@@ -32,7 +30,8 @@ class _GMapState extends State<GMap> {
   void _setMarkerIcon() async {
     // Añadir el icono que queramos!!!
     if (this.widget.lat != null || this.widget.long != null) {
-      print(this.widget.lat);
+      coordenadas.add(this.widget.lat);
+      coordenadas.add(this.widget.long);
       setState(() {
         myMarker = [];
         myMarker.add(
@@ -52,7 +51,7 @@ class _GMapState extends State<GMap> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
+    this._mapController = controller;
 
 /*
     setState(() {
@@ -106,10 +105,10 @@ class _GMapState extends State<GMap> {
               onTap: _handleTap,
             ),
             // Para añadir cosas en el mapa que no estan fijas en el, sino como encima, que si mueves el mapa sigue estando en la pantalla
-            Container(
+            /*Container(
                 alignment: Alignment.bottomCenter,
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Text("Whatever"))
+                child: Text("Whatever"))*/
           ],
         ));
   }
