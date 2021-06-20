@@ -77,8 +77,12 @@ class Profile extends State<ProfileScreen> {
                               icon: Icon(Icons.settings),
                               onPressed: () {
                                 //Nos lleva a settings
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => SettingsScreen()));
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => SettingsScreen()))
+                                    .then((result) {
+                                  setState(() {});
+                                });
                               }),
                           IconButton(
                               icon: Icon(Icons.logout),
@@ -205,13 +209,16 @@ class Profile extends State<ProfileScreen> {
                                   currentUser.role),
                               TextSection(
                                   AppLocalizations.instance.text('university'),
-                                  currentUser.university == null
+                                  currentUser.university == null ||
+                                          currentUser.university ==
+                                              "Not Selected"
                                       ? AppLocalizations.instance
                                           .text('notselected')
                                       : currentUser.university),
                               TextSection(
                                   AppLocalizations.instance.text('degree'),
-                                  currentUser.degree == null
+                                  currentUser.degree == null ||
+                                          currentUser.degree == "Not Selected"
                                       ? AppLocalizations.instance
                                           .text('notselected')
                                       : currentUser.degree),

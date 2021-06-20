@@ -81,13 +81,12 @@ class Forum extends State<ForumScreen> {
                   heroTag: "btnAddOffer",
                   child: Icon(Icons.add),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/addOffer')
-                      ..then((result) {
-                        setState(() {
-                          print(result);
-                          snapshot.data.add(result);
-                        });
+                    Navigator.of(context).pushNamed('/addOffer').then((result) {
+                      setState(() {
+                        print(result);
+                        snapshot.data.add(result);
                       });
+                    });
                   },
                 ));
           } else {

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:jiffy/jiffy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
-import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/screens/comments/comments.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';

@@ -10,13 +10,13 @@ class SearchScreen extends StatefulWidget {
 }
 
 TabController _tabController;
-final List<Tab> myTabs = <Tab>[
-  Tab(text: AppLocalizations.instance.text("search_feedPubs")),
-  Tab(text: AppLocalizations.instance.text("search_offers")),
-  Tab(text: AppLocalizations.instance.text("search_profiles")),
-];
 
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
+  final List<Tab> myTabs = <Tab>[
+    Tab(text: AppLocalizations.instance.text("search_feedPubs")),
+    Tab(text: AppLocalizations.instance.text("search_offers")),
+    Tab(text: AppLocalizations.instance.text("search_profiles")),
+  ];
   String currentTab = AppLocalizations.instance.text("search_feedPubs");
   TextEditingController _searchController;
 
@@ -85,7 +85,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
             Text(AppLocalizations.instance.text("search")),
             Container(
               width: MediaQuery.of(context).size.width / 2,
-              height: 35,
+              height: 40,
               child: TextField(
                 style: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                 controller: _searchController,
