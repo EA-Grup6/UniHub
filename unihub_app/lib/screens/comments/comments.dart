@@ -64,20 +64,23 @@ class CommentState extends State<CommentsScreen> {
                           for (Comment newComment in snapshot.data.reversed)
                             new Padding(
                               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Dismissible(
-                                  key: ObjectKey(newComment),
-                                  child: CommentWidget(
+                              child: newComment.username == this.widget.username
+                                  ? Dismissible(
+                                      key: ObjectKey(newComment),
+                                      child: CommentWidget(
+                                          newComment, this.widget.username),
+                                      confirmDismiss: (direction) {
+                                        if (newComment.username ==
+                                            this.widget.username) {
+                                          return showDeletePostAlertDialog(
+                                              context, newComment);
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      onDismissed: (direction) {})
+                                  : CommentWidget(
                                       newComment, this.widget.username),
-                                  confirmDismiss: (direction) {
-                                    if (newComment.username ==
-                                        this.widget.username) {
-                                      return showDeletePostAlertDialog(
-                                          context, newComment);
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  onDismissed: (direction) {}),
                             )
                         ],
                       ))),
