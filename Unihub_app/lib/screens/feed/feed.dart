@@ -53,34 +53,36 @@ class Feed extends State<FeedScreen> {
                 title: Text("Feed"),
               ),
               body: SafeArea(
-                  child: ListView.builder(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        if (snapshot.data.reversed.elementAt(index).username ==
-                            this.username) {
-                          this.pubsList = new List<FeedPublication>.from(
-                              snapshot.data.reversed);
-                          return new Dismissible(
-                              key: ObjectKey(this.pubsList.elementAt(index)),
-                              child: new FeedPost(
-                                  this.pubsList.elementAt(index),
-                                  this.username),
-                              confirmDismiss: (direction) {
-                                if (this.pubsList.elementAt(index).username ==
-                                    this.username) {
-                                  return showDeletePostAlertDialog(
-                                      context, index);
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onDismissed: (direction) {});
-                        } else {
-                          return new FeedPost(
-                              snapshot.data.reversed.elementAt(index),
-                              this.username);
-                        }
+                  child: RefreshIndicator(
+                      child: ListView.builder(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            if (snapshot.data.reversed
+                                    .elementAt(index)
+                                    .username ==
+                                this.username) {
+                              this.pubsList = new List<FeedPublication>.from(
+                                  snapshot.data.reversed);
+                              return new Dismissible(
+                                  key:
+                                      ObjectKey(this.pubsList.elementAt(index)),
+                                  child: new FeedPost(
+                                      this.pubsList.elementAt(index),
+                                      this.username),
+                                  confirmDismiss: (direction) {
+                                    return showDeletePostAlertDialog(
+                                        context, index);
+                                  },
+                                  onDismissed: (direction) {});
+                            } else {
+                              return new FeedPost(
+                                  snapshot.data.reversed.elementAt(index),
+                                  this.username);
+                            }
+                          }),
+                      onRefresh: () async {
+                        setState(() {});
                       })),
               floatingActionButton: FloatingActionButton(
                 heroTag: "btnAddFeed",

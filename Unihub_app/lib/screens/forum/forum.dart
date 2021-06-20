@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
@@ -11,11 +12,21 @@ class ForumScreen extends StatefulWidget {
 }
 
 class Forum extends State<ForumScreen> {
+  String username;
+  List<OfferApp> offersList;
   @override
   void initState() {
-    getOffers();
+    getUsername();
     //Aquí se llama a la API cuando cargamos esta vista
     super.initState();
+  }
+
+  getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      this.username = prefs.getString('username');
+    });
+    return this.username;
   }
 
   Future<List<OfferApp>> getOffers() async {
@@ -38,17 +49,34 @@ class Forum extends State<ForumScreen> {
                   title: Text(AppLocalizations.instance.text("offer_title")),
                 ),
                 body: SafeArea(
-                    child: SingleChildScrollView(
-                        padding: EdgeInsets.all(10),
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                for (OfferApp offer in snapshot.data.reversed)
-                                  new OfferSection(offer),
-                              ],
-                            )))),
+                    child: RefreshIndicator(
+                        child: ListView.builder(
+                            padding: EdgeInsets.all(10),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              this.offersList = new List<OfferApp>.from(
+                                  snapshot.data.reversed);
+                              if (snapshot.data.reversed
+                                      .elementAt(index)
+                                      .username ==
+                                  this.username) {
+                                return new Dismissible(
+                                    key: ObjectKey(
+                                        this.offersList.elementAt(index)),
+                                    child: new OfferSection(
+                                        this.offersList.elementAt(index)),
+                                    confirmDismiss: (direction) {
+                                      return showDeleteOfferAlertDialog(
+                                          context, index);
+                                    });
+                              } else {
+                                return new OfferSection(
+                                    this.offersList.elementAt(index));
+                              }
+                            }),
+                        onRefresh: () async {
+                          setState(() {});
+                        })),
                 floatingActionButton: FloatingActionButton(
                   heroTag: "btnAddOffer",
                   child: Icon(Icons.add),
@@ -87,5 +115,43 @@ class Forum extends State<ForumScreen> {
                 ));
           }
         });
+  }
+
+  showDeleteOfferAlertDialog(BuildContext context, int index) {
+    // set up the buttons
+    Widget submitButton = TextButton(
+      child: Text(AppLocalizations.instance.text("yes")),
+      onPressed: () async {
+        //delete post
+        await OfferController()
+            .deleteOffer(this.offersList.elementAt(index).id)
+            .whenComplete(() {
+          setState(() {
+            this.offersList.removeAt(index);
+          });
+          Navigator.pop(context);
+        });
+      },
+    );
+    Widget dismissButton = TextButton(
+      child: Text(AppLocalizations.instance.text("no")),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+        content:
+            Text(AppLocalizations.instance.text("feed_deletePostConfirmation")),
+        actions: [dismissButton, submitButton]);
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
