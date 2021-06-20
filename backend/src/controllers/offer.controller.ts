@@ -12,7 +12,7 @@ export async function createOffer (req: any, res: Response){
             if(error){
                 return res.status(205).send({message: 'Authorization error'});
             } else {
-                let {username, title, description, university, subject, price, type} = req.body;
+                let {username, title, description, university, subject, price, type, lat, long} = req.body;
                 let newOffer = new Offer();
                 newOffer.username = username;
                 newOffer.title = title;
@@ -23,6 +23,8 @@ export async function createOffer (req: any, res: Response){
                 newOffer.price = price;
                 newOffer.type = type;
                 newOffer.buys = 0;
+                newOffer.lat = lat;
+                newOffer.long = long;
                 newOffer.likes = [];
                 try{
                     let result = await newOffer.save();
