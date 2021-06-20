@@ -6,8 +6,16 @@ import 'package:http/http.dart' as http;
 ApiBaseHelper _helper = ApiBaseHelper();
 
 class OfferController {
-  Future<dynamic> createOffer(String username, String title, String university,
-      String subject, String type, String description, String price) async {
+  Future<dynamic> createOffer(
+      String username,
+      String title,
+      String university,
+      String subject,
+      String type,
+      String description,
+      String price,
+      String latitud,
+      String longitud) async {
     var body = {
       'username': username,
       'title': title,
@@ -16,6 +24,8 @@ class OfferController {
       'type': type,
       'description': description,
       'price': price,
+      'latitud': latitud,
+      'longitud': longitud
     };
     print(body);
     final http.Response response = await _helper.post('/Offer/newOffer', body);
@@ -53,8 +63,6 @@ class OfferController {
   }
 
   Future<dynamic> getOfferSubject(OfferApp offer) async {
-
-
     var json = offer.toJSON();
     print('Envio esta oferta: ' + json.toString());
     final http.Response response =
@@ -62,6 +70,4 @@ class OfferController {
     print("Estoy en response: " + response.body);
     return response;
   }
-
-
 }

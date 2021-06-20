@@ -25,6 +25,7 @@ class AddOffer extends State<AddOfferScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  List<String> coordenadas = [];
 
   getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -263,7 +264,11 @@ class AddOffer extends State<AddOfferScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => GMap(),
-                                          ));
+                                          )).then((result) {
+                                        setState(() {
+                                          coordenadas = result;
+                                        });
+                                      });
                                     },
                                   ),
                                   TextButton(
@@ -282,14 +287,15 @@ class AddOffer extends State<AddOfferScreen> {
                                       if (_formKey.currentState.validate()) {
                                         final int response =
                                             await OfferController().createOffer(
-                                          await getUsername(),
-                                          _titleController.text,
-                                          valueUniversity,
-                                          valueAsign,
-                                          valueTipo,
-                                          _descriptionController.text,
-                                          _priceController.text,
-                                        );
+                                                await getUsername(),
+                                                _titleController.text,
+                                                valueUniversity,
+                                                valueAsign,
+                                                valueTipo,
+                                                _descriptionController.text,
+                                                _priceController.text,
+                                                coordenadas[0],
+                                                coordenadas[1]);
                                         if (response == 200) {
                                           createToast("Offer Created Correctly",
                                               Colors.green);

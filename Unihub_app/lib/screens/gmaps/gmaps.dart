@@ -1,7 +1,9 @@
 import 'dart:collection';
+import 'dart:ffi';
 
 import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
+import 'package:unihub_app/screens/addOffer/addOffer.dart';
 
 class GMap extends StatefulWidget {
   GMap({Key key}) : super(key: key);
@@ -16,6 +18,9 @@ class _GMapState extends State<GMap> {
   GoogleMapController _mapController;
   BitmapDescriptor _markerIcon;
   List<Marker> myMarker = [];
+  String latitud;
+  String longitud;
+  List<String> coordenadas = [];
 
   @override
   void initState() {
@@ -67,8 +72,17 @@ class _GMapState extends State<GMap> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Location"),
-        ),
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+              Text("Location"),
+              IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    print(coordenadas[1]);
+                    Navigator.of(context).pop(coordenadas);
+                  }),
+            ])),
         body: Stack(
           children: <Widget>[
             GoogleMap(
@@ -105,6 +119,11 @@ class _GMapState extends State<GMap> {
               print(dragEndPosition);
             }),
       );
+      latitud = tappedPoint.latitude.toString();
+      longitud = tappedPoint.longitude.toString();
+      coordenadas.add(latitud);
+      coordenadas.add(longitud);
+      return coordenadas;
     });
   }
 }

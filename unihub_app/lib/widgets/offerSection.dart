@@ -44,7 +44,8 @@ class OfferSection extends StatelessWidget {
                   Icon(Icons.euro, color: Colors.green),
                   Expanded(
                     child: Text(this.offer.price.toString()),
-                  )
+                  ),
+                  Icon(Icons.map, color: Colors.green)
                 ],
               ),
             ],
