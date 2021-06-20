@@ -94,7 +94,7 @@
     "language_spanish": "Español",
     "language_catalan": "Catalán",
     "language_english": "Inglés",
-    "notSelected": "No seleccionado",
+    "notselected": "No seleccionado",
     "none": "Ninguna",
     "fullname": "Nombre completo",
     "university": "Universidad",
@@ -106,5 +106,6 @@
     "yes": "Sí",
     "no": "No",
     "cancel": "Cancela",
-    "save": "Guardar"
+    "save": "Guardar",
+    "location": "Location"
   }

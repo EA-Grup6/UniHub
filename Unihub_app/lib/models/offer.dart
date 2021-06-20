@@ -9,6 +9,8 @@ class OfferApp {
   final int price;
   final List<dynamic> comments;
   final int buys;
+  final String lat;
+  final String long;
   final List<dynamic> likes;
 
   OfferApp(
@@ -22,6 +24,8 @@ class OfferApp {
       this.price,
       this.comments,
       this.buys,
+      this.lat,
+      this.long,
       this.likes);
 
   factory OfferApp.fromMap(Map<String, dynamic> json) {
@@ -36,6 +40,8 @@ class OfferApp {
       json['price'],
       json['comments'],
       json['buys'],
+      json['lat'],
+      json['long'],
       json['likes'],
     );
   }
@@ -52,6 +58,8 @@ class OfferApp {
       'price': this.price,
       'comments': this.comments,
       'buys': this.buys,
+      'lat': this.lat,
+      'long': this.long,
       'likes': this.likes,
     };
     return newJSON;

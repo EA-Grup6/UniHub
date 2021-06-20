@@ -202,13 +202,13 @@ class Profile extends State<ProfileScreen> {
                                   AppLocalizations.instance.text('university'),
                                   currentUser.university == null
                                       ? AppLocalizations.instance
-                                          .text('notSelected')
+                                          .text('notselected')
                                       : currentUser.university),
                               TextSection(
                                   AppLocalizations.instance.text('degree'),
                                   currentUser.degree == null
                                       ? AppLocalizations.instance
-                                          .text('notSelected')
+                                          .text('notselected')
                                       : currentUser.degree),
                               TextSection(
                                   AppLocalizations.instance

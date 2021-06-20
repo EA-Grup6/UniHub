@@ -31,7 +31,7 @@
     "search_hintText": "Cercar",
     "search_filterContent": "Contingut",
     "search_filterUsername": "Nom d'usuari",
-    "search_filterUniversity": "University",
+    "search_filterUniversity": "Universitat",
     "search_filterSubject": "Assignatura",
     "search_filterType": "Tipus d'oferta",
     "search_filterDescription": "Descripció",
@@ -94,7 +94,7 @@
     "language_spanish": "Castellà",
     "language_catalan": "Català",
     "language_english": "Anglès",
-    "notSelected": "No seleccionat",
+    "notselected": "No seleccionat",
     "none": "Cap",
     "fullname": "Nom complet",
     "university": "Universitat",
@@ -106,5 +106,6 @@
     "yes": "Si",
     "no": "No",
     "cancel": "Cancelar",
-    "save": "Guardar"
+    "save": "Guardar",
+    "location": "Location"
   }

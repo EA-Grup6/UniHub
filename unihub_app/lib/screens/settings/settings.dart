@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
-import 'package:unihub_app/app.dart' as myApp;
 
 class SettingsScreen extends StatefulWidget {
   @override

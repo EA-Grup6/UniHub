@@ -290,7 +290,13 @@ class EditProfile extends State<EditProfileScreen> {
                                   items: universitiesNamesList.map((String e) {
                                     return DropdownMenuItem<String>(
                                       value: e,
-                                      child: Text(e),
+                                      child: e == "Not Selected"
+                                          ? Text(AppLocalizations.instance.text(
+                                              e
+                                                  .split(" ")
+                                                  .join()
+                                                  .toLowerCase()))
+                                          : Text(e),
                                     );
                                   }).toList(),
                                   onChanged: (String e) {
@@ -314,7 +320,14 @@ class EditProfile extends State<EditProfileScreen> {
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
-                                              child: Text(e),
+                                              child: e == "Not Selected"
+                                                  ? Text(AppLocalizations
+                                                      .instance
+                                                      .text(e
+                                                          .split(" ")
+                                                          .join()
+                                                          .toLowerCase()))
+                                                  : Text(e),
                                             );
                                           }).toList(),
                                           onChanged: (String e) async {
@@ -341,7 +354,14 @@ class EditProfile extends State<EditProfileScreen> {
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
-                                              child: Text(e),
+                                              child: e == "Not Selected"
+                                                  ? Text(AppLocalizations
+                                                      .instance
+                                                      .text(e
+                                                          .split(" ")
+                                                          .join()
+                                                          .toLowerCase()))
+                                                  : Text(e),
                                             );
                                           }).toList(),
                                           onChanged: (String e) async {
@@ -673,7 +693,7 @@ class EditProfile extends State<EditProfileScreen> {
     _phoneController.text = currentUser.phone;
     currentUser.university == null
         ? universitySelected = currentUser.university
-        : universitySelected = AppLocalizations.instance.text("notSelected");
+        : universitySelected = "Not Selected";
     subjectsAskingSelected =
         new List<String>.from(currentUser.subjectsRequested);
     subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);

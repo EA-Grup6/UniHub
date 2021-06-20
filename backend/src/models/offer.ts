@@ -10,7 +10,9 @@ const schema = new Schema({
     price: Number,
     type: String,
     buys: Number,
-    likes: Array
+    likes: Array,
+    lat: String,
+    long: String
 }, {collection: 'offers'});
 
 interface IOffer extends Document {
@@ -21,9 +23,11 @@ interface IOffer extends Document {
     university: string;
     subject: string;
     price: number;
-    type: String;
+    type: string;
     buys: number;
     likes: Array<string>;
+    lat: string;
+    long: string;
 }
 
 export default model<IOffer>('Offer',schema);

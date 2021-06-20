@@ -3,11 +3,13 @@ import 'dart:ffi';
 
 import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
+import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/screens/addOffer/addOffer.dart';
 
 class GMap extends StatefulWidget {
-  GMap({Key key}) : super(key: key);
-
+  GMap(this.lat, this.long);
+  String lat;
+  String long;
   @override
   _GMapState createState() => _GMapState();
 }
@@ -18,8 +20,6 @@ class _GMapState extends State<GMap> {
   GoogleMapController _mapController;
   BitmapDescriptor _markerIcon;
   List<Marker> myMarker = [];
-  String latitud;
-  String longitud;
   List<String> coordenadas = [];
 
   @override
@@ -35,26 +35,9 @@ class _GMapState extends State<GMap> {
     // Añadir el icono que queramos!!!
   }
 
-  // void _setPolygons() {
-  //   List<LatLng> polygonLatLongs = <LatLng>[];
-  //   polygonLatLongs.add(LatLng(41.1,1.95));
-  //   polygonLatLongs.add(LatLng(41.4,1.95));
-  //   polygonLatLongs.add(LatLng(41.1,2.18));
-  //   polygonLatLongs.add(LatLng(41.4,2.18));
-
-  //   _polygons.add(
-  //     Polygon(
-  //       polygonId: PolygonId("0"),
-  //       points: polygonLatLongs,
-  //       fillColor: Colors.transparent,
-  //       strokeWidth: 1,
-  //     )
-  //   );
-  // }
-
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
-
+/*
     setState(() {
       _markers.add(Marker(
         markerId: MarkerId("0"),
@@ -65,7 +48,7 @@ class _GMapState extends State<GMap> {
         ),
         icon: _markerIcon,
       ));
-    });
+    });*/
   }
 
   @override
@@ -75,7 +58,7 @@ class _GMapState extends State<GMap> {
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-              Text("Location"),
+              Text(AppLocalizations.instance.text("location")),
               IconButton(
                   icon: Icon(Icons.save),
                   onPressed: () {
@@ -88,7 +71,10 @@ class _GMapState extends State<GMap> {
             GoogleMap(
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: LatLng(41.3879, 2.16992),
+                target: this.widget.lat == null || this.widget.long == null
+                    ? LatLng(41.3879, 2.16992)
+                    : LatLng(double.parse(this.widget.lat),
+                        double.parse(this.widget.long)),
                 zoom: 13,
               ),
               markers: Set.from(myMarker),
@@ -119,10 +105,10 @@ class _GMapState extends State<GMap> {
               print(dragEndPosition);
             }),
       );
-      latitud = tappedPoint.latitude.toString();
-      longitud = tappedPoint.longitude.toString();
-      coordenadas.add(latitud);
-      coordenadas.add(longitud);
+      this.widget.lat = tappedPoint.latitude.toString();
+      this.widget.long = tappedPoint.longitude.toString();
+      coordenadas.add(this.widget.lat);
+      coordenadas.add(this.widget.long);
       return coordenadas;
     });
   }

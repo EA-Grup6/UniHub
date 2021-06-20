@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unihub_app/models/offer.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:unihub_app/screens/gmaps/gmaps.dart';
 
 class OfferSection extends StatelessWidget {
   final OfferApp offer;
@@ -45,17 +46,24 @@ class OfferSection extends StatelessWidget {
                   Expanded(
                     child: Text(this.offer.price.toString()),
                   ),
-                  Icon(Icons.map, color: Colors.green)
                 ],
               ),
             ],
           ),
           trailing: this.offer.type == "Online Class"
-              ? Icon(Icons.videocam_outlined)
-              : Icon(Icons.videocam_off_outlined),
-          onTap: () {
-            this.offer.type == "Online Class" ? _joinMeeting() : null;
-          }, //Ver perfil del usuario
+              ? IconButton(
+                  icon: Icon(Icons.videocam_outlined),
+                  onPressed: () async {
+                    await _joinMeeting();
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.map_outlined),
+                  onPressed: () {
+                    GMap(offer.lat, offer.long);
+                  },
+                ),
+          onTap: () {}, //Ver perfil del usuario
         ));
   }
 

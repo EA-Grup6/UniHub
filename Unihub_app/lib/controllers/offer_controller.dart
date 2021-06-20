@@ -28,7 +28,7 @@ class OfferController {
       'longitud': longitud
     };
     print(body);
-    final http.Response response = await _helper.post('/Offer/newOffer', body);
+    final response = await _helper.post('/Offer/newOffer', body);
     print("Estoy en response " + response.body);
     return response.statusCode;
   }
@@ -36,28 +36,25 @@ class OfferController {
   Future<dynamic> updateOffer(OfferApp offer) async {
     var json = offer.toJSON();
     print('Envio esta oferta: ' + json.toString());
-    final http.Response response =
-        await _helper.post('/Offer/updateOffer', json);
+    final response = await _helper.post('/Offer/updateOffer', json);
     print("Estoy en response: " + response.body);
     return response;
   }
 
   Future<dynamic> deleteOffer(String id) async {
-    final http.Response response =
-        await _helper.delete('/User/deleteOffer/$id');
+    final response = await _helper.delete('/User/deleteOffer/$id');
     print("Response: " + response.body);
     return response;
   }
 
   Future<dynamic> getOffers() async {
-    final http.Response response = await _helper.get('/Offer/getAllOffers');
+    final response = await _helper.get('/Offer/getAllOffers');
     print("Response: " + response.body);
     return response;
   }
 
   Future<dynamic> getOffer(String username) async {
-    final http.Response response =
-        await _helper.get('/Offer/getOffer/$username');
+    final response = await _helper.get('/Offer/getOffer/$username');
     print("Response: " + response.body);
     return response.body;
   }
@@ -65,8 +62,7 @@ class OfferController {
   Future<dynamic> getOfferSubject(OfferApp offer) async {
     var json = offer.toJSON();
     print('Envio esta oferta: ' + json.toString());
-    final http.Response response =
-        await _helper.post('/Offer/getOfferSubject', json);
+    final response = await _helper.post('/Offer/getOfferSubject', json);
     print("Estoy en response: " + response.body);
     return response;
   }

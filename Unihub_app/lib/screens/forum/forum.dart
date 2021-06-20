@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:unihub_app/i18N/appTranslations.dart';
-import 'package:unihub_app/screens/gmaps/gmaps.dart';
 import 'package:flutter/material.dart';
 import 'package:unihub_app/controllers/offer_controller.dart';
 import 'package:unihub_app/models/offer.dart';

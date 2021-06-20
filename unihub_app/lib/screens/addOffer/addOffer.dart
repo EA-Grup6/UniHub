@@ -247,30 +247,34 @@ class AddOffer extends State<AddOfferScreen> {
                                               FloatingLabelBehavior.always),
                                     ),
                                   ),
-                                  TextButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.greenAccent),
-                                    ),
-                                    child: Text(
-                                      AppLocalizations.instance
-                                          .text("addOffer_selectLocation"),
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    onPressed: () async {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => GMap(),
-                                          )).then((result) {
-                                        setState(() {
-                                          coordenadas = result;
-                                        });
-                                      });
-                                    },
-                                  ),
+                                  valueTipo != "Online Class"
+                                      ? TextButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.greenAccent),
+                                          ),
+                                          child: Text(
+                                            AppLocalizations.instance.text(
+                                                "addOffer_selectLocation"),
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                          ),
+                                          onPressed: () async {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      GMap(null, null),
+                                                )).then((result) {
+                                              setState(() {
+                                                coordenadas = result;
+                                              });
+                                            });
+                                          },
+                                        )
+                                      : Container(),
                                   TextButton(
                                     style: ButtonStyle(
                                       backgroundColor:
@@ -297,11 +301,16 @@ class AddOffer extends State<AddOfferScreen> {
                                                 coordenadas[0],
                                                 coordenadas[1]);
                                         if (response == 200) {
-                                          createToast("Offer Created Correctly",
+                                          createToast(
+                                              AppLocalizations.instance
+                                                  .text("addOffer_createdOK"),
                                               Colors.green);
                                           Navigator.of(context).pop();
                                         } else {
-                                          createToast('Error', Colors.red);
+                                          createToast(
+                                              AppLocalizations.instance
+                                                  .text("addOffer_createdNO"),
+                                              Colors.red);
                                         }
                                       }
                                     },
