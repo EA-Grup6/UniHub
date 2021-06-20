@@ -26,6 +26,7 @@ export async function createOffer (req: any, res: Response){
                 newOffer.lat = lat;
                 newOffer.long = long;
                 newOffer.likes = [];
+                console.log(newOffer.toJSON.toString());
                 try{
                     let result = await newOffer.save();
                     return res.status(200).send({message: "Offer Publicado correctamente"});

@@ -27,7 +27,6 @@ class OfferController {
       'latitud': latitud,
       'longitud': longitud
     };
-    print(body);
     final response = await _helper.post('/Offer/newOffer', body);
     print("Estoy en response " + response.body);
     return response.statusCode;
