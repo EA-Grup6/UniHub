@@ -3,6 +3,10 @@ import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/networking/google_signin_api.dart';
+
+import 'logged_in_page.dart';
+
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
@@ -158,10 +162,9 @@ class Login extends State<LoginScreen> {
                                 child: Row(
                                   children: <Widget>[
                                     TextButton(
-                                        onPressed: () {
+                                        onPressed: signIn,
                                           //Login with google
-                                        },
-                                        style: ButtonStyle(
+                                          style: ButtonStyle(
                                           minimumSize:
                                               MaterialStateProperty.all<Size>(
                                                   Size(140, 40)),
@@ -242,4 +245,19 @@ class Login extends State<LoginScreen> {
       _isHidden = !_isHidden;
     });
   }
+    Future signIn()async{
+  final user = await GoogleSignInApi.login();
+  if (user==null){
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Sign in Failed')));
+      
+  } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+    builder: (context) => LoggedInPage(user: user),
+  ));//MaterialPageRoute
+
+
+  }
+
+}
 }

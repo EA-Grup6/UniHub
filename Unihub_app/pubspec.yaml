@@ -43,6 +43,7 @@ dependencies:
   flutter_socket_io: ^0.6.0
   jitsi_meet: ^4.0.0
   flutter_translate: ^3.0.1
+  google_sign_in: ^5.0.3
 
 dev_dependencies:
   flutter_test:
