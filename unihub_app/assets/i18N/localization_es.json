@@ -79,6 +79,7 @@
     "profile_deleteAccountConfirmationGDPR": "¿Estás seguro de que quieres borrar tu cuenta y todo el contenido que has generado?",
     "profile_deleteAccountConfirmPassword": "Por favor, confírmalo con tu contraseña",
     "profile_noSubjectsSelected": "Ninguna asignatura seleccionada",
+    "editProfile_title": "Edita tu perfil",
     "editProfile_missingConfirmation": "Falta la confirmación de la contraseña",
     "editProfile_passwordsNotEqual": "Las contraseñas no coinciden. Por favor, introduce la misma contraseña",
     "editProfile_userCorrectlyUpdated": "El usuario se ha actualizado correctamente",

@@ -79,6 +79,7 @@
     "profile_deleteAccountConfirmationGDPR": "Are you sure you want to delete your account and all the content related to it?",
     "profile_deleteAccountConfirmPassword": "Please confirm with your password",
     "profile_noSubjectsSelected": "No subjects selected",
+    "editProfile_title": "Edit your profile",
     "editProfile_missingConfirmation": "Missing confirmation of the password",
     "editProfile_passwordsNotEqual": "Passwords are not equal. Please enter the same password",
     "editProfile_userCorrectlyUpdated": "User correctly updated",

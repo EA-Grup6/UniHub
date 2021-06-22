@@ -79,6 +79,7 @@
     "profile_deleteAccountConfirmationGDPR": "Estàs segur que vols esborrar el teu compte i tot el contingut que has generat?",
     "profile_deleteAccountConfirmPassword": "Siusplau, confirmi-ho amb la seva contrasenya",
     "profile_noSubjectsSelected": "Cap assignatura seleccionada",
+    "editProfile_title": "Edita el teu perfil",
     "editProfile_missingConfirmation": "Falta la confirmació de la contrasenya",
     "editProfile_passwordsNotEqual": "Les contrasenyes no coincideixen. Siusplau, introdueixi la mateixa contrasenya",
     "editProfile_userCorrectlyUpdated": "L'usuari s'ha actualitzat correctament",

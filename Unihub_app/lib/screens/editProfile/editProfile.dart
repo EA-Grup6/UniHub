@@ -63,7 +63,7 @@ class EditProfile extends State<EditProfileScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Edit Profile",
+            AppLocalizations.instance.text("editProfile_title"),
             style: TextStyle(color: Colors.blue),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
