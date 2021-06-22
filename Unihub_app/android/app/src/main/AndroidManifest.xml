@@ -3,6 +3,7 @@ xmlns:tools="http://schemas.android.com/tools"
     package="com.example.unihub">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-feature
       android:name="android.hardware.camera"
       android:required="false" />
@@ -12,7 +13,7 @@ xmlns:tools="http://schemas.android.com/tools"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY" 
-                  android:value="AIzaSyB2s9b8rEY3r7PWQQLl_aSTmh0Zft7xySw"/>
+                  android:value="AIzaSyAkwjZqaEknMCxjZyR8CPofO1rn8spUd4Y"/>
         <activity
         
             android:name=".MainActivity"

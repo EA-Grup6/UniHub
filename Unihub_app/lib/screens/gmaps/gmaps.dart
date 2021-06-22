@@ -1,20 +1,25 @@
-import 'dart:collection';
+import 'dart:async';
 
 import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:location/location.dart';
 
 class GMap extends StatefulWidget {
   GMap(this.lat, this.long);
-  String lat;
-  String long;
+  String lat = "41.3879";
+  String long = "2.16992";
+  String actualLat;
+  String actualLong;
   @override
   _GMapState createState() => _GMapState();
 }
 
 class _GMapState extends State<GMap> {
-  Set<Polygon> _polygons = HashSet<Polygon>();
-  GoogleMapController _mapController;
+  Completer<GoogleMapController> _mapController = Completer();
+  Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
   List<Marker> myMarker = [];
   List<String> coordenadas = [];
 
@@ -22,6 +27,32 @@ class _GMapState extends State<GMap> {
   void initState() {
     _setMarkerIcon();
     super.initState();
+  }
+
+  _locateMe() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    await location.getLocation().then((res) async {
+      final GoogleMapController controller = await _mapController.future;
+      final _position = CameraPosition(
+        target: LatLng(res.latitude, res.longitude),
+        zoom: 12,
+      );
+      controller.animateCamera(CameraUpdate.newCameraPosition(_position));
+    });
   }
 
   void _setMarkerIcon() async {
@@ -47,9 +78,6 @@ class _GMapState extends State<GMap> {
     }
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    this._mapController = controller;
-
 /*
     setState(() {
       _markers.add(Marker(
@@ -62,52 +90,51 @@ class _GMapState extends State<GMap> {
         icon: _markerIcon,
       ));
     });*/
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          actions: [
-            this.coordenadas.length == 0
-                ? IconButton(
-                    icon: Icon(Icons.save),
-                    onPressed: () {
-                      coordenadas.add(this.widget.lat);
-                      coordenadas.add(this.widget.long);
-                      Navigator.of(context).pop(coordenadas);
-                    })
-                : Container(),
-          ],
-          title: Text(AppLocalizations.instance.text("location")),
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+        actions: [
+          this.coordenadas.length == 0
+              ? IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    coordenadas.add(this.widget.lat);
+                    coordenadas.add(this.widget.long);
+                    Navigator.of(context).pop(coordenadas);
+                  })
+              : Container(),
+        ],
+        title: Text(AppLocalizations.instance.text("location")),
+      ),
+      body: GoogleMap(
+        myLocationButtonEnabled: false,
+        myLocationEnabled: true,
+        onMapCreated: (GoogleMapController controller) {
+          _mapController.complete(controller);
+        },
+        initialCameraPosition: CameraPosition(
+          target: this.widget.lat == null || this.widget.long == null
+              ? LatLng(41.3879, 2.16992)
+              : LatLng(double.parse(this.widget.lat),
+                  double.parse(this.widget.long)),
+          zoom: 13,
         ),
-        body: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: this.widget.lat == null || this.widget.long == null
-                    ? LatLng(41.3879, 2.16992)
-                    : LatLng(double.parse(this.widget.lat),
-                        double.parse(this.widget.long)),
-                zoom: 13,
-              ),
-              markers: Set.from(myMarker),
-              polygons: _polygons,
-              onTap: _handleTap,
-            ),
-            // Para añadir cosas en el mapa que no estan fijas en el, sino como encima, que si mueves el mapa sigue estando en la pantalla
-            /*Container(
-                alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Text("Whatever"))*/
-          ],
-        ));
+        markers: Set.from(myMarker),
+        onTap: _handleTap,
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.location_searching_outlined),
+          onPressed: () => _locateMe()),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+    );
   }
 
   _handleTap(LatLng tappedPoint) {
