@@ -143,8 +143,8 @@ class Login extends State<LoginScreen> {
                                                           false);
                                             } else if (response == 201) {
                                               createToast(
-                                                  AppLocalizations.instance
-                                                      .text('wrongPassword'),
+                                                  AppLocalizations.instance.text(
+                                                      'login_wrongPassword'),
                                                   Colors.red);
                                             } else {
                                               createToast('Error', Colors.red);

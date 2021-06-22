@@ -11,18 +11,18 @@ class ApiBaseHelper {
 
   void setUrl() {
     //Produccion
-    _baseUrl = "http://147.83.7.164:4000";
+    //_baseUrl = "http://147.83.7.164:4000";
     //Desarrollo
-/*
+
     try {
       if (Platform.isAndroid) {
-        _baseUrl = "http://10.0.2.2:4000";
+        _baseUrl = "http://10.0.2.2:4001";
       } else {
         _baseUrl = "http://127.0.0.1:4000";
       }
     } catch (e) {
       _baseUrl = "http://127.0.0.1:4000";
-    }*/
+    }
   }
 
   Future<dynamic> post(String url, dynamic content) async {

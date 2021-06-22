@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
@@ -75,7 +74,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     this.myUsername = prefs.getString('username');
     this.chatController = ChatController(this.myUsername);
-    chatController.init();
+    this.chatController.init();
     UserApp currentUser = UserApp.fromMap(
         jsonDecode(await EditProfileController().getProfile(myUsername)));
     List<String> listFriends = [];

@@ -574,13 +574,8 @@ class EditProfile extends State<EditProfileScreen> {
                                               AppLocalizations.instance.text(
                                                   "editProfile_userCorrectlyUpdated"),
                                               Colors.green);
-                                          Navigator.pop(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HomepageScreen(),
-                                                  settings: RouteSettings(
-                                                      arguments: updatedUser)));
+                                          Navigator.of(context)
+                                              .pop(updatedUser);
                                         } else {
                                           createToast(
                                               response.body, Colors.red);

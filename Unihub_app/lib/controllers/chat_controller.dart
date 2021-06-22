@@ -1,7 +1,8 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_socket_io/socket_io_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:convert';
 
 import '../models/user.dart';
@@ -18,10 +19,10 @@ class ChatController extends Model {
     // friendList = users.where((user) => user.chatID != username).toList();
 
     //getFriendList(username);
-
-    socketIO = SocketIOManager().createSocketIO('147.83.7.164:4000', '/',
-        query: 'username=${username}');
-    socketIO.init();
+    print('Hola ' + this.username);
+    print('socket init');
+    socketIO = SocketIOManager().createSocketIO('http://10.0.2.2:4001', '/');
+    socketIO.init(query: 'username=${username}');
 
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
