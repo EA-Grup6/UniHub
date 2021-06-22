@@ -256,37 +256,35 @@ class Login extends State<LoginScreen> {
 
     http.Response registerResponse =
         await RegisterController().registerUser(user.email, user.id);
-    if (registerResponse.statusCode == 201) {
-      print("User already exists, trying to login");
+    print('register: ' + registerResponse.statusCode.toString());
+    if (registerResponse.statusCode == 200) {
+      print("User does not exist, registered and now loging in");
       var login = await LoginController().loginUser(user.email, user.id);
+      print('login: ' + login.toString());
       if (login == 200) {
-        if (user.photoUrl != null) {
-          await EditProfileController().updateProfile(UserApp(
-              user.email,
-              user.id,
-              '',
-              '',
-              '',
-              '',
-              '',
-              '',
-              [],
-              [],
-              '',
-              user.photoUrl,
-              [],
-              []));
-        }
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('username', user.email);
+        if (login == 200) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomepageScreen(),
+              ));
+        }
+      }
+    } else if (registerResponse.statusCode == 201) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('username', user.email);
+      var login = await LoginController().loginUser(user.email, user.id);
+      if (login == 200) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => HomepageScreen(),
             ));
-      } else {
-        createToast('Error', Colors.red);
       }
+    } else {
+      createToast('Error', Colors.red);
     }
   }
 }

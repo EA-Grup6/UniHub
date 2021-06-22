@@ -323,15 +323,15 @@ class Profile extends State<ProfileScreen> {
   }
 
   logOut(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
     try {
-      await await GoogleSignInApi.logout();
+      await GoogleSignInApi.logout();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.clear();
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
     } catch (exception) {
       print('Easter egg');
     }
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }
 }
 

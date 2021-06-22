@@ -46,6 +46,7 @@ dependencies:
   flutter_translate: ^3.0.1
   google_sign_in: ^5.0.4
   location: ^4.3.0
+  flutter_map: ^0.13.1
 
 dev_dependencies:
   flutter_test:
