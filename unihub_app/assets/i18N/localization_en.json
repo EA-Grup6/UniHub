@@ -72,6 +72,7 @@
     "profile_youUnfollowed": "You have unfollowed",
     "profile_youFollowed": "You have followed",
     "profile_deleteAccount": "Delete account",
+    "profile_deleteAccountGDPR": "Erase GDPR",
     "profile_deleteAccountOK": "Account correctly deleted",
     "profile_deleteAccountNO": "Couldn't delete account",
     "profile_deleteAccountConfirmation": "Are you sure you want to delete your account?",

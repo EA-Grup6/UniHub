@@ -252,7 +252,9 @@ class Profile extends State<ProfileScreen> {
                                       .text('profile_following'),
                                   currentUser.following.length.toString()),
                               this.username == myUsername
-                                  ? TextButton(
+                               ? Column(
+                                 children: [
+                                   TextButton(
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
@@ -267,7 +269,23 @@ class Profile extends State<ProfileScreen> {
                                       onPressed: () async {
                                         showAlertDialog(context);
                                       },
-                                    )
+                                    ),
+                                      TextButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<Color>(Colors.red),
+                                          ),
+                                          child: Text(
+                                            AppLocalizations.instance
+                                            .text('profile_deleteAccountGDPR'),
+                                            style:
+                                                TextStyle(fontSize: 20, color: Colors.white),
+                                          ),
+                                          onPressed: () async {
+                                            showAlertDialog2(context);
+                                          },
+                                        ),
+                                 ])
                                   : Container(),
                               /*
                               TextButton(

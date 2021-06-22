@@ -104,8 +104,8 @@ export async function deleteAll (req: any, res: Response){
             } else {
                 try{
                     await User.findOneAndRemove({username: req.params.username});
-                   // await feedPublication.deleteFeedbyUser({username: req.params.username});
-                    //await feedPublication.find({feedPublication: req.params.username});
+                    await feedPublication.remove({username: req.params.username});
+                    await feedPublication.find({feedPublication: req.params.username});
                     await offer.find({offer: req.params.username});
                     
                     return res.status(200).send({message: "Data erased correctly"});

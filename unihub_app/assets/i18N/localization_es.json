@@ -72,6 +72,7 @@
     "profile_youUnfollowed": "Has dejado de seguir a ",
     "profile_youFollowed": "Has empezado a seguir a ",
     "profile_deleteAccount": "Eliminar cuenta",
+    "profile_deleteAccountGDPR": "Eliminar GDPR",
     "profile_deleteAccountOK": "Cuenta borrada correctamente",
     "profile_deleteAccountNO": "No ha sido posible borrar la cuenta",
     "profile_deleteAccountConfirmation": "¿Estás seguro de que quieres borrar tu cuenta?",
