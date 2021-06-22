@@ -1,10 +1,8 @@
 import 'dart:collection';
-import 'dart:ffi';
 
 import "package:flutter/material.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 import 'package:unihub_app/i18N/appTranslations.dart';
-import 'package:unihub_app/screens/addOffer/addOffer.dart';
 
 class GMap extends StatefulWidget {
   GMap(this.lat, this.long);

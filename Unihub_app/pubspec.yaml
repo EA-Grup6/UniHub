@@ -39,11 +39,12 @@ dependencies:
   jiffy: ^4.1.0
   cloudinary_sdk: ^3.0.0+6
   google_maps_flutter: ^2.0.6
+  google_maps_flutter_web: ^0.3.0+2
   scoped_model: ^1.0.1
   flutter_socket_io: ^0.6.0
   jitsi_meet: ^4.0.0
   flutter_translate: ^3.0.1
-  google_sign_in: ^5.0.3
+  google_sign_in: ^5.0.4
 
 dev_dependencies:
   flutter_test:
