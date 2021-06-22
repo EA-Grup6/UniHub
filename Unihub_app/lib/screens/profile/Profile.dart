@@ -26,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 class Profile extends State<ProfileScreen> {
   String myUsername;
   String username;
+  String languageCode;
 
   @override
   void initState() {
@@ -38,6 +39,11 @@ class Profile extends State<ProfileScreen> {
     myUsername = preferences.getString('username');
     if (username == null) {
       username = myUsername;
+    }
+    languageCode = preferences.getString('lang');
+    if (languageCode == null) {
+      Locale myLocale = Localizations.localeOf(context);
+      languageCode = myLocale.toString();
     }
     currentUser = UserApp.fromMap(
         jsonDecode(await EditProfileController().getProfile(username)));
@@ -55,7 +61,21 @@ class Profile extends State<ProfileScreen> {
                   title: this.username == this.myUsername
                       ? Text(AppLocalizations.instance
                           .text('profile_yourProfileTitle'))
-                      : Text(currentUser.fullname),
+                      : languageCode == 'en'
+                          ? currentUser.fullname == ''
+                              ? Text(currentUser.username +
+                                  AppLocalizations.instance
+                                      .text("profile_otherProfileTitle"))
+                              : Text(currentUser.fullname +
+                                  AppLocalizations.instance
+                                      .text("profile_otherProfileTitle"))
+                          : currentUser.fullname == ''
+                              ? Text(AppLocalizations.instance
+                                      .text("profile_otherProfileTitle") +
+                                  currentUser.username)
+                              : Text(AppLocalizations.instance
+                                      .text("profile_otherProfileTitle") +
+                                  currentUser.fullname),
                   actions: this.username == this.myUsername
                       ? <Widget>[
                           IconButton(
