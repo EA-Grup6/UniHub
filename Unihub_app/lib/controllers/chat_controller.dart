@@ -19,7 +19,8 @@ class ChatController extends Model {
     //getFriendList(username);
     print('Hola ' + this.username);
     print('socket init');
-    socketIO = SocketIOManager().createSocketIO('http://10.0.2.2:4001', '/');
+    socketIO =
+        SocketIOManager().createSocketIO('http://147.83.7.164:4001', '/');
     socketIO.init(query: 'username=${username}');
 
     socketIO.subscribe('receive_message', (jsonData) {
