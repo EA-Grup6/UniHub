@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/theming/appTheme.dart';
+import 'package:unihub_app/theming/themeModel.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -10,7 +13,7 @@ class SettingsScreen extends StatefulWidget {
 class Settings extends State<SettingsScreen> {
   String languageCode;
   bool isPrivate;
-  bool isThemeDark;
+  bool isDarkTheme;
   String language;
 
   List<String> availableLanguages = ['system', 'spanish', 'catalan', 'english'];
@@ -22,6 +25,10 @@ class Settings extends State<SettingsScreen> {
 
   @override
   void initState() {
+    Provider.of<ThemeModel>(context, listen: false).currentTheme ==
+            AppTheme.lightTheme
+        ? isDarkTheme = false
+        : isDarkTheme = true;
     getLanguage();
     super.initState();
   }
@@ -37,30 +44,17 @@ class Settings extends State<SettingsScreen> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Text(AppLocalizations.instance.text("settings_privateAccount")),
-                Switch(
-                  value: isPrivate,
-                  onChanged: (value) {
-                    setState(() {
-                      isPrivate = value;
-                      print(isPrivate);
-                    });
-                  },
-                  activeTrackColor: Colors.lightBlueAccent,
-                  activeColor: Colors.blue,
-                )
-              ]),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(AppLocalizations.instance.text("settings_darkTheme")),
                   Switch(
-                    value: isThemeDark,
+                    value: isDarkTheme,
                     onChanged: (value) {
                       setState(() {
-                        isThemeDark = value;
-                        print(isThemeDark);
+                        isDarkTheme = value;
+                        Provider.of<ThemeModel>(context, listen: false)
+                            .toggleTheme();
                       });
                     },
                     activeTrackColor: Colors.lightBlueAccent,

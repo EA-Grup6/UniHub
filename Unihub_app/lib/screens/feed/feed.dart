@@ -143,7 +143,6 @@ class Feed extends State<FeedScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(10),
         title: Text(AppLocalizations.instance.text("feed_titleNewPost")),
         content: Stack(

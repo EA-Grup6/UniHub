@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unihub_app/theming/themeModel.dart';
 import 'i18N/appTranslations.dart';
 import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
@@ -33,6 +35,7 @@ class App extends StatelessWidget {
         return supportedLocales.first;
       },
       debugShowCheckedModeBanner: false,
+      theme: Provider.of<ThemeModel>(context, listen: true).currentTheme,
       home: SplashScreen(),
       routes: {
         '/login': (BuildContext context) => LoginScreen(),
