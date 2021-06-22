@@ -1,8 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_socket_io/socket_io_manager.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:convert';
 
 import '../models/user.dart';
