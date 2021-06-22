@@ -22,7 +22,6 @@ class _GMapState extends State<GMap> {
   void initState() {
     _setMarkerIcon();
     super.initState();
-    // _setPolygons();
   }
 
   void _setMarkerIcon() async {

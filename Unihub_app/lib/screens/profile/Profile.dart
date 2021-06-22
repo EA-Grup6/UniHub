@@ -7,6 +7,7 @@ import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/social_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/networking/google_signin_api.dart';
 import 'package:unihub_app/screens/editProfile/editProfile.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/screens/settings/settings.dart';
@@ -252,40 +253,42 @@ class Profile extends State<ProfileScreen> {
                                       .text('profile_following'),
                                   currentUser.following.length.toString()),
                               this.username == myUsername
-                               ? Column(
-                                 children: [
-                                   TextButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.red),
-                                      ),
-                                      child: Text(
-                                        AppLocalizations.instance
-                                            .text('profile_deleteAccount'),
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                      onPressed: () async {
-                                        showAlertDialog(context);
-                                      },
-                                    ),
+                                  ? Column(children: [
                                       TextButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<Color>(Colors.red),
-                                          ),
-                                          child: Text(
-                                            AppLocalizations.instance
-                                            .text('profile_deleteAccountGDPR'),
-                                            style:
-                                                TextStyle(fontSize: 20, color: Colors.white),
-                                          ),
-                                          onPressed: () async {
-                                            showAlertDialog2(context);
-                                          },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red),
                                         ),
-                                 ])
+                                        child: Text(
+                                          AppLocalizations.instance
+                                              .text('profile_deleteAccount'),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        onPressed: () async {
+                                          showAlertDialog(context);
+                                        },
+                                      ),
+                                      TextButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red),
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.instance.text(
+                                              'profile_deleteAccountGDPR'),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        onPressed: () async {
+                                          showAlertDialog2(context);
+                                        },
+                                      ),
+                                    ])
                                   : Container(),
                               /*
                               TextButton(
@@ -322,6 +325,11 @@ class Profile extends State<ProfileScreen> {
   logOut(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    try {
+      await await GoogleSignInApi.logout();
+    } catch (exception) {
+      print('Easter egg');
+    }
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
   }

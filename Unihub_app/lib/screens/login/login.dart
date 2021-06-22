@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/controllers/register_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/networking/google_signin_api.dart';
+import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/logged_in_page.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   Login createState() => Login();
@@ -249,7 +254,39 @@ class Login extends State<LoginScreen> {
   Future signIn() async {
     final user = await GoogleSignInApi.login();
 
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoggedInPage(user: user)));
+    http.Response registerResponse =
+        await RegisterController().registerUser(user.email, user.id);
+    if (registerResponse.statusCode == 201) {
+      print("User already exists, trying to login");
+      var login = await LoginController().loginUser(user.email, user.id);
+      if (login == 200) {
+        if (user.photoUrl != null) {
+          await EditProfileController().updateProfile(UserApp(
+              user.email,
+              user.id,
+              '',
+              '',
+              '',
+              '',
+              '',
+              '',
+              [],
+              [],
+              '',
+              user.photoUrl,
+              [],
+              []));
+        }
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('username', user.email);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomepageScreen(),
+            ));
+      } else {
+        createToast('Error', Colors.red);
+      }
+    }
   }
 }
