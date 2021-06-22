@@ -8,22 +8,17 @@ import '../models/user.dart';
 import '../models/message.dart';
 
 class ChatController extends Model {
+  ChatController(this.username);
+  final String username;
   List<UserApp> friendList = [];
   List<Message> messages = [];
   SocketIO socketIO;
 
-  SharedPreferences currentUser =
-      SharedPreferences.getInstance() as SharedPreferences;
-  var username = "";
-
   void init() {
     // friendList = users.where((user) => user.chatID != username).toList();
 
+    //getFriendList(username);
 
-    
-    var username = currentUser.getString('username');
-    getFriendList(username);
-    
     socketIO = SocketIOManager().createSocketIO('147.83.7.164:4000', '/',
         query: 'username=${username}');
     socketIO.init();
@@ -36,6 +31,7 @@ class ChatController extends Model {
     });
 
     socketIO.connect();
+    print('connected');
   }
 
   void sendMessage(String text, String receiverChatID) {
@@ -55,12 +51,5 @@ class ChatController extends Model {
     return messages
         .where((msg) => msg.senderID == chatID || msg.receiverID == chatID)
         .toList();
-  }
-
-  Future<dynamic> getFriendList(String username) async {
-    final http.Response response =
-        await _helper.get('/Data/getSubjects/$degree');
-    print("Response: " + response.body);
-    return response;
   }
 }

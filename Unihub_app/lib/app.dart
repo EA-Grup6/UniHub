@@ -14,7 +14,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserApp friend;
     return MaterialApp(
       localizationsDelegates: [
         const AppLocalizationsDelegate(),
@@ -44,7 +43,6 @@ class App extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
         '/addOffer': (BuildContext context) => AddOfferScreen(),
-        '/ChatPage': (BuildContext context) => ChatPage(friend),
         '/allChats': (BuildContext context) => AllChatsPage(),
       },
     );
