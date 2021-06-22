@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/screens/chat/allChats.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 import '../forum/forum.dart';
 import '../feed/feed.dart';
@@ -86,7 +87,7 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      //currentScreen = ;
+                      currentScreen = AllChatsPage();
                       currentTab = 2;
                     });
                   },

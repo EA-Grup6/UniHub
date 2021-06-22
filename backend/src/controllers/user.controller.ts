@@ -400,3 +400,38 @@ function findUsername(username: String, list:any){
     }
 }
 
+
+export async function getFollowers (req: any, res: Response){
+    const Btoken = req.headers['authorization'];
+    let {usernameSearching, usernameSearched} = req.body;
+
+
+    if(typeof Btoken !== undefined){
+        req.token = Btoken;
+        jwt.verify(req.token, 'mykey', async(error: any, authData: any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            } else {
+                try {
+                    const usersearching = await User.findOne({username: usernameSearching});
+                    let following = usersearching?.following;
+                    let followers = usersearching?.followers;
+
+                    if (following!= null && followers!=null){
+                        if (following.find(usernameSearched)!= null && followers.find(usernameSearched)!= null){
+                            
+                            return res.status(200).send(usernameSearched);
+                        }else
+                            return res.status(404).send({message: 'User not found'});
+                    }
+                    
+                } catch {
+                    return res.status(201).send({message: "User couldn't be found on the database"});
+                }
+            }
+        });
+    } else {
+        return res.status(204).send({message: 'Unauthorized'});
+    }
+
+}

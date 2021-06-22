@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unihub_app/theming/themeModel.dart';
+import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/chat/allChats.dart';
+import 'package:unihub_app/screens/chat/chatPage.dart';
 import 'i18N/appTranslations.dart';
 import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
@@ -43,6 +46,7 @@ class App extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
         '/addOffer': (BuildContext context) => AddOfferScreen(),
+        '/allChats': (BuildContext context) => AllChatsPage(),
       },
     );
   }

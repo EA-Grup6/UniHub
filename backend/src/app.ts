@@ -21,5 +21,4 @@ app.use(cors());
 
 //Routes
 app.use('/',indexRoutes); //Configurem qui sera l'autoritat de les rutes que arribin amb /app
-
 export default app;
