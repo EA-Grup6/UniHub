@@ -11,6 +11,7 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => _ChatPageState();
 }
 
+//chatid fix need
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController = TextEditingController();
 

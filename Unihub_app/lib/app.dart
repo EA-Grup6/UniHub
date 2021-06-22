@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:unihub_app/models/user.dart';
+import 'package:unihub_app/screens/chat/allChats.dart';
+import 'package:unihub_app/screens/chat/chatPage.dart';
 import 'i18N/appTranslations.dart';
 import 'screens/addOffer/addOffer.dart';
 import 'screens/editProfile/editProfile.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    UserApp friend;
     return MaterialApp(
       localizationsDelegates: [
         const AppLocalizationsDelegate(),
@@ -40,6 +44,8 @@ class App extends StatelessWidget {
         '/editProfile': (BuildContext context) => EditProfileScreen(),
         '/homepage': (BuildContext context) => HomepageScreen(),
         '/addOffer': (BuildContext context) => AddOfferScreen(),
+        '/ChatPage': (BuildContext context) => ChatPage(friend),
+        '/allChats': (BuildContext context) => AllChatsPage(),
       },
     );
   }

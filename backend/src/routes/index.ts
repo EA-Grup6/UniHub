@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {createUser, loginUser, deleteUser, getUsers,/*, getAdmin*/
-updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage, deleteAll} from '../controllers/user.controller'
+updateUser, getUser, getAdmin, getUniversities, getDegrees, getSubjects, updateFollowers, getUserImage, deleteAll, getFollowers} from '../controllers/user.controller'
 import { getOffer, getOffers, updateOffer, deleteOffer, createOffer, updateBuys, updateLikesOffer, getAllOffers, getOfferSubject} from '../controllers/offer.controller'
 import { getFeed, getFeeds, updateFeed, deleteFeed, createFeed, updateLikesFeed, getAllFeeds } from '../controllers/feedPublication.controller'
 import { createComment, deleteComment, getComments, updateComment, updateLikesComment } from '../controllers/comments.controller';
@@ -22,6 +22,8 @@ router.route('/User/getUsers').get(getUsers);
 router.route('/User/getUser/:username').get(getUser);
 
 router.route('User/getAdmin/:id').get(getAdmin);
+
+router.route('/User/getFollowers/').post(getFollowers);
 
 //profile update
 router.route('/User/updateUser').post(updateUser);

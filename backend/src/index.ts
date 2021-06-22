@@ -11,12 +11,16 @@ async function main(){
 
     io.on('connection', (socket: Socket) => {
         //Get the chatID of the user and join in a room of the same chatID
-        let chatID = socket.handshake.query.chatID
-        socket.join("" + chatID)
+        let chatID  = socket.handshake.query.username
+        if (chatID!=null){
+            socket.join(chatID)
+        }
+        
     
         //Leave the room if the user closes the socket
         socket.on('disconnect', () => {
-            socket.leave("" + chatID)
+            socket.leave(""+chatID)
+
         })
     
         //Send message to only a particular user
