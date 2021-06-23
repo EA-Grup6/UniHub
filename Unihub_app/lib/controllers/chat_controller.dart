@@ -22,6 +22,7 @@ class ChatController extends Model {
     socketIO =
         SocketIOManager().createSocketIO('http://147.83.7.164:4001', '/');
     socketIO.init(query: 'username=${username}');
+    socketIO.connect();
 
     socketIO.subscribe('receive_message', (jsonData) {
       Map<String, dynamic> data = json.decode(jsonData);
@@ -42,7 +43,7 @@ class ChatController extends Model {
         'content': text,
       }),
     );
-    return notifyListeners();
+    notifyListeners();
   }
 
   List<Message> getMessagesForChatID(String chatID) {
