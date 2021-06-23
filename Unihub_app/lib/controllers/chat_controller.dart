@@ -29,8 +29,6 @@ class ChatController extends Model {
           data['content'], data['senderChatID'], data['receiverChatID']));
       notifyListeners();
     });
-
-    socketIO.connect();
     print('connected');
   }
 
@@ -44,7 +42,7 @@ class ChatController extends Model {
         'content': text,
       }),
     );
-    notifyListeners();
+    return notifyListeners();
   }
 
   List<Message> getMessagesForChatID(String chatID) {
