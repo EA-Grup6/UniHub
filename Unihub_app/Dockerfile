@@ -28,6 +28,6 @@ RUN flutter build web
 
 # Stage 2 - Create the run-time image
 FROM nginx:alpine
-EXPOSE 3000
+EXPOSE 8080
 COPY --from=build-env /app/build/web /usr/share/nginx/html
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
