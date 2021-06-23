@@ -42,7 +42,7 @@ services:
 
 networks:
   backofficeNetwork:
-#  frontendNetwork:
+  frontendNetwork:
 
   db-tier:
     driver: bridge
