@@ -15,4 +15,13 @@ class LoginController {
     prefs.setString('jwt', response.body);
     return response.statusCode;
   }
+
+  Future<dynamic> checkToken() async {
+    final http.Response response = await _helper.get('/User/checkToken');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
