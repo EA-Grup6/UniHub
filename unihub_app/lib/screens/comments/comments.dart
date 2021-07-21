@@ -29,7 +29,6 @@ class CommentState extends State<CommentsScreen> {
       print(comment.toString());
       preCommentList.add(Comment.fromMap(comment));
     }
-    print(preCommentList.toSet().toString());
     return preCommentList;
   }
 
@@ -114,7 +113,12 @@ class CommentState extends State<CommentsScreen> {
                               setState(() {
                                 commentsList.insert(0,
                                     Comment.fromMap(jsonDecode(response.body)));
-                                contentController = new TextEditingController();
+                                this
+                                    .widget
+                                    .feedPublication
+                                    .comments
+                                    .insert(0, commentsList[0].id.toString());
+                                contentController.clear();
                               });
                             }
                           } else {
@@ -229,13 +233,11 @@ class CommentState extends State<CommentsScreen> {
     Widget submitButton = TextButton(
       child: Text(AppLocalizations.instance.text("yes", null)),
       onPressed: () async {
-        //delete post
-        await CommentController().deleteComment(comment.id).whenComplete(() {
-          setState(() {
-            this.commentsList.remove(comment);
-          });
-          Navigator.pop(context);
+        await CommentController().deleteComment(comment.id);
+        setState(() {
+          this.widget.feedPublication.comments.remove(comment.id);
         });
+        Navigator.pop(context);
       },
     );
     Widget dismissButton = TextButton(
