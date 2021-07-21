@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class FeedPublication {
   final String id;
   final String username;
@@ -36,5 +38,23 @@ class FeedPublication {
       'likes': this.likes,
     };
     return newJSON;
+  }
+}
+
+class ListFeedPublication with ChangeNotifier {
+  List<FeedPublication> pubsList;
+
+  ListFeedPublication({this.pubsList});
+
+  getPubs() => this.pubsList;
+
+  void add(FeedPublication feedPub) {
+    pubsList.add(feedPub);
+    notifyListeners();
+  }
+
+  void remove(FeedPublication feedPub) {
+    pubsList.remove(feedPub);
+    notifyListeners();
   }
 }

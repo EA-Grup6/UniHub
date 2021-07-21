@@ -40,7 +40,8 @@ class ProfileSection extends State<Profile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ProfileScreen(
-                                            myUsername, this.widget.user)));
+                                            username: myUsername,
+                                            currentUser: this.widget.user)));
                               })),
                       contentPadding: EdgeInsets.all(0),
                       title: Padding(

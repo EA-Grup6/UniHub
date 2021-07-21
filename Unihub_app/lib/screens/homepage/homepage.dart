@@ -25,10 +25,10 @@ class Homepage extends State<HomepageScreen> {
   List<FeedPublication> feedList;
   int currentTab = 0;
   final List<Widget> screens = [
-    FeedScreen(null),
-    AllChatsScreen(null),
+    FeedScreen(),
+    AllChatsScreen(),
     SearchScreen(),
-    ProfileScreen(null, null)
+    ProfileScreen()
   ];
   //
 
@@ -42,13 +42,12 @@ class Homepage extends State<HomepageScreen> {
   }
 
   Widget currentScreen;
-  String currentTitle;
   final PageStorageBucket bucket = PageStorageBucket();
 
   @override
   Widget build(BuildContext context) {
     if (currentScreen == null) {
-      currentScreen = FeedScreen(this.widget.pubsList);
+      currentScreen = FeedScreen(pubsList: this.widget.pubsList);
     }
     return Scaffold(
       body: SafeArea(
@@ -84,7 +83,8 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () async {
                     setState(() {
-                      currentScreen = FeedScreen(this.widget.pubsList);
+                      currentScreen =
+                          FeedScreen(pubsList: this.widget.pubsList);
                       currentTab = 0;
                     });
                   },
@@ -108,8 +108,8 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      currentScreen =
-                          AllChatsScreen(this.widget.chatController);
+                      currentScreen = AllChatsScreen(
+                          chatController: this.widget.chatController);
                       currentTab = 2;
                     });
                   },
@@ -122,7 +122,8 @@ class Homepage extends State<HomepageScreen> {
                   onPressed: () {
                     setState(() {
                       currentScreen = ProfileScreen(
-                          this.widget.user.username, this.widget.user);
+                          username: this.widget.user.username,
+                          currentUser: this.widget.user);
                       currentTab = 3;
                     });
                   },

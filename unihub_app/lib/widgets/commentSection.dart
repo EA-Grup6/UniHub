@@ -45,7 +45,8 @@ class CommentSection extends State<CommentWidget> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ProfileScreen(
-                                          widget._myUsername, user)));
+                                          username: widget._myUsername,
+                                          currentUser: user)));
                             })),
                     contentPadding: EdgeInsets.all(0),
                     title: Padding(

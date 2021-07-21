@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/feedPublication.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class FeedScreen extends StatefulWidget {
   List<FeedPublication> pubsList;
-  FeedScreen(this.pubsList);
+  FeedScreen({this.pubsList});
   Feed createState() => Feed();
 }
 
@@ -46,11 +47,12 @@ class Feed extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    this
-        .widget
-        .pubsList
-        .sort((a, b) => a.publicationDate.compareTo(b.publicationDate));
-    if (this.widget.pubsList == null || this.widget.pubsList.length == 0) {
+    ListFeedPublication pubsList;
+    pubsList = Provider.of<ListFeedPublication>(context);
+    if (pubsList.pubsList == null) {
+      pubsList = ListFeedPublication(pubsList: this.widget.pubsList);
+    }
+    if (pubsList.pubsList.length == 0) {
       return Scaffold(
           appBar: AppBar(
             title: Text("Feed"),
@@ -68,7 +70,7 @@ class Feed extends State<FeedScreen> {
             heroTag: "btnAddFeed",
             child: Icon(Icons.add),
             onPressed: () {
-              showNewPostAlertDialog(context);
+              showNewPostAlertDialog(context, pubsList);
             },
           ));
     } else {
@@ -80,36 +82,26 @@ class Feed extends State<FeedScreen> {
               child: RefreshIndicator(
                   child: ListView.builder(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      itemCount: this.widget.pubsList.length,
+                      itemCount: pubsList.pubsList.length,
                       itemBuilder: (context, index) {
-                        if (this
-                                .widget
-                                .pubsList
-                                .reversed
+                        if (pubsList.pubsList.reversed
                                 .elementAt(index)
                                 .username ==
                             this.username) {
                           return new Dismissible(
-                              key: ObjectKey(this
-                                  .widget
-                                  .pubsList
-                                  .reversed
-                                  .elementAt(index)),
+                              key: ObjectKey(
+                                  pubsList.pubsList.reversed.elementAt(index)),
                               child: new FeedPost(
-                                  this
-                                      .widget
-                                      .pubsList
-                                      .reversed
-                                      .elementAt(index),
+                                  pubsList.pubsList.reversed.elementAt(index),
                                   this.username),
                               confirmDismiss: (direction) {
                                 return showDeletePostAlertDialog(
-                                    context, index);
+                                    context, index, pubsList);
                               },
                               onDismissed: (direction) {});
                         } else {
                           return new FeedPost(
-                              this.widget.pubsList.reversed.elementAt(index),
+                              pubsList.pubsList.reversed.elementAt(index),
                               this.username);
                         }
                       }),
@@ -120,13 +112,13 @@ class Feed extends State<FeedScreen> {
             heroTag: "btnAddFeed",
             child: Icon(Icons.add),
             onPressed: () {
-              showNewPostAlertDialog(context);
+              showNewPostAlertDialog(context, pubsList);
             },
           ));
     }
   }
 
-  showNewPostAlertDialog(BuildContext context) {
+  showNewPostAlertDialog(BuildContext context, ListFeedPublication pubsList) {
     contentController.text = '';
     // set up the buttons
     Widget submitButton = TextButton(
@@ -141,8 +133,7 @@ class Feed extends State<FeedScreen> {
                     .text("feed_correctlyCreatedNewPost", null),
                 Colors.green);
             setState(() {
-              this.widget.pubsList.insert(
-                  0, FeedPublication.fromMap(jsonDecode(response.body)));
+              pubsList.add(FeedPublication.fromMap(jsonDecode(response.body)));
             });
             Navigator.pop(context);
           }
@@ -189,19 +180,18 @@ class Feed extends State<FeedScreen> {
     );
   }
 
-  showDeletePostAlertDialog(BuildContext context, int index) {
+  showDeletePostAlertDialog(
+      BuildContext context, int index, ListFeedPublication pubsList) {
     // set up the buttons
     Widget submitButton = TextButton(
       child: Text(AppLocalizations.instance.text("yes", null)),
       onPressed: () async {
         //delete post
         await FeedController()
-            .deleteFeedPost(this.widget.pubsList.reversed.elementAt(index).id)
+            .deleteFeedPost(pubsList.pubsList.reversed.elementAt(index).id)
             .whenComplete(() {
           setState(() {
-            this
-                .widget
-                .pubsList
+            pubsList.pubsList
                 .remove(this.widget.pubsList.reversed.elementAt(index));
           });
           Navigator.pop(context);

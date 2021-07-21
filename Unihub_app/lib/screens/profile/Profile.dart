@@ -15,7 +15,7 @@ import 'package:unihub_app/screens/settings/settings.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen(this.username, this.currentUser);
+  const ProfileScreen({this.username, this.currentUser});
   final String username;
   final UserApp currentUser;
   Profile createState() => Profile();
