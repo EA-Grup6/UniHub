@@ -91,6 +91,21 @@ export async function deleteUser (req: any, res: Response){
     }
 }
 
+export async function checkToken(req: any, res: Response){
+    const Btoken = req.headers['authorization'];
+    if(typeof Btoken !== undefined){
+        req.token=Btoken;
+        jwt.verify(req.token, 'mykey', async(error:any, authData:any) => {
+            if(error){
+                return res.status(205).send({message: 'Authorization error'});
+            }else{
+                return res.status(200).send({message: 'Authorized'});
+            }});
+    }else{
+        return res.status(205).send({message: 'Authorization error'});
+    }
+}
+
 ///////////
 export async function deleteAll (req: any, res: Response){
 
@@ -123,7 +138,6 @@ export async function updateUser (req: any, res: Response){
     let{username, password, fullname, description, university, degree, role, subjectsDone, subjectsRequested, phone, profilePhoto} = req.body;
     const Btoken = req.headers['authorization'];
     const updateData = {
-        password: password,
         fullname: fullname,
         description: description,
         university: university,
