@@ -3,7 +3,7 @@ class FeedPublication {
   final String username;
   final DateTime publicationDate;
   final String content;
-  final List<dynamic> comments;
+  List<dynamic> comments;
   final List<dynamic> likes;
 
   FeedPublication(

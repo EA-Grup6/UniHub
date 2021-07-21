@@ -43,7 +43,7 @@ class ChatController extends Model {
         'content': text,
       }),
     );
-    return notifyListeners();
+    notifyListeners();
   }
 
   List<Message> getMessagesForChatID(String chatID) {
