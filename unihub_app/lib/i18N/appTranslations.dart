@@ -17,8 +17,14 @@ class AppLocalizations {
     return this;
   }
 
-  String text(String key) {
-    return _localisedValues[key] ?? "$key not found";
+  String text(String key, Map<String, dynamic> args) {
+    String value = _localisedValues[key] ?? "$key not found";
+    if (args != null) {
+      for (final key in args.keys) {
+        value = value.replaceAll('{$key}', '${args[key]}');
+      }
+    }
+    return value;
   }
 }
 

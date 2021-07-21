@@ -37,8 +37,8 @@ class Settings extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title:
-                Text(AppLocalizations.instance.text("settings_titleScreen"))),
+            title: Text(
+                AppLocalizations.instance.text("settings_titleScreen", null))),
         body: SafeArea(
             child: Center(
                 child: Column(
@@ -47,7 +47,8 @@ class Settings extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(AppLocalizations.instance.text("settings_darkTheme")),
+                  Text(AppLocalizations.instance
+                      .text("settings_darkTheme", null)),
                   Switch(
                     value: isDarkTheme,
                     onChanged: (value) {
@@ -65,21 +66,22 @@ class Settings extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(AppLocalizations.instance.text("settings_language")),
+                  Text(AppLocalizations.instance
+                      .text("settings_language", null)),
                   DropdownButton<String>(
                     isExpanded: false,
                     value: language,
-                    hint: Text(
-                        AppLocalizations.instance.text("settings_select") +
-                            " " +
-                            AppLocalizations.instance
-                                .text("settings_language")
-                                .toLowerCase()),
+                    hint: Text(AppLocalizations.instance
+                            .text("settings_select", null) +
+                        " " +
+                        AppLocalizations.instance
+                            .text("settings_language", null)
+                            .toLowerCase()),
                     items: availableLanguages.map((String e) {
                       return DropdownMenuItem<String>(
                         value: e,
-                        child: Text(
-                            AppLocalizations.instance.text("language_" + e)),
+                        child: Text(AppLocalizations.instance
+                            .text("language_" + e, null)),
                       );
                     }).toList(),
                     onChanged: (String e) async {

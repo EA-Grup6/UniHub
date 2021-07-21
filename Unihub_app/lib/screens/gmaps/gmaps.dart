@@ -111,7 +111,7 @@ class _GMapState extends State<GMap> {
                   })
               : Container(),
         ],
-        title: Text(AppLocalizations.instance.text("location")),
+        title: Text(AppLocalizations.instance.text("location", null)),
       ),
       body: GoogleMap(
         myLocationButtonEnabled: false,

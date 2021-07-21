@@ -15,8 +15,6 @@ class SearchProfilesScreen extends StatefulWidget {
 }
 
 class SearchProfiles extends State<SearchProfilesScreen> {
-  String username;
-
   Future<List<UserApp>> initializeListAndUser() async {
     List<UserApp> profilesList = [];
     List<UserApp> filteredProfilesList = [];
@@ -41,7 +39,7 @@ class SearchProfiles extends State<SearchProfilesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.widget.keyword != '') {
+    if (this.widget.keyword != ' ') {
       return FutureBuilder<List<UserApp>>(
           future: initializeListAndUser(),
           builder: (context, snapshot) {
@@ -56,14 +54,7 @@ class SearchProfiles extends State<SearchProfilesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 for (UserApp user in snapshot.data.reversed)
-                                  new Profile(
-                                    user.fullname,
-                                    user.username,
-                                    user.university,
-                                    user.degree,
-                                    user.subjectsDone,
-                                    user.subjectsRequested,
-                                  ),
+                                  new Profile(user),
                               ],
                             )))),
               );
@@ -80,9 +71,11 @@ class SearchProfiles extends State<SearchProfilesScreen> {
       return Scaffold(
           body: Center(
               child: Text(
-        AppLocalizations.instance.text("search") +
+        AppLocalizations.instance.text("search", null) +
             " " +
-            AppLocalizations.instance.text("search_profiles").toLowerCase(),
+            AppLocalizations.instance
+                .text("search_profiles", null)
+                .toLowerCase(),
         style: TextStyle(fontSize: 21),
       )));
     }

@@ -84,9 +84,11 @@ class SearchFeedPubs extends State<SearchFeedPubsScreen> {
       return Scaffold(
           body: Center(
               child: Text(
-        AppLocalizations.instance.text("search") +
+        AppLocalizations.instance.text("search", null) +
             " " +
-            AppLocalizations.instance.text("search_feedPubs").toLowerCase(),
+            AppLocalizations.instance
+                .text("search_feedPubs", null)
+                .toLowerCase(),
         style: TextStyle(fontSize: 21),
       )));
     }

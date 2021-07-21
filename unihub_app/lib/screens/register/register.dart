@@ -39,13 +39,13 @@ class Register extends State<RegisterScreen> {
                                 validator: (String value) {
                                   if (value.isEmpty) {
                                     return AppLocalizations.instance
-                                        .text("login_noEmail");
+                                        .text("login_noEmail", null);
                                   }
                                   if (!RegExp(
                                           "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                       .hasMatch(value)) {
                                     return AppLocalizations.instance
-                                        .text("login_notValidEmail");
+                                        .text("login_notValidEmail", null);
                                   }
                                   return null;
                                 },
@@ -63,13 +63,13 @@ class Register extends State<RegisterScreen> {
                                 obscureText: _isHidden,
                                 validator: (val) => val.isEmpty
                                     ? AppLocalizations.instance
-                                        .text("login_noPassword")
+                                        .text("login_noPassword", null)
                                     : null,
                                 controller: _passwordController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: AppLocalizations.instance
-                                      .text("password"),
+                                      .text("password", null),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -89,11 +89,11 @@ class Register extends State<RegisterScreen> {
                                 validator: (String value) {
                                   if (value.isEmpty) {
                                     return AppLocalizations.instance
-                                        .text("login_noPassword");
+                                        .text("login_noPassword", null);
                                   }
                                   if (_passwordController.text != (value)) {
                                     return AppLocalizations.instance
-                                        .text("login_notSamePassword");
+                                        .text("login_notSamePassword", null);
                                   }
                                   return null;
                                 },
@@ -101,7 +101,7 @@ class Register extends State<RegisterScreen> {
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: AppLocalizations.instance
-                                      .text("register_repeatPassword"),
+                                      .text("register_repeatPassword", null),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -123,7 +123,7 @@ class Register extends State<RegisterScreen> {
                                       TextButton(
                                           child: Text(
                                               AppLocalizations.instance
-                                                  .text("login_signUp"),
+                                                  .text("login_signUp", null),
                                               style: TextStyle(fontSize: 20)),
                                           style: ButtonStyle(
                                             minimumSize:
@@ -148,7 +148,8 @@ class Register extends State<RegisterScreen> {
                                               if (response.statusCode == 200) {
                                                 createToast(
                                                     AppLocalizations.instance.text(
-                                                        "register_accountCreatedOK"),
+                                                        "register_accountCreatedOK",
+                                                        null),
                                                     Colors.green);
 
                                                 Navigator.of(context)
@@ -157,7 +158,8 @@ class Register extends State<RegisterScreen> {
                                                   201) {
                                                 createToast(
                                                     AppLocalizations.instance.text(
-                                                        "register_accountCreatedSameEmail"),
+                                                        "register_accountCreatedSameEmail",
+                                                        null),
                                                     Colors.green);
                                               } else {
                                                 createToast(

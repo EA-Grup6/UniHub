@@ -1,22 +1,60 @@
-class UserApp {
+import 'package:flutter/cupertino.dart';
+
+class AuthUser {
   final String username;
   final String password;
-  final String fullname;
-  final String description;
-  final String university;
-  final String school;
-  final String degree;
-  final String role;
-  final List<dynamic> subjectsDone;
-  final List<dynamic> subjectsRequested;
-  final String phone;
+
+  AuthUser(this.username, this.password);
+
+  factory AuthUser.fromMap(Map<String, dynamic> json) {
+    return AuthUser(json['username'], json['password']);
+  }
+
+  Map<String, dynamic> toJSON() {
+    Map<String, dynamic> newJSON = {
+      'username': this.username,
+      'password': this.password,
+    };
+    return newJSON;
+  }
+}
+
+class UserApp extends ChangeNotifier {
+  String username;
+  String fullname;
+  String description;
+  String university;
+  String school;
+  String degree;
+  String role;
+  List<dynamic> subjectsDone;
+  List<dynamic> subjectsRequested;
+  String phone;
   String profilePhoto;
-  final List<dynamic> followers;
-  final List<dynamic> following;
+  List<dynamic> followers;
+  List<dynamic> following;
+  bool isGoogleAccount;
+
+  void updateUser(UserApp user) {
+    this.username = user.username;
+    this.fullname = user.fullname;
+    this.description = user.description;
+    this.university = user.university;
+    this.school = user.school;
+    this.degree = user.degree;
+    this.role = user.role;
+    this.subjectsDone = user.subjectsDone;
+    this.subjectsRequested = user.subjectsRequested;
+    this.phone = user.phone;
+    this.profilePhoto = user.profilePhoto;
+    this.followers = user.followers;
+    this.following = user.following;
+    this.isGoogleAccount = user.isGoogleAccount;
+    notifyListeners();
+  }
 
   UserApp(
       this.username,
-      this.password,
       this.fullname,
       this.description,
       this.university,
@@ -28,13 +66,12 @@ class UserApp {
       this.phone,
       this.profilePhoto,
       this.followers,
-      this.following);
+      this.following,
+      this.isGoogleAccount);
 
   factory UserApp.fromMap(Map<String, dynamic> json) {
-    print(json['username']);
     return UserApp(
         json['username'],
-        json['password'],
         json['fullname'],
         json['description'],
         json['university'],
@@ -46,13 +83,13 @@ class UserApp {
         json['phone'],
         json['profilePhoto'],
         json['followers'],
-        json['following']);
+        json['following'],
+        json['isGoogleAccount']);
   }
 
   Map<String, dynamic> toJSON() {
     Map<String, dynamic> newJSON = {
       'username': this.username,
-      'password': this.password,
       'fullname': this.fullname,
       'description': this.description,
       'university': this.university,
@@ -64,7 +101,8 @@ class UserApp {
       'phone': this.phone,
       'profilePhoto': this.profilePhoto,
       'followers': this.followers,
-      'following': this.following
+      'following': this.following,
+      'isGoogleAccount': this.isGoogleAccount
     };
     return newJSON;
   }

@@ -74,7 +74,7 @@ class AddOffer extends State<AddOfferScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.instance.text("addOffer_titleScreen"),
+            AppLocalizations.instance.text("addOffer_titleScreen", null),
             style: TextStyle(color: Colors.blue),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -115,7 +115,7 @@ class AddOffer extends State<AddOfferScreen> {
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
                                           labelText: AppLocalizations.instance
-                                              .text("addOffer_title"),
+                                              .text("addOffer_title", null),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -128,7 +128,7 @@ class AddOffer extends State<AddOfferScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(AppLocalizations.instance
-                                                  .text("university") +
+                                                  .text("university", null) +
                                               ":"),
                                           DropdownButton(
                                             value: valueUniversity,
@@ -146,7 +146,7 @@ class AddOffer extends State<AddOfferScreen> {
                                             }).toList(),
                                           ),
                                           Text(AppLocalizations.instance
-                                                  .text("college") +
+                                                  .text("college", null) +
                                               ":"),
                                           DropdownButton(
                                             value: valueCollege,
@@ -172,8 +172,8 @@ class AddOffer extends State<AddOfferScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(AppLocalizations.instance
-                                              .text("addOffer_chooseSubject")),
+                                          Text(AppLocalizations.instance.text(
+                                              "addOffer_chooseSubject", null)),
                                           DropdownButton(
                                             value: valueAsign,
                                             onChanged: (newValue) {
@@ -198,7 +198,7 @@ class AddOffer extends State<AddOfferScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(AppLocalizations.instance
-                                              .text("search_filterType")),
+                                              .text("search_filterType", null)),
                                           DropdownButton(
                                             value: valueTipo,
                                             onChanged: (newValue) {
@@ -210,13 +210,14 @@ class AddOffer extends State<AddOfferScreen> {
                                               return DropdownMenuItem(
                                                   value: valueItem,
                                                   child: Text(
-                                                    AppLocalizations.instance
-                                                        .text("addOffer_" +
+                                                    AppLocalizations.instance.text(
+                                                        "addOffer_" +
                                                             valueItem
                                                                 .toString()
                                                                 .split(" ")
                                                                 .join()
-                                                                .toLowerCase()),
+                                                                .toLowerCase(),
+                                                        null),
                                                   ));
                                             }).toList(),
                                           ),
@@ -231,7 +232,8 @@ class AddOffer extends State<AddOfferScreen> {
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
                                           labelText: AppLocalizations.instance
-                                              .text("search_filterDescription"),
+                                              .text("search_filterDescription",
+                                                  null),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -246,7 +248,7 @@ class AddOffer extends State<AddOfferScreen> {
                                           contentPadding:
                                               EdgeInsets.only(bottom: 3),
                                           labelText: AppLocalizations.instance
-                                              .text("addOffer_price"),
+                                              .text("addOffer_price", null),
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.always),
                                     ),
@@ -260,7 +262,8 @@ class AddOffer extends State<AddOfferScreen> {
                                           ),
                                           child: Text(
                                             AppLocalizations.instance.text(
-                                                "addOffer_selectLocation"),
+                                                "addOffer_selectLocation",
+                                                null),
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white),
@@ -287,7 +290,7 @@ class AddOffer extends State<AddOfferScreen> {
                                     ),
                                     child: Text(
                                       AppLocalizations.instance
-                                          .text("addOffer_accept"),
+                                          .text("addOffer_accept", null),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -306,16 +309,16 @@ class AddOffer extends State<AddOfferScreen> {
                                                 coordenadas[1]);
                                         if (response.statusCode == 200) {
                                           createToast(
-                                              AppLocalizations.instance
-                                                  .text("addOffer_createdOK"),
+                                              AppLocalizations.instance.text(
+                                                  "addOffer_createdOK", null),
                                               Colors.green);
                                           Navigator.of(context).pop(
                                               OfferApp.fromMap(
                                                   jsonDecode(response.body)));
                                         } else {
                                           createToast(
-                                              AppLocalizations.instance
-                                                  .text("addOffer_createdNO"),
+                                              AppLocalizations.instance.text(
+                                                  "addOffer_createdNO", null),
                                               Colors.red);
                                         }
                                       }

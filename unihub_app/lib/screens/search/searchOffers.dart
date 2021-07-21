@@ -73,9 +73,9 @@ class SearchOffers extends State<SearchOffersScreen> {
       return Scaffold(
           body: Center(
               child: Text(
-        AppLocalizations.instance.text("search") +
+        AppLocalizations.instance.text("search", null) +
             " " +
-            AppLocalizations.instance.text("search_offers").toLowerCase(),
+            AppLocalizations.instance.text("search_offers", null).toLowerCase(),
         style: TextStyle(fontSize: 21),
       )));
     }

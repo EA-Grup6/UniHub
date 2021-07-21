@@ -4,12 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/faculty.dart';
 import 'package:unihub_app/models/degree.dart';
 import 'package:unihub_app/models/university.dart';
 import 'package:unihub_app/models/user.dart';
-import 'package:unihub_app/screens/homepage/homepage.dart';
 import 'package:unihub_app/screens/login/login.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +17,6 @@ import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 String finalUsername;
-UserApp currentUser;
 List<University> universitiesList = [];
 List<Faculty> schoolsList = [];
 List<Degree> degreesList = [];
@@ -28,6 +27,8 @@ List<String> degreesNamesList = [];
 Image imageUser;
 
 class EditProfileScreen extends StatefulWidget {
+  UserApp currentUser;
+  EditProfileScreen(this.currentUser);
   EditProfile createState() => EditProfile();
 }
 
@@ -63,7 +64,7 @@ class EditProfile extends State<EditProfileScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalizations.instance.text("editProfile_title"),
+            AppLocalizations.instance.text("editProfile_title", null),
             style: TextStyle(color: Colors.blue),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -118,7 +119,9 @@ class EditProfile extends State<EditProfileScreen> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(currentUser
+                                                image: NetworkImage(this
+                                                    .widget
+                                                    .currentUser
                                                     .profilePhoto)))),
                                     Positioned(
                                         bottom: 0,
@@ -175,9 +178,9 @@ class EditProfile extends State<EditProfileScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        AppLocalizations
-                                                                            .instance
-                                                                            .text("pickOrigin_camera"),
+                                                                        AppLocalizations.instance.text(
+                                                                            "pickOrigin_camera",
+                                                                            null),
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 18,
@@ -211,9 +214,9 @@ class EditProfile extends State<EditProfileScreen> {
                                                                     Expanded(
                                                                       child:
                                                                           Text(
-                                                                        AppLocalizations
-                                                                            .instance
-                                                                            .text("pickOrigin_gallery"),
+                                                                        AppLocalizations.instance.text(
+                                                                            "pickOrigin_gallery",
+                                                                            null),
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 18,
@@ -249,7 +252,7 @@ class EditProfile extends State<EditProfileScreen> {
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
                                       labelText: AppLocalizations.instance
-                                          .text("profile_fullname"),
+                                          .text("profile_fullname", null),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -262,7 +265,7 @@ class EditProfile extends State<EditProfileScreen> {
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
                                       labelText: AppLocalizations.instance
-                                          .text("profile_description"),
+                                          .text("profile_description", null),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -276,7 +279,7 @@ class EditProfile extends State<EditProfileScreen> {
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
                                       labelText: AppLocalizations.instance
-                                          .text("profile_phone"),
+                                          .text("profile_phone", null),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
@@ -286,16 +289,14 @@ class EditProfile extends State<EditProfileScreen> {
                                   isExpanded: true,
                                   value: universitySelected,
                                   hint: Text(AppLocalizations.instance
-                                      .text("university")),
+                                      .text("university", null)),
                                   items: universitiesNamesList.map((String e) {
                                     return DropdownMenuItem<String>(
                                       value: e,
                                       child: e == "Not Selected"
                                           ? Text(AppLocalizations.instance.text(
-                                              e
-                                                  .split(" ")
-                                                  .join()
-                                                  .toLowerCase()))
+                                              e.split(" ").join().toLowerCase(),
+                                              null))
                                           : Text(e),
                                     );
                                   }).toList(),
@@ -316,17 +317,19 @@ class EditProfile extends State<EditProfileScreen> {
                                           isExpanded: true,
                                           value: schoolSelected,
                                           hint: Text(AppLocalizations.instance
-                                              .text("college")),
+                                              .text("college", null)),
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
                                               child: e == "Not Selected"
                                                   ? Text(AppLocalizations
                                                       .instance
-                                                      .text(e
-                                                          .split(" ")
-                                                          .join()
-                                                          .toLowerCase()))
+                                                      .text(
+                                                          e
+                                                              .split(" ")
+                                                              .join()
+                                                              .toLowerCase(),
+                                                          null))
                                                   : Text(e),
                                             );
                                           }).toList(),
@@ -350,17 +353,19 @@ class EditProfile extends State<EditProfileScreen> {
                                           isExpanded: true,
                                           value: degreeSelected,
                                           hint: Text(AppLocalizations.instance
-                                              .text("degree")),
+                                              .text("degree", null)),
                                           items: snapshot.data.map((String e) {
                                             return DropdownMenuItem<String>(
                                               value: e,
                                               child: e == "Not Selected"
                                                   ? Text(AppLocalizations
                                                       .instance
-                                                      .text(e
-                                                          .split(" ")
-                                                          .join()
-                                                          .toLowerCase()))
+                                                      .text(
+                                                          e
+                                                              .split(" ")
+                                                              .join()
+                                                              .toLowerCase(),
+                                                          null))
                                                   : Text(e),
                                             );
                                           }).toList(),
@@ -384,12 +389,15 @@ class EditProfile extends State<EditProfileScreen> {
                                       Text(subjectsDoneSelected == null ||
                                               subjectsDoneSelected.length == 0
                                           ? AppLocalizations.instance.text(
-                                                  "profile_subjectsDone") +
+                                                  "profile_subjectsDone",
+                                                  null) +
                                               ": " +
                                               AppLocalizations.instance.text(
-                                                  "profile_noSubjectsSelected")
+                                                  "profile_noSubjectsSelected",
+                                                  null)
                                           : AppLocalizations.instance.text(
-                                                  "profile_subjectsDone") +
+                                                  "profile_subjectsDone",
+                                                  null) +
                                               ": " +
                                               subjectsDoneSelected.join(', ')),
                                       ChipsChoice<String>.multiple(
@@ -417,12 +425,15 @@ class EditProfile extends State<EditProfileScreen> {
                                       Text(subjectsAskingSelected == null ||
                                               subjectsAskingSelected.length == 0
                                           ? AppLocalizations.instance.text(
-                                                  "profile_subjectsAsking") +
+                                                  "profile_subjectsAsking",
+                                                  null) +
                                               ": " +
                                               AppLocalizations.instance.text(
-                                                  "profile_noSubjectsSelected")
+                                                  "profile_noSubjectsSelected",
+                                                  null)
                                           : AppLocalizations.instance.text(
-                                                  "profile_subjectsAsking") +
+                                                  "profile_subjectsAsking",
+                                                  null) +
                                               ": " +
                                               subjectsAskingSelected
                                                   .join(', ')),
@@ -451,66 +462,78 @@ class EditProfile extends State<EditProfileScreen> {
                                       contentPadding:
                                           EdgeInsets.only(bottom: 3),
                                       labelText: AppLocalizations.instance
-                                          .text("profile_role"),
+                                          .text("profile_role", null),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.always),
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  obscureText: _isHidden,
-                                  controller: _passwordController,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(bottom: 3),
-                                    labelText: AppLocalizations.instance
-                                        .text("password"),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    suffix: InkWell(
-                                      onTap: _tooglePasswordView,
-                                      child: Icon(
-                                        _isHidden
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                              this.widget.currentUser.isGoogleAccount
+                                  ? Container()
+                                  : Column(children: [
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        child: TextFormField(
+                                          obscureText: _isHidden,
+                                          controller: _passwordController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.only(bottom: 3),
+                                            labelText: AppLocalizations.instance
+                                                .text("password", null),
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.always,
+                                            suffix: InkWell(
+                                              onTap: _tooglePasswordView,
+                                              child: Icon(
+                                                _isHidden
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: TextFormField(
-                                  obscureText: _isHidden,
-                                  controller: _password2Controller,
-                                  validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return AppLocalizations.instance.text(
-                                          "editProfile_missingConfirmation");
-                                    }
-                                    if (_passwordController.text != (value)) {
-                                      return AppLocalizations.instance.text(
-                                          "editProfile_passwordsNotEqual");
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(bottom: 3),
-                                    labelText: AppLocalizations.instance
-                                        .text("register_repeatPassword"),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    suffix: InkWell(
-                                      onTap: _tooglePasswordView,
-                                      child: Icon(
-                                        _isHidden
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        child: TextFormField(
+                                          obscureText: _isHidden,
+                                          controller: _password2Controller,
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return AppLocalizations.instance.text(
+                                                  "editProfile_missingConfirmation",
+                                                  null);
+                                            }
+                                            if (_passwordController.text !=
+                                                (value)) {
+                                              return AppLocalizations.instance.text(
+                                                  "editProfile_passwordsNotEqual",
+                                                  null);
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.only(bottom: 3),
+                                            labelText: AppLocalizations.instance
+                                                .text("register_repeatPassword",
+                                                    null),
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.always,
+                                            suffix: InkWell(
+                                              onTap: _tooglePasswordView,
+                                              child: Icon(
+                                                _isHidden
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                    ]),
                               SizedBox(
                                 height: 20,
                               ),
@@ -526,7 +549,8 @@ class EditProfile extends State<EditProfileScreen> {
                                               Colors.red),
                                     ),
                                     child: Text(
-                                      AppLocalizations.instance.text("cancel"),
+                                      AppLocalizations.instance
+                                          .text("cancel", null),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -544,41 +568,57 @@ class EditProfile extends State<EditProfileScreen> {
                                               Colors.blue),
                                     ),
                                     child: Text(
-                                      AppLocalizations.instance.text("save"),
+                                      AppLocalizations.instance
+                                          .text("save", null),
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        UserApp updatedUser = new UserApp(
-                                          currentUser.username,
-                                          _passwordController.text,
-                                          _nameController.text,
-                                          _descriptionController.text,
-                                          universitySelected,
-                                          schoolSelected,
-                                          degreeSelected,
-                                          _roleController.text,
-                                          subjectsDoneSelected,
-                                          subjectsAskingSelected,
-                                          _phoneController.text,
-                                          currentUser.profilePhoto,
-                                          currentUser.followers,
-                                          currentUser.following,
-                                        );
-                                        http.Response response =
-                                            await EditProfileController()
-                                                .updateProfile(updatedUser);
-                                        if (response.statusCode == 200) {
-                                          createToast(
-                                              AppLocalizations.instance.text(
-                                                  "editProfile_userCorrectlyUpdated"),
-                                              Colors.green);
-                                          Navigator.of(context)
-                                              .pop(updatedUser);
-                                        } else {
-                                          createToast(
-                                              response.body, Colors.red);
+                                        int isPasswordOK =
+                                            await LoginController().loginUser(
+                                                this
+                                                    .widget
+                                                    .currentUser
+                                                    .username,
+                                                _passwordController.text);
+                                        if (isPasswordOK == 200) {
+                                          UserApp updatedUser = new UserApp(
+                                              this.widget.currentUser.username,
+                                              _nameController.text,
+                                              _descriptionController.text,
+                                              universitySelected,
+                                              schoolSelected,
+                                              degreeSelected,
+                                              _roleController.text,
+                                              subjectsDoneSelected,
+                                              subjectsAskingSelected,
+                                              _phoneController.text,
+                                              this
+                                                  .widget
+                                                  .currentUser
+                                                  .profilePhoto,
+                                              this.widget.currentUser.followers,
+                                              this.widget.currentUser.following,
+                                              this
+                                                  .widget
+                                                  .currentUser
+                                                  .isGoogleAccount);
+                                          http.Response response =
+                                              await EditProfileController()
+                                                  .updateProfile(updatedUser);
+                                          if (response.statusCode == 200) {
+                                            createToast(
+                                                AppLocalizations.instance.text(
+                                                    "editProfile_userCorrectlyUpdated",
+                                                    null),
+                                                Colors.green);
+                                            Navigator.of(context)
+                                                .pop(updatedUser);
+                                          } else {
+                                            createToast(
+                                                response.body, Colors.red);
+                                          }
                                         }
                                       }
                                     },
@@ -608,32 +648,33 @@ class EditProfile extends State<EditProfileScreen> {
             fileBytes: await image.readAsBytes(),
             resourceType: CloudinaryResourceType.image,
             folder: 'profilePhotos',
-            fileName: currentUser.username);
+            fileName: this.widget.currentUser.username);
         if (response.isSuccessful) {
           createToast(
               AppLocalizations.instance
-                  .text("editProfile_imageCorrectlyUploaded"),
+                  .text("editProfile_imageCorrectlyUploaded", null),
               Colors.green);
-          currentUser.profilePhoto = response.secureUrl;
+          this.widget.currentUser.profilePhoto = response.secureUrl;
         }
       } else {
         final response = await cloudinary.uploadFile(
             filePath: image.path,
             resourceType: CloudinaryResourceType.image,
             folder: 'profilePhotos',
-            fileName: currentUser.username);
+            fileName: this.widget.currentUser.username);
         if (response.isSuccessful) {
           createToast(
               AppLocalizations.instance
-                  .text("editProfile_imageCorrectlyUploaded"),
+                  .text("editProfile_imageCorrectlyUploaded", null),
               Colors.green);
-          currentUser.profilePhoto = response.secureUrl;
+          this.widget.currentUser.profilePhoto = response.secureUrl;
         }
       }
     } on Exception catch (e) {
       print(e);
       createToast(
-          AppLocalizations.instance.text("editProfile_imageErrorUploading"),
+          AppLocalizations.instance
+              .text("editProfile_imageErrorUploading", null),
           Colors.red);
     }
   }
@@ -649,9 +690,9 @@ class EditProfile extends State<EditProfileScreen> {
         if (response.isSuccessful) {
           createToast(
               AppLocalizations.instance
-                  .text("editProfile_imageCorrectlyUploaded"),
+                  .text("editProfile_imageCorrectlyUploaded", null),
               Colors.green);
-          currentUser.profilePhoto = response.secureUrl;
+          this.widget.currentUser.profilePhoto = response.secureUrl;
         }
       } else {
         final response = await cloudinary.uploadFile(
@@ -661,15 +702,16 @@ class EditProfile extends State<EditProfileScreen> {
         if (response.isSuccessful) {
           createToast(
               AppLocalizations.instance
-                  .text("editProfile_imageCorrectlyUploaded"),
+                  .text("editProfile_imageCorrectlyUploaded", null),
               Colors.green);
-          currentUser.profilePhoto = response.secureUrl;
+          this.widget.currentUser.profilePhoto = response.secureUrl;
         }
       }
     } on Exception catch (e) {
       print(e);
       createToast(
-          AppLocalizations.instance.text("editProfile_imageErrorUploading"),
+          AppLocalizations.instance
+              .text("editProfile_imageErrorUploading", null),
           Colors.red);
     }
   }
@@ -677,21 +719,20 @@ class EditProfile extends State<EditProfileScreen> {
   Future getValidationData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var username = preferences.getString('username');
+    _nameController.text = this.widget.currentUser.fullname;
+    _descriptionController.text = this.widget.currentUser.description;
+    _roleController.text = this.widget.currentUser.role;
+    _phoneController.text = this.widget.currentUser.phone;
+    this.widget.currentUser.university == null
+        ? universitySelected = this.widget.currentUser.university
+        : universitySelected = "Not Selected";
+    subjectsAskingSelected =
+        new List<String>.from(this.widget.currentUser.subjectsRequested);
+    subjectsDoneSelected =
+        new List<String>.from(this.widget.currentUser.subjectsDone);
     setState(() {
       finalUsername = username;
     });
-    currentUser = ModalRoute.of(this.context).settings.arguments as UserApp;
-    _nameController.text = currentUser.fullname;
-    _descriptionController.text = currentUser.description;
-    _roleController.text = currentUser.role;
-    _passwordController.text = currentUser.password;
-    _phoneController.text = currentUser.phone;
-    currentUser.university == null
-        ? universitySelected = currentUser.university
-        : universitySelected = "Not Selected";
-    subjectsAskingSelected =
-        new List<String>.from(currentUser.subjectsRequested);
-    subjectsDoneSelected = new List<String>.from(currentUser.subjectsDone);
   }
 
   Future getUniversities() async {

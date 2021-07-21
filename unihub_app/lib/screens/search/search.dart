@@ -13,11 +13,11 @@ TabController _tabController;
 
 class Search extends State<SearchScreen> with TickerProviderStateMixin {
   final List<Tab> myTabs = <Tab>[
-    Tab(text: AppLocalizations.instance.text("search_feedPubs")),
-    Tab(text: AppLocalizations.instance.text("search_offers")),
-    Tab(text: AppLocalizations.instance.text("search_profiles")),
+    Tab(text: AppLocalizations.instance.text("search_feedPubs", null)),
+    Tab(text: AppLocalizations.instance.text("search_offers", null)),
+    Tab(text: AppLocalizations.instance.text("search_profiles", null)),
   ];
-  String currentTab = AppLocalizations.instance.text("search_feedPubs");
+  String currentTab = AppLocalizations.instance.text("search_feedPubs", null);
   final TextEditingController _searchController = new TextEditingController();
 
   void initState() {
@@ -26,11 +26,14 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     _tabController.addListener(() {
       setState(() {
         if (_tabController.index == 0) {
-          this.currentTab = AppLocalizations.instance.text("search_feedPubs");
+          this.currentTab =
+              AppLocalizations.instance.text("search_feedPubs", null);
         } else if (_tabController.index == 1) {
-          this.currentTab = AppLocalizations.instance.text("search_offers");
+          this.currentTab =
+              AppLocalizations.instance.text("search_offers", null);
         } else if (_tabController.index == 2) {
-          this.currentTab = AppLocalizations.instance.text("search_profiles");
+          this.currentTab =
+              AppLocalizations.instance.text("search_profiles", null);
         }
       });
     });
@@ -48,10 +51,16 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
   }
 
   String keyword = '';
-  List<String> finalSelectedFeedPubsFields = [];
+  List<String> finalSelectedFeedPubsFields = ['Content', 'Username'];
   List<String> availableFeedPubFields = ['Content', 'Username'];
 
-  List<String> finalSelectedOffersFields = [];
+  List<String> finalSelectedOffersFields = [
+    'University',
+    'Subject',
+    'Type',
+    'Description',
+    'Username'
+  ];
   List<String> availableOffersFields = [
     'University',
     'Subject',
@@ -60,7 +69,11 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     'Username'
   ];
 
-  List<String> finalSelectedProfilesFields = [];
+  List<String> finalSelectedProfilesFields = [
+    'Fullname',
+    'Degree',
+    'University'
+  ];
   List<String> availableProfilesFields = ['Fullname', 'Degree', 'University'];
 
   @override
@@ -81,7 +94,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
           ),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(AppLocalizations.instance.text("search")),
+            Text(AppLocalizations.instance.text("search", null)),
             Container(
               width: MediaQuery.of(context).size.width / 2,
               height: 40,
@@ -89,9 +102,10 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                 style: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: AppLocalizations.instance.text("search_hintText") +
-                      " " +
-                      currentTab.toLowerCase(),
+                  hintText:
+                      AppLocalizations.instance.text("search_hintText", null) +
+                          " " +
+                          currentTab.toLowerCase(),
                   hintStyle: TextStyle(color: Colors.grey[300], fontSize: 14.0),
                   filled: true,
                   fillColor: Colors.white30,
@@ -135,7 +149,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     List<String> selectedOffersFields = offersFilters;
     List<String> selectedProfilesFields = profilesFilters;
     Widget acceptFilters = TextButton(
-        child: Text(AppLocalizations.instance.text("search_filterBy")),
+        child: Text(AppLocalizations.instance.text("search_filterBy", null)),
         onPressed: () {
           if (_tabController.index == 0) {
             setState(() {
@@ -154,7 +168,7 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
         });
 
     Widget dismissFilters = TextButton(
-      child: Text(AppLocalizations.instance.text("search_dismiss")),
+      child: Text(AppLocalizations.instance.text("search_dismiss", null)),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -164,7 +178,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
     AlertDialog alert = AlertDialog(
         backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(10),
-        title: Text(AppLocalizations.instance.text("search_filterOptions")),
+        title:
+            Text(AppLocalizations.instance.text("search_filterOptions", null)),
         content: _tabController.index == 0
             ? StatefulBuilder(
                 builder: (context, setState) {
@@ -176,8 +191,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                       itemBuilder: (BuildContext context, index) {
                         return new CheckboxListTile(
                             title: Text(AppLocalizations.instance.text(
-                                "search_filter" +
-                                    availableFeedPubFields[index])),
+                                "search_filter" + availableFeedPubFields[index],
+                                null)),
                             value: selectedFeedPubsFields
                                 .contains(availableFeedPubFields[index]),
                             onChanged: (bool value) {
@@ -205,7 +220,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                           return new CheckboxListTile(
                               title: Text(AppLocalizations.instance.text(
                                   "search_filter" +
-                                      availableOffersFields[index])),
+                                      availableOffersFields[index],
+                                  null)),
                               value: selectedOffersFields
                                   .contains(availableOffersFields[index]),
                               onChanged: (bool value) {
@@ -232,7 +248,8 @@ class Search extends State<SearchScreen> with TickerProviderStateMixin {
                               return new CheckboxListTile(
                                   title: Text(AppLocalizations.instance.text(
                                       "search_filter" +
-                                          availableProfilesFields[index])),
+                                          availableProfilesFields[index],
+                                      null)),
                                   value: selectedProfilesFields
                                       .contains(availableProfilesFields[index]),
                                   onChanged: (bool value) {

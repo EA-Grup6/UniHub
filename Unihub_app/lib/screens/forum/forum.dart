@@ -46,7 +46,8 @@ class Forum extends State<ForumScreen> {
           if (snapshot.hasData) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text(AppLocalizations.instance.text("offer_title")),
+                  title:
+                      Text(AppLocalizations.instance.text("offer_title", null)),
                 ),
                 body: SafeArea(
                     child: RefreshIndicator(
@@ -91,7 +92,8 @@ class Forum extends State<ForumScreen> {
           } else {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text(AppLocalizations.instance.text("offer_title")),
+                  title:
+                      Text(AppLocalizations.instance.text("offer_title", null)),
                 ),
                 body: Container(
                   child: Center(
@@ -118,7 +120,7 @@ class Forum extends State<ForumScreen> {
   showDeleteOfferAlertDialog(BuildContext context, int index) {
     // set up the buttons
     Widget submitButton = TextButton(
-      child: Text(AppLocalizations.instance.text("yes")),
+      child: Text(AppLocalizations.instance.text("yes", null)),
       onPressed: () async {
         //delete post
         await OfferController()
@@ -132,7 +134,7 @@ class Forum extends State<ForumScreen> {
       },
     );
     Widget dismissButton = TextButton(
-      child: Text(AppLocalizations.instance.text("no")),
+      child: Text(AppLocalizations.instance.text("no", null)),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -140,8 +142,8 @@ class Forum extends State<ForumScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-        content:
-            Text(AppLocalizations.instance.text("feed_deletePostConfirmation")),
+        content: Text(AppLocalizations.instance
+            .text("feed_deletePostConfirmation", null)),
         actions: [dismissButton, submitButton]);
 
     // show the dialog
