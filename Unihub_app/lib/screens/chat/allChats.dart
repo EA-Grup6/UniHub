@@ -10,7 +10,7 @@ import '../../models/user.dart';
 import '../../controllers/chat_controller.dart';
 
 class AllChatsScreen extends StatefulWidget {
-  AllChatsScreen(this.chatController);
+  AllChatsScreen({this.chatController});
   @override
   _AllChatsScreenState createState() => _AllChatsScreenState();
   final ChatController chatController;

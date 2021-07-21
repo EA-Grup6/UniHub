@@ -1,8 +1,8 @@
 import app from './app';
 import {startConnection} from './database';
-import { createServer } from "http";
+import {createServer} from "http";
 
-const  http = createServer(app);
+const http = createServer(app);
 var server = app.listen(4001);
 const io = require('socket.io')(server);
 
