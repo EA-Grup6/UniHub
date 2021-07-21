@@ -9,14 +9,15 @@ import './chatPage.dart';
 import '../../models/user.dart';
 import '../../controllers/chat_controller.dart';
 
-class AllChatsPage extends StatefulWidget {
+class AllChatsScreen extends StatefulWidget {
+  AllChatsScreen(this.chatController);
   @override
-  _AllChatsPageState createState() => _AllChatsPageState();
+  _AllChatsScreenState createState() => _AllChatsScreenState();
+  final ChatController chatController;
 }
 
-class _AllChatsPageState extends State<AllChatsPage> {
+class _AllChatsScreenState extends State<AllChatsScreen> {
   String myUsername;
-  ChatController chatController;
   @override
   void initState() {
     super.initState();
@@ -26,7 +27,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
-          return ChatPage(this.chatController, friend, myUsername);
+          return ChatPage(this.widget.chatController, friend, myUsername);
         },
       ),
     );
@@ -64,7 +65,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.instance.text("chat_allChats")),
+        title: Text(AppLocalizations.instance.text("chat_allChats", null)),
       ),
       body: buildAllChatList(),
     );
@@ -73,8 +74,6 @@ class _AllChatsPageState extends State<AllChatsPage> {
   Future<List<String>> getFriends() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     this.myUsername = prefs.getString('username');
-    this.chatController = ChatController(this.myUsername);
-    this.chatController.init();
     UserApp currentUser = UserApp.fromMap(
         jsonDecode(await EditProfileController().getProfile(myUsername)));
     List<String> listFriends = [];
