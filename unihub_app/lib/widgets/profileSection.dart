@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
 class Profile extends StatefulWidget {
-  const Profile(this._fullname, this._username, this._university, this._degree,
-      this._doneSubjects, this._askingSubjects);
+  const Profile(this.user);
 
   ProfileSection createState() => ProfileSection();
-  final String _fullname;
-  final String
-      _username; //Solo para que me lleve a su perfil, no lo mostraré en la Card
-  final String _university;
-  final String _degree;
-  final List<dynamic> _doneSubjects;
-  final List<dynamic> _askingSubjects;
+  final UserApp user;
 }
 
 class ProfileSection extends State<Profile> {
@@ -37,12 +32,15 @@ class ProfileSection extends State<Profile> {
                           child: IconButton(
                               splashRadius: 25,
                               icon: Icon(null),
-                              onPressed: () {
+                              onPressed: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                String myUsername = prefs.getString('username');
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProfileScreen(widget._username)));
+                                        builder: (context) => ProfileScreen(
+                                            myUsername, this.widget.user)));
                               })),
                       contentPadding: EdgeInsets.all(0),
                       title: Padding(
@@ -50,7 +48,7 @@ class ProfileSection extends State<Profile> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(widget._fullname,
+                              Text(widget.user.fullname,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.0,
@@ -68,21 +66,22 @@ class ProfileSection extends State<Profile> {
                                     children: [
                                       Text(
                                           AppLocalizations.instance
-                                              .text("university"),
+                                              .text("university", null),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
-                                      Text(widget._university),
+                                      Text(widget.user.university),
                                     ]),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                           AppLocalizations.instance.text(
-                                                  "profile_subjectsDone") +
+                                                  "profile_subjectsDone",
+                                                  null) +
                                               ": ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
-                                      Text(widget._doneSubjects.join(', ')),
+                                      Text(widget.user.subjectsDone.join(', ')),
                                     ]),
                               ]),
                           Column(
@@ -93,21 +92,23 @@ class ProfileSection extends State<Profile> {
                                     children: [
                                       Text(
                                           AppLocalizations.instance
-                                              .text("degree"),
+                                              .text("degree", null),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
-                                      Text(widget._degree),
+                                      Text(widget.user.degree),
                                     ]),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                           AppLocalizations.instance.text(
-                                                  "profile_subjectsDone") +
+                                                  "profile_subjectsAsking",
+                                                  null) +
                                               ": ",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
-                                      Text(widget._askingSubjects.join(', ')),
+                                      Text(widget.user.subjectsRequested
+                                          .join(', ')),
                                     ]),
                               ])
                         ],
@@ -121,7 +122,7 @@ class ProfileSection extends State<Profile> {
 
   getUserImage() async {
     String urlImage =
-        await FeedController().getUserImage(this.widget._username);
+        await FeedController().getUserImage(this.widget.user.username);
     return urlImage;
   }
 }

@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:unihub_app/controllers/chat_controller.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/register_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
+import 'package:unihub_app/models/feedPublication.dart';
 import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/networking/google_signin_api.dart';
 import 'package:unihub_app/screens/homepage/homepage.dart';
-import 'package:unihub_app/screens/login/logged_in_page.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
@@ -58,13 +61,13 @@ class Login extends State<LoginScreen> {
                                 validator: (String value) {
                                   if (value.isEmpty) {
                                     return AppLocalizations.instance
-                                        .text('login_noEmail');
+                                        .text('login_noEmail', null);
                                   }
                                   if (!RegExp(
                                           "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                       .hasMatch(value)) {
                                     return AppLocalizations.instance
-                                        .text('login_notValidEmail');
+                                        .text('login_notValidEmail', null);
                                   }
                                   return null;
                                 },
@@ -72,7 +75,7 @@ class Login extends State<LoginScreen> {
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: AppLocalizations.instance
-                                      .text('username'),
+                                      .text('username', null),
                                   alignLabelWithHint: true,
                                 ),
                               ),
@@ -82,14 +85,14 @@ class Login extends State<LoginScreen> {
                               child: TextFormField(
                                 validator: (val) => val.isEmpty
                                     ? AppLocalizations.instance
-                                        .text('login_noPassword')
+                                        .text('login_noPassword', null)
                                     : null,
                                 obscureText: _isHidden,
                                 controller: _passwordController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: AppLocalizations.instance
-                                      .text('password'),
+                                      .text('password', null),
                                   alignLabelWithHint: true,
                                   suffix: InkWell(
                                     onTap: _tooglePasswordView,
@@ -111,7 +114,7 @@ class Login extends State<LoginScreen> {
                                       TextButton(
                                         child: Text(
                                             AppLocalizations.instance
-                                                .text('login_signIn'),
+                                                .text('login_signIn', null),
                                             style: TextStyle(fontSize: 20)),
                                         style: ButtonStyle(
                                           minimumSize:
@@ -141,17 +144,36 @@ class Login extends State<LoginScreen> {
                                                   _nameController.text);
                                               createToast(
                                                   AppLocalizations.instance.text(
-                                                      'login_loggedCorrectly'),
+                                                      'login_loggedCorrectly',
+                                                      null),
                                                   Colors.green);
-                                              Navigator.of(context)
-                                                  .pushNamedAndRemoveUntil(
-                                                      '/homepage',
-                                                      (Route<dynamic> route) =>
-                                                          false);
+                                              UserApp currentUser =
+                                                  UserApp.fromMap(jsonDecode(
+                                                      await EditProfileController()
+                                                          .getProfile(
+                                                              _nameController
+                                                                  .text)));
+                                              ChatController chatController =
+                                                  new ChatController(
+                                                      currentUser.username);
+                                              chatController.init();
+                                              List<FeedPublication> pubsList =
+                                                  await getAllFeeds();
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomepageScreen(
+                                                            currentUser,
+                                                            chatController,
+                                                            pubsList),
+                                                  ));
                                             } else if (response == 201) {
                                               createToast(
-                                                  AppLocalizations.instance.text(
-                                                      'login_wrongPassword'),
+                                                  AppLocalizations.instance
+                                                      .text(
+                                                          'login_wrongPassword',
+                                                          null),
                                                   Colors.red);
                                             } else {
                                               createToast('Error', Colors.red);
@@ -220,7 +242,7 @@ class Login extends State<LoginScreen> {
                                             Colors.grey),
                                   ),
                                   child: Text(AppLocalizations.instance
-                                      .text('login_forgotPassword')),
+                                      .text('login_forgotPassword', null)),
                                 ),
                                 TextButton(
                                   style: ButtonStyle(
@@ -230,7 +252,7 @@ class Login extends State<LoginScreen> {
                                   ),
                                   child: Text(
                                     AppLocalizations.instance
-                                        .text('login_signUp'),
+                                        .text('login_signUp', null),
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   onPressed: () {
@@ -251,6 +273,15 @@ class Login extends State<LoginScreen> {
     });
   }
 
+  Future<List<FeedPublication>> getAllFeeds() async {
+    http.Response response = await FeedController().getFeedPubs();
+    List<FeedPublication> preFeedList = [];
+    for (var feedPub in jsonDecode(response.body)) {
+      preFeedList.add(FeedPublication.fromMap(feedPub));
+    }
+    return preFeedList;
+  }
+
   Future signIn() async {
     final user = await GoogleSignInApi.login();
 
@@ -265,10 +296,16 @@ class Login extends State<LoginScreen> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('username', user.email);
         if (login == 200) {
+          UserApp currentUser = UserApp.fromMap(
+              jsonDecode(await EditProfileController().getProfile(user.email)));
+          ChatController chatController = new ChatController(user.email);
+          chatController.init();
+          List<FeedPublication> pubsList = await getAllFeeds();
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => HomepageScreen(),
+                builder: (context) =>
+                    HomepageScreen(currentUser, chatController, pubsList),
               ));
         }
       }
@@ -277,11 +314,16 @@ class Login extends State<LoginScreen> {
       prefs.setString('username', user.email);
       var login = await LoginController().loginUser(user.email, user.id);
       if (login == 200) {
+        UserApp currentUser = UserApp.fromMap(
+            jsonDecode(await EditProfileController().getProfile(user.email)));
+        ChatController chatController = new ChatController(user.email);
+        chatController.init();
+        List<FeedPublication> pubsList = await getAllFeeds();
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomepageScreen(),
-            ));
+                builder: (context) =>
+                    HomepageScreen(currentUser, chatController, pubsList)));
       }
     } else {
       createToast('Error', Colors.red);

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:unihub_app/controllers/comment_controller.dart';
+import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/comment.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
 class CommentWidget extends StatefulWidget {
@@ -33,12 +37,15 @@ class CommentSection extends State<CommentWidget> {
                         child: IconButton(
                             splashRadius: 25,
                             icon: Icon(null),
-                            onPressed: () {
+                            onPressed: () async {
+                              UserApp user = UserApp.fromMap(jsonDecode(
+                                  await EditProfileController()
+                                      .getProfile(widget.comment.username)));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ProfileScreen(
-                                          widget.comment.username)));
+                                          widget._myUsername, user)));
                             })),
                     contentPadding: EdgeInsets.all(0),
                     title: Padding(

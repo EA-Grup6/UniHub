@@ -1,34 +1,55 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:unihub_app/controllers/chat_controller.dart';
+import 'package:unihub_app/controllers/feed_controller.dart';
+import 'package:unihub_app/models/feedPublication.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/chat/allChats.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 import '../forum/forum.dart';
 import '../feed/feed.dart';
 import '../search/search.dart';
+import 'package:http/http.dart' as http;
 
 class HomepageScreen extends StatefulWidget {
+  //TODO crear el Socket de los chats (tambien notificará cambios en el perfil)
+  HomepageScreen(this.user, this.chatController, this.pubsList);
+  UserApp user;
+  ChatController chatController;
+  List<FeedPublication> pubsList;
   Homepage createState() => Homepage();
 }
 
 class Homepage extends State<HomepageScreen> {
+  List<FeedPublication> feedList;
   int currentTab = 0;
   final List<Widget> screens = [
-    FeedScreen(),
-    //  Chat(),
+    FeedScreen(null),
+    AllChatsScreen(null),
     SearchScreen(),
-    ProfileScreen(null)
+    ProfileScreen(null, null)
   ];
   //
+
+  Future<List<FeedPublication>> getAllFeeds() async {
+    http.Response response = await FeedController().getFeedPubs();
+    List<FeedPublication> preFeedList = [];
+    for (var feedPub in jsonDecode(response.body)) {
+      preFeedList.add(FeedPublication.fromMap(feedPub));
+    }
+    return preFeedList;
+  }
+
+  Widget currentScreen;
+  String currentTitle;
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = FeedScreen();
 
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context).settings.arguments != null) {
-      setState(() {
-        currentTab = 3;
-        currentScreen = ProfileScreen(null);
-      });
-    } else {}
+    if (currentScreen == null) {
+      currentScreen = FeedScreen(this.widget.pubsList);
+    }
     return Scaffold(
       body: SafeArea(
           child: PageStorage(
@@ -61,9 +82,9 @@ class Homepage extends State<HomepageScreen> {
             children: [
               MaterialButton(
                   minWidth: 50,
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
-                      currentScreen = FeedScreen();
+                      currentScreen = FeedScreen(this.widget.pubsList);
                       currentTab = 0;
                     });
                   },
@@ -87,7 +108,8 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      currentScreen = AllChatsPage();
+                      currentScreen =
+                          AllChatsScreen(this.widget.chatController);
                       currentTab = 2;
                     });
                   },
@@ -99,7 +121,8 @@ class Homepage extends State<HomepageScreen> {
                   minWidth: 50,
                   onPressed: () {
                     setState(() {
-                      currentScreen = ProfileScreen(null);
+                      currentScreen = ProfileScreen(
+                          this.widget.user.username, this.widget.user);
                       currentTab = 3;
                     });
                   },

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:jiffy/jiffy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unihub_app/controllers/editProfile_controller.dart';
 import 'package:unihub_app/controllers/feed_controller.dart';
 import 'package:unihub_app/models/feedPublication.dart';
+import 'package:unihub_app/models/user.dart';
 import 'package:unihub_app/screens/comments/comments.dart';
 import 'package:unihub_app/screens/profile/Profile.dart';
 
@@ -35,12 +39,15 @@ class FeedPostSection extends State<FeedPost> {
                         child: IconButton(
                             splashRadius: 25,
                             icon: Icon(null),
-                            onPressed: () {
+                            onPressed: () async {
+                              UserApp user = UserApp.fromMap(jsonDecode(
+                                  await EditProfileController()
+                                      .getProfile(widget.feed.username)));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfileScreen(widget.feed.username)));
+                                      builder: (context) => ProfileScreen(
+                                          widget._myUsername, user)));
                             })),
                     contentPadding: EdgeInsets.all(0),
                     title: Padding(
@@ -122,10 +129,22 @@ class FeedPostSection extends State<FeedPost> {
                             highlightColor: Colors.transparent,
                             alignment: Alignment.center,
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CommentsScreen(
-                                      this.widget.feed,
-                                      this.widget._myUsername)));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => CommentsScreen(
+                                          this.widget.feed,
+                                          this.widget._myUsername)))
+                                  .then((newComments) {
+                                if (newComments != null) {
+                                  setState(() {
+                                    this.widget.feed.comments = newComments;
+                                  });
+                                } else {
+                                  setState(() {
+                                    this.widget.feed.comments = [];
+                                  });
+                                }
+                              });
                             }),
                         Expanded(
                           child:

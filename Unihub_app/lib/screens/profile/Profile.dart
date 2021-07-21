@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unihub_app/controllers/editProfile_controller.dart';
+import 'package:unihub_app/controllers/login_controller.dart';
 import 'package:unihub_app/controllers/social_controller.dart';
 import 'package:unihub_app/i18N/appTranslations.dart';
 import 'package:unihub_app/models/user.dart';
@@ -13,304 +14,275 @@ import 'package:unihub_app/screens/login/login.dart';
 import 'package:unihub_app/screens/settings/settings.dart';
 import 'package:unihub_app/widgets/textSection.dart';
 
-UserApp currentUser;
-String imageUser;
-Image usrImg;
-
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen(this.username);
+  const ProfileScreen(this.username, this.currentUser);
   final String username;
+  final UserApp currentUser;
   Profile createState() => Profile();
 }
 
 class Profile extends State<ProfileScreen> {
-  String myUsername;
-  String username;
-  String languageCode;
-
   @override
   void initState() {
     super.initState();
   }
 
-  Future<UserApp> getDataFromUser() async {
-    username = this.widget.username;
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    myUsername = preferences.getString('username');
-    if (username == null) {
-      username = myUsername;
-    }
-    languageCode = preferences.getString('lang');
-    if (languageCode == null) {
-      Locale myLocale = Localizations.localeOf(context);
-      languageCode = myLocale.toString();
-    }
-    currentUser = UserApp.fromMap(
-        jsonDecode(await EditProfileController().getProfile(username)));
-    return currentUser;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserApp>(
-        future: getDataFromUser(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Scaffold(
-                appBar: AppBar(
-                  title: this.username == this.myUsername
-                      ? Text(AppLocalizations.instance
-                          .text('profile_yourProfileTitle'))
-                      : languageCode == 'en'
-                          ? currentUser.fullname == ''
-                              ? Text(currentUser.username +
+    return Scaffold(
+        appBar: AppBar(
+          title: this.widget.username == this.widget.currentUser.username
+              ? Text(AppLocalizations.instance
+                  .text('profile_yourProfileTitle', null))
+              : Text(AppLocalizations.instance.text('profile_otherProfileTitle',
+                  {'fullname': this.widget.currentUser.fullname})),
+          actions: this.widget.username == this.widget.currentUser.username
+              ? <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.brush_rounded),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                          builder: (context) =>
+                              EditProfileScreen(this.widget.currentUser),
+                        ))
+                            .then((result) {
+                          if (result != null) {
+                            print('Updated profile');
+                            setState(() {
+                              this.widget.currentUser.updateUser(result);
+                            });
+                          }
+                        });
+                      }),
+                  IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        //Nos lleva a settings
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (context) => SettingsScreen()))
+                            .then((result) {
+                          setState(() {});
+                        });
+                      }),
+                  IconButton(
+                      icon: Icon(Icons.logout),
+                      onPressed: () async {
+                        logOut(context);
+                      })
+                ]
+              : <Widget>[
+                  this
+                          .widget
+                          .currentUser
+                          .followers
+                          .contains(this.widget.username)
+                      ? TextButton(
+                          child: Text(
+                              AppLocalizations.instance
+                                  .text('profile_unfollow', null),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.grey[800])),
+                          onPressed: () async {
+                            //Funcion para quitar follow
+                            http.Response response = await SocialController()
+                                .unfollow(this.widget.currentUser.username,
+                                    this.widget.username);
+                            if (response.statusCode == 200) {
+                              setState(() {
+                                this
+                                    .widget
+                                    .currentUser
+                                    .followers
+                                    .remove(this.widget.username);
+                              });
+                              createToast(
                                   AppLocalizations.instance
-                                      .text("profile_otherProfileTitle"))
-                              : Text(currentUser.fullname +
+                                          .text('profile_youUnfollowed', null) +
+                                      this.widget.currentUser.username,
+                                  Colors.green);
+                            } else {
+                              createToast(jsonDecode(response.body)['message'],
+                                  Colors.green);
+                            }
+                          })
+                      : TextButton(
+                          child: Text(
+                              AppLocalizations.instance
+                                  .text('profile_follow', null),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red[800])),
+                          onPressed: () async {
+                            //Funcion para añadir follow
+                            http.Response response = await SocialController()
+                                .follow(this.widget.currentUser.username,
+                                    this.widget.username);
+                            if (response.statusCode == 200) {
+                              setState(() {
+                                this
+                                    .widget
+                                    .currentUser
+                                    .followers
+                                    .add(this.widget.username);
+                              });
+                              createToast(
                                   AppLocalizations.instance
-                                      .text("profile_otherProfileTitle"))
-                          : currentUser.fullname == ''
-                              ? Text(AppLocalizations.instance
-                                      .text("profile_otherProfileTitle") +
-                                  currentUser.username)
-                              : Text(AppLocalizations.instance
-                                      .text("profile_otherProfileTitle") +
-                                  currentUser.fullname),
-                  actions: this.username == this.myUsername
-                      ? <Widget>[
-                          IconButton(
-                              icon: Icon(Icons.brush_rounded),
-                              onPressed: () {
-                                Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditProfileScreen(),
-                                            settings: RouteSettings(
-                                                arguments: currentUser)))
-                                    .then((result) {
-                                  setState(() {
-                                    currentUser = result;
-                                  });
-                                });
-                              }),
-                          IconButton(
-                              icon: Icon(Icons.settings),
-                              onPressed: () {
-                                //Nos lleva a settings
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                        builder: (context) => SettingsScreen()))
-                                    .then((result) {
-                                  setState(() {});
-                                });
-                              }),
-                          IconButton(
-                              icon: Icon(Icons.logout),
-                              onPressed: () async {
-                                logOut(context);
-                              })
-                        ]
-                      : <Widget>[
-                          currentUser.followers.contains(this.myUsername)
-                              ? TextButton(
-                                  child: Text(
-                                      AppLocalizations.instance
-                                          .text('profile_unfollow'),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black)),
-                                  style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty
-                                          .all<Color>(Colors.grey[800])),
-                                  onPressed: () async {
-                                    //Funcion para quitar follow
-                                    http.Response response =
-                                        await SocialController().unfollow(
-                                            this.myUsername,
-                                            currentUser.username);
-                                    if (response.statusCode == 200) {
-                                      setState(() {
-                                        currentUser.followers
-                                            .remove(this.myUsername);
-                                      });
-                                      createToast(
-                                          AppLocalizations.instance.text(
-                                                  'profile_youUnfollowed') +
-                                              currentUser.username,
-                                          Colors.green);
-                                    } else {
-                                      createToast(
-                                          jsonDecode(response.body)['message'],
-                                          Colors.green);
-                                    }
-                                  })
-                              : TextButton(
-                                  child:
-                                      Text(AppLocalizations.instance.text('profile_follow'),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black)),
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.red[800])),
-                                  onPressed: () async {
-                                    //Funcion para añadir follow
-                                    http.Response response =
-                                        await SocialController().follow(
-                                            this.myUsername,
-                                            currentUser.username);
-                                    if (response.statusCode == 200) {
-                                      setState(() {
-                                        currentUser.followers
-                                            .remove(this.myUsername);
-                                      });
-                                      createToast(
-                                          AppLocalizations.instance
-                                                  .text('profile_youFollowed') +
-                                              currentUser.username,
-                                          Colors.green);
-                                    } else {
-                                      createToast(
-                                          jsonDecode(response.body)['message'],
-                                          Colors.green);
-                                    }
-                                  })
-                        ],
-                ),
-                body: SafeArea(
-                    child: Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: ListView(children: [
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Center(
-                              child: Stack(children: [
-                            Container(
-                                width: 130,
-                                height: 130,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 4,
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          spreadRadius: 2,
-                                          blurRadius: 10,
-                                          color: Colors.black.withOpacity(0.5),
-                                          offset: Offset(0, 2))
-                                    ],
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          currentUser.profilePhoto),
-                                    ))),
-                          ])),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              TextSection(
+                                          .text('profile_youFollowed', null) +
+                                      this.widget.currentUser.username,
+                                  Colors.green);
+                            } else {
+                              createToast(jsonDecode(response.body)['message'],
+                                  Colors.green);
+                            }
+                          })
+                ],
+        ),
+        body: SafeArea(
+            child: Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: ListView(children: [
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                      child: Stack(children: [
+                    Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 4,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor),
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 2,
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.5),
+                                  offset: Offset(0, 2))
+                            ],
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  this.widget.currentUser.profilePhoto),
+                            ))),
+                  ])),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_fullname', null),
+                          this.widget.currentUser.fullname),
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_description', null),
+                          this.widget.currentUser.description),
+                      TextSection(
+                          AppLocalizations.instance.text('profile_role', null),
+                          this.widget.currentUser.role),
+                      TextSection(
+                          AppLocalizations.instance.text('university', null),
+                          this.widget.currentUser.university == null ||
+                                  this.widget.currentUser.university ==
+                                      "Not Selected"
+                              ? AppLocalizations.instance
+                                  .text('notselected', null)
+                              : this.widget.currentUser.university),
+                      TextSection(
+                          AppLocalizations.instance.text('degree', null),
+                          this.widget.currentUser.degree == null ||
+                                  this.widget.currentUser.degree ==
+                                      "Not Selected"
+                              ? AppLocalizations.instance
+                                  .text('notselected', null)
+                              : this.widget.currentUser.degree),
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_subjectsDone', null),
+                          this.widget.currentUser.subjectsDone.length == 0
+                              ? AppLocalizations.instance.text('none', null)
+                              : this
+                                  .widget
+                                  .currentUser
+                                  .subjectsDone
+                                  .join(', ')),
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_subjectsAsking', null),
+                          this.widget.currentUser.subjectsRequested.length == 0
+                              ? AppLocalizations.instance.text('none', null)
+                              : this
+                                  .widget
+                                  .currentUser
+                                  .subjectsRequested
+                                  .join(', ')),
+                      TextSection(
+                          AppLocalizations.instance.text('profile_email', null),
+                          this.widget.currentUser.username),
+                      TextSection(
+                          AppLocalizations.instance.text('profile_phone', null),
+                          this.widget.currentUser.phone),
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_followers', null),
+                          this.widget.currentUser.followers.length.toString()),
+                      TextSection(
+                          AppLocalizations.instance
+                              .text('profile_following', null),
+                          this.widget.currentUser.following.length.toString()),
+                      this.widget.username == this.widget.currentUser.username
+                          ? Column(children: [
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                                child: Text(
                                   AppLocalizations.instance
-                                      .text('profile_fullname'),
-                                  currentUser.fullname),
-                              TextSection(
+                                      .text('profile_deleteAccount', null),
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  showAlertDialog(
+                                      context, this.widget.currentUser);
+                                },
+                              ),
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
+                                child: Text(
                                   AppLocalizations.instance
-                                      .text('profile_description'),
-                                  currentUser.description),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_role'),
-                                  currentUser.role),
-                              TextSection(
-                                  AppLocalizations.instance.text('university'),
-                                  currentUser.university == null ||
-                                          currentUser.university ==
-                                              "Not Selected"
-                                      ? AppLocalizations.instance
-                                          .text('notselected')
-                                      : currentUser.university),
-                              TextSection(
-                                  AppLocalizations.instance.text('degree'),
-                                  currentUser.degree == null ||
-                                          currentUser.degree == "Not Selected"
-                                      ? AppLocalizations.instance
-                                          .text('notselected')
-                                      : currentUser.degree),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_subjectsDone'),
-                                  currentUser.subjectsDone.length == 0
-                                      ? AppLocalizations.instance.text('none')
-                                      : currentUser.subjectsDone.join(', ')),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_subjectsAsking'),
-                                  currentUser.subjectsRequested.length == 0
-                                      ? AppLocalizations.instance.text('none')
-                                      : currentUser.subjectsRequested
-                                          .join(', ')),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_email'),
-                                  currentUser.username),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_phone'),
-                                  currentUser.phone),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_followers'),
-                                  currentUser.followers.length.toString()),
-                              TextSection(
-                                  AppLocalizations.instance
-                                      .text('profile_following'),
-                                  currentUser.following.length.toString()),
-                              this.username == myUsername
-                                  ? Column(children: [
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.red),
-                                        ),
-                                        child: Text(
-                                          AppLocalizations.instance
-                                              .text('profile_deleteAccount'),
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white),
-                                        ),
-                                        onPressed: () async {
-                                          showAlertDialog(context);
-                                        },
-                                      ),
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.red),
-                                        ),
-                                        child: Text(
-                                          AppLocalizations.instance.text(
-                                              'profile_deleteAccountGDPR'),
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white),
-                                        ),
-                                        onPressed: () async {
-                                          showAlertDialog2(context);
-                                        },
-                                      ),
-                                    ])
-                                  : Container(),
-                              /*
+                                      .text('profile_deleteAccountGDPR', null),
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  showAlertDialog2(
+                                      context, this.widget.currentUser);
+                                },
+                              ),
+                            ])
+                          : Container(),
+                      /*
                               TextButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -326,20 +298,9 @@ class Profile extends State<ProfileScreen> {
                                   showAlertDialog2(context);
                                 },
                               )*/
-                            ],
-                          ),
-                        ]))));
-          } else {
-            return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(),
-                  )
-                ]);
-          }
-        });
+                    ],
+                  ),
+                ]))));
   }
 
   logOut(BuildContext context) async {
@@ -358,32 +319,34 @@ class Profile extends State<ProfileScreen> {
   }
 }
 
-showAlertDialog(BuildContext context) {
+showAlertDialog(BuildContext context, UserApp user) {
   TextEditingController passwordController = new TextEditingController();
   // set up the buttons
   Widget confirmButton = TextButton(
-    child: Text(AppLocalizations.instance.text('confirm')),
+    child: Text(AppLocalizations.instance.text('confirm', null)),
     onPressed: () async {
       // Delete account checking if password is correct
-      if (passwordController.text == currentUser.password) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        var username = preferences.getString('username');
+      http.Response isPasswordOK = await LoginController()
+          .loginUser(user.username, passwordController.text);
+      if (isPasswordOK == 200) {
         http.Response response =
-            await EditProfileController().deleteProfile(username);
+            await EditProfileController().deleteProfile(user.username);
         if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
-          createToast(AppLocalizations.instance.text('profile_deleteAccountOK'),
+          createToast(
+              AppLocalizations.instance.text('profile_deleteAccountOK', null),
               Colors.green);
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/login', (Route<dynamic> route) => false);
         } else {
-          createToast(AppLocalizations.instance.text('profile_deleteAccountNO'),
+          createToast(
+              AppLocalizations.instance.text('profile_deleteAccountNO', null),
               Colors.red);
         }
       } else {
         createToast(
-            AppLocalizations.instance.text('wrongPassword'), Colors.red);
+            AppLocalizations.instance.text('wrongPassword', null), Colors.red);
       }
     },
   );
@@ -396,14 +359,14 @@ showAlertDialog(BuildContext context) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text(
-        AppLocalizations.instance.text('profile_deleteAccountConfirmation')),
+    title: Text(AppLocalizations.instance
+        .text('profile_deleteAccountConfirmation', null)),
     content: TextFormField(
       controller: passwordController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 3),
           labelText: AppLocalizations.instance
-              .text("profile_deleteAccountConfirmPassword"),
+              .text("profile_deleteAccountConfirmPassword", null),
           floatingLabelBehavior: FloatingLabelBehavior.always),
     ),
     actions: [cancelButton, confirmButton],
@@ -420,32 +383,34 @@ showAlertDialog(BuildContext context) {
 
 /////////////////////
 
-showAlertDialog2(BuildContext context) {
+showAlertDialog2(BuildContext context, UserApp user) {
   TextEditingController passwordController = new TextEditingController();
   // set up the buttons
   Widget confirmButton = TextButton(
-    child: Text(AppLocalizations.instance.text('confirm')),
+    child: Text(AppLocalizations.instance.text('confirm', null)),
     onPressed: () async {
       // Delete account checking if password is correct
-      if (passwordController.text == currentUser.password) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        var username = preferences.getString('username');
+      http.Response isPasswordOK = await LoginController()
+          .loginUser(user.username, passwordController.text);
+      if (isPasswordOK == 200) {
         http.Response response =
-            await EditProfileController().deleteALL(username); //DELETEALL
+            await EditProfileController().deleteProfile(user.username);
         if (response.statusCode == 200) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.clear();
-          createToast(AppLocalizations.instance.text('profile_deleteAccountOK'),
+          createToast(
+              AppLocalizations.instance.text('profile_deleteAccountOK', null),
               Colors.green);
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/login', (Route<dynamic> route) => false);
         } else {
-          createToast(AppLocalizations.instance.text('profile_deleteAccountNO'),
+          createToast(
+              AppLocalizations.instance.text('profile_deleteAccountNO', null),
               Colors.red);
         }
       } else {
         createToast(
-            AppLocalizations.instance.text('wrongPassword'), Colors.red);
+            AppLocalizations.instance.text('wrongPassword', null), Colors.red);
       }
     },
   );
@@ -459,13 +424,13 @@ showAlertDialog2(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text(AppLocalizations.instance
-        .text('profile_deleteAccountConfirmationGDPR')),
+        .text('profile_deleteAccountConfirmationGDPR', null)),
     content: TextFormField(
       controller: passwordController,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 3),
           labelText: AppLocalizations.instance
-              .text("profile_deleteAccountConfirmPassword"),
+              .text("profile_deleteAccountConfirmPassword", null),
           floatingLabelBehavior: FloatingLabelBehavior.always),
     ),
     actions: [cancelButton, confirmButton],
