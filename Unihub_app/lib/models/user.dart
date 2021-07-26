@@ -84,7 +84,7 @@ class UserApp extends ChangeNotifier {
         json['profilePhoto'],
         json['followers'],
         json['following'],
-        json['isGoogleAccount']);
+        json['isGoogleAccount'] == "true");
   }
 
   Map<String, dynamic> toJSON() {

@@ -9,7 +9,7 @@ const router = Router();
     
 
 
-router.route('/User/newUser/').post(createUser);
+router.route('/User/newUser/:isGoogleAccount').post(createUser);
     
 router.route('/User/loginUser/').post(loginUser);
 

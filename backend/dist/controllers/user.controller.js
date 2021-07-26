@@ -15,6 +15,7 @@ let mongoose = require('mongoose');
 async function createUser(req, res) {
     let { username, password } = req.body;
     let newUser = new User_1.default();
+    newUser.isGoogleAccount = req.params.isGoogleAccount;
     newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
@@ -55,7 +56,7 @@ async function loginUser(req, res) {
         if (registeredUser != null) {
             if (registeredUser.get('password') == registeringUser.password) {
                 let registeredUserId = registeredUser._id;
-                var token = await jsonwebtoken_1.default.sign({ id: registeredUserId }, 'mykey', { expiresIn: 86400 });
+                var token = await jsonwebtoken_1.default.sign({ id: registeredUserId }, 'mykey', { expiresIn: 604800 });
                 if (registeredUser.get('isAdmin')) {
                     return res.status(202).send(token);
                 }

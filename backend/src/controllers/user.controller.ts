@@ -13,6 +13,7 @@ let mongoose = require('mongoose');
 export async function createUser (req: any, res: Response){
     let {username, password} = req.body;
     let newUser = new User();
+    newUser.isGoogleAccount = req.params.isGoogleAccount;
     newUser._id = new mongoose.Types.ObjectId();
     newUser.username = username;
     newUser.password = password;
@@ -52,7 +53,7 @@ export async function loginUser (req: Request, res: Response){
         if(registeredUser != null){
             if(registeredUser.get('password') == registeringUser.password){
                 let registeredUserId = registeredUser._id;
-                var token = await jwt.sign({id: registeredUserId}, 'mykey', {expiresIn: 86400});
+                var token = await jwt.sign({id: registeredUserId}, 'mykey', {expiresIn: 604800});
                 if(registeredUser.get('isAdmin')){
                     return res.status(202).send(token);
                 }else

@@ -17,7 +17,7 @@ const schema = new Schema({
     followers: Array,
     following: Array,
     profilePhoto: String,
-    //Coins: Number
+    isGoogleAccount: String,
 }, {collection: 'users'});
 
 interface IUser extends Document {
@@ -36,8 +36,8 @@ interface IUser extends Document {
     phone: string,
     followers: Array<string>;
     following: Array<string>;
-    profilePhoto: String;
-    //Coins: Number
+    profilePhoto: string;
+    isGoogleAccount: string;
 }
 
 export default model<IUser>('User',schema);

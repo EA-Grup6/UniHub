@@ -286,12 +286,9 @@ class Login extends State<LoginScreen> {
     final user = await GoogleSignInApi.login();
 
     http.Response registerResponse =
-        await RegisterController().registerUser(user.email, user.id);
-    print('register: ' + registerResponse.statusCode.toString());
+        await RegisterController().registerUser(user.email, user.id, true);
     if (registerResponse.statusCode == 200) {
-      print("User does not exist, registered and now loging in");
       var login = await LoginController().loginUser(user.email, user.id);
-      print('login: ' + login.toString());
       if (login == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('username', user.email);

@@ -144,7 +144,8 @@ class Register extends State<RegisterScreen> {
                                                       .registerUser(
                                                           _nameController.text,
                                                           _passwordController
-                                                              .text);
+                                                              .text,
+                                                          false);
                                               if (response.statusCode == 200) {
                                                 createToast(
                                                     AppLocalizations.instance.text(

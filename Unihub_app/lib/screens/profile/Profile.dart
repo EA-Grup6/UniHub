@@ -48,7 +48,6 @@ class Profile extends State<ProfileScreen> {
                         ))
                             .then((result) {
                           if (result != null) {
-                            print('Updated profile');
                             setState(() {
                               this.widget.currentUser.updateUser(result);
                             });
@@ -326,19 +325,25 @@ showAlertDialog(BuildContext context, UserApp user) {
     child: Text(AppLocalizations.instance.text('confirm', null)),
     onPressed: () async {
       // Delete account checking if password is correct
-      http.Response isPasswordOK = await LoginController()
+      int isPasswordOK = await LoginController()
           .loginUser(user.username, passwordController.text);
       if (isPasswordOK == 200) {
         http.Response response =
             await EditProfileController().deleteProfile(user.username);
         if (response.statusCode == 200) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.clear();
-          createToast(
-              AppLocalizations.instance.text('profile_deleteAccountOK', null),
-              Colors.green);
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/login', (Route<dynamic> route) => false);
+          try {
+            await GoogleSignInApi.logout();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.clear();
+            Navigator.of(context).pushReplacementNamed('/login');
+          } catch (exception) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.clear();
+            createToast(
+                AppLocalizations.instance.text('profile_deleteAccountOK', null),
+                Colors.green);
+            Navigator.of(context).pushReplacementNamed('/login');
+          }
         } else {
           createToast(
               AppLocalizations.instance.text('profile_deleteAccountNO', null),
@@ -390,19 +395,25 @@ showAlertDialog2(BuildContext context, UserApp user) {
     child: Text(AppLocalizations.instance.text('confirm', null)),
     onPressed: () async {
       // Delete account checking if password is correct
-      http.Response isPasswordOK = await LoginController()
+      int isPasswordOK = await LoginController()
           .loginUser(user.username, passwordController.text);
       if (isPasswordOK == 200) {
         http.Response response =
             await EditProfileController().deleteProfile(user.username);
         if (response.statusCode == 200) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.clear();
-          createToast(
-              AppLocalizations.instance.text('profile_deleteAccountOK', null),
-              Colors.green);
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/login', (Route<dynamic> route) => false);
+          try {
+            await GoogleSignInApi.logout();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.clear();
+            Navigator.of(context).pushReplacementNamed('/login');
+          } catch (exception) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.clear();
+            createToast(
+                AppLocalizations.instance.text('profile_deleteAccountOK', null),
+                Colors.green);
+            Navigator.of(context).pushReplacementNamed('/login');
+          }
         } else {
           createToast(
               AppLocalizations.instance.text('profile_deleteAccountNO', null),
@@ -444,5 +455,3 @@ showAlertDialog2(BuildContext context, UserApp user) {
     },
   );
 }
-
-void setFollow() {}
