@@ -41,7 +41,6 @@ class EditProfile extends State<EditProfileScreen> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _roleController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _password2Controller = TextEditingController();

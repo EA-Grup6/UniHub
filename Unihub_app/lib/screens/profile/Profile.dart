@@ -90,8 +90,8 @@ class Profile extends State<ProfileScreen> {
                           onPressed: () async {
                             //Funcion para quitar follow
                             http.Response response = await SocialController()
-                                .unfollow(this.widget.currentUser.username,
-                                    this.widget.username);
+                                .unfollow(this.widget.username,
+                                    this.widget.currentUser.username);
                             if (response.statusCode == 200) {
                               setState(() {
                                 this
@@ -123,8 +123,8 @@ class Profile extends State<ProfileScreen> {
                           onPressed: () async {
                             //Funcion para añadir follow
                             http.Response response = await SocialController()
-                                .follow(this.widget.currentUser.username,
-                                    this.widget.username);
+                                .follow(this.widget.username,
+                                    this.widget.currentUser.username);
                             if (response.statusCode == 200) {
                               setState(() {
                                 this
